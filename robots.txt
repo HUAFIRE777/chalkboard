@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chalkboard.eazyopc.com/sitemap.xml
