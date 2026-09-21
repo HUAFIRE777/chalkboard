@@ -337,7 +337,7 @@
             <span>Chalkboard</span>
             <span class="text-[10px] font-semibold px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded">by EazyOPC</span>
           </div>
-          <span class="text-[10px] text-slate-400 hidden sm:inline leading-none">复古教学黑板与拟真粉笔</span>
+          <span class="text-[10px] text-slate-400 hidden sm:inline leading-none" data-i18n="site_subtitle">拟真粉笔音效与板书教学</span>
         </div>
       </a>
     </div>
@@ -414,43 +414,43 @@
     <!-- 左侧专业悬浮工具坞 -->
     <aside id="leftSidebar" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-1.5 bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-1.5 rounded-2xl shadow-2xl transition-all">
       <!-- 0. 鼠标选择与调整 (Select - V) -->
-      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="select" title="↖️ 鼠标选择与调整 (快捷键 V，点选图片/文字可拖动、四角缩放或删除)">↖️</button>
+      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="select" data-i18n-title="tip_select" title="↖️ 鼠标选择与调整 (快捷键 V，点选图片/文字可拖动、四角缩放或删除)">↖️</button>
       <!-- 1. 真实粉笔 (带粒子碎屑) -->
-      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition tool-btn-active" data-tool="chalk" title="粉笔 (真实碎屑颗粒质感，停顿吸附标准几何)">👨‍🏫</button>
+      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition tool-btn-active" data-tool="chalk" data-i18n-title="tip_chalk" title="粉笔 (真实碎屑颗粒质感，停顿吸附标准几何)">👨‍🏫</button>
       <!-- 2. 钢笔细线条 -->
-      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="pen" title="钢笔细线 (板书重点)">🖋️</button>
+      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="pen" data-i18n-title="tip_pen" title="钢笔细线 (板书重点)">🖋️</button>
       <!-- 3. 荧光粉笔 -->
-      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="highlighter" title="荧光高亮 (讲课板书批注)">🖍️</button>
+      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="highlighter" data-i18n-title="tip_highlighter" title="荧光高亮 (讲课板书批注)">🖍️</button>
       <!-- 4. 自由打字工具 (Text Tool - T) -->
-      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="text" title="🔤 文本板书工具 (快捷键 T，点击任意位置打字)">🔤</button>
+      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="text" data-i18n-title="tip_text" title="🔤 文本板书工具 (快捷键 T，点击任意位置打字)">🔤</button>
       <!-- 5. ⚡ 一笔整擦 -->
-      <button class="tool-btn p-2 rounded-xl text-amber-300 hover:bg-amber-500/20 text-xs transition" data-tool="eraser" title="⚡ 一笔整擦 (点中粉笔字瞬间全消)">⚡</button>
+      <button class="tool-btn p-2 rounded-xl text-amber-300 hover:bg-amber-500/20 text-xs transition" data-tool="eraser" data-i18n-title="tip_eraser" title="⚡ 一笔整擦 (点中粉笔字瞬间全消)">⚡</button>
       <!-- 6. ⭕ 套索选择与移动 -->
-      <button class="tool-btn p-2 rounded-xl text-emerald-300 hover:bg-emerald-500/20 text-xs transition" data-tool="lasso" title="⭕ 套索圈选与平移 (画圈圈住板书即可整体拖动)">⭕</button>
+      <button class="tool-btn p-2 rounded-xl text-emerald-300 hover:bg-emerald-500/20 text-xs transition" data-tool="lasso" data-i18n-title="tip_lasso" title="⭕ 套索圈选与平移 (画圈圈住板书即可整体拖动)">⭕</button>
       <!-- 7. 插入/粘贴图片 (支持剪贴板 Ctrl+V) -->
-      <button id="btnInsertImage" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" title="🖼️ 插入课件/习题图片，支持 Ctrl+V 粘贴">🖼️</button>
+      <button id="btnInsertImage" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-i18n-title="tip_image" title="🖼️ 插入课件/习题图片，支持 Ctrl+V 粘贴">🖼️</button>
       <input type="file" id="imageFileInput" accept="image/*" class="hidden" />
 
       <div class="w-6 h-px bg-slate-700 my-0.5"></div>
 
       <!-- 8. 3D 空间坐标轴 -->
-      <button id="btnToolAxis3D" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" title="绘制三维空间坐标系 (XYZ)">🌐</button>
+      <button id="btnToolAxis3D" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-i18n-title="tip_axis_3d" title="绘制三维空间坐标系 (XYZ)">🌐</button>
       <!-- 9. 2D 直角坐标轴 -->
-      <button id="btnToolAxis2D" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" title="绘制二维平面直角坐标系 (XY)">➕</button>
+      <button id="btnToolAxis2D" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-i18n-title="tip_axis_2d" title="绘制二维平面直角坐标系 (XY)">➕</button>
       <!-- 10. 激光教鞭 -->
-      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="laser" title="激光笔 (讲课指示，1.2秒消散)">🔦</button>
+      <button class="tool-btn p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-tool="laser" data-i18n-title="tip_laser" title="激光笔 (讲课指示，1.2秒消散)">🔦</button>
 
       <div class="w-6 h-px bg-slate-700 my-0.5"></div>
 
       <!-- 11. 调色面板 -->
-      <button id="btnTogglePalette" class="relative p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" title="粉笔色彩与粗细调节">
+      <button id="btnTogglePalette" class="relative p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-i18n-title="tip_palette" title="粉笔色彩与粗细调节">
         <span id="activeColorDot" class="w-3.5 h-3.5 rounded-full block border border-white/60 bg-white"></span>
       </button>
 
       <!-- 12. 撤销 -->
-      <button id="btnUndo" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" title="撤销 (Ctrl+Z，移动端双指轻敲)">↩️</button>
+      <button id="btnUndo" class="p-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs transition" data-i18n-title="tip_undo" title="撤销 (Ctrl+Z，移动端双指轻敲)">↩️</button>
       <!-- 13. 一键全擦黑板 -->
-      <button id="btnClearAll" class="p-2 rounded-xl text-rose-400 hover:bg-rose-950/60 text-xs transition" title="🗑️ 清空所有黑板字画">🗑️</button>
+      <button id="btnClearAll" class="p-2 rounded-xl text-rose-400 hover:bg-rose-950/60 text-xs transition" data-i18n-title="tip_clear" title="🗑️ 清空所有黑板字画">🗑️</button>
     </aside>
 
     <!-- 悬浮粉笔色彩面板 -->
@@ -474,7 +474,7 @@
       <button id="btnZoomReset" class="px-1.5 py-0.5 hover:bg-slate-800 rounded-lg font-mono text-[11px]" title="重置 100%">100%</button>
       <button id="btnZoomIn" class="w-6 h-6 flex items-center justify-center hover:bg-slate-800 rounded-lg font-bold" title="放大 (Ctrl+滚轮)">+</button>
       <span class="text-slate-600">|</span>
-      <button id="btnZoomFit" class="px-1.5 py-0.5 hover:bg-slate-800 rounded-lg text-[11px]" title="适应居中">📐 适中</button>
+      <button id="btnZoomFit" class="px-1.5 py-0.5 hover:bg-slate-800 rounded-lg text-[11px]" data-i18n-title="tip_fit" title="适应居中">📐 <span data-i18n="fit">适中</span></button>
     </div>
 
     <!-- 真实黑板纸张卡片 -->
@@ -573,94 +573,136 @@
   </footer>
 
   <!-- ================= 6. 现代专业导出中心模态弹窗 ================= -->
-  <div id="exportModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
-    <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl text-white space-y-4">
+  <div id="exportModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-3xl p-5 sm:p-6 shadow-2xl text-white space-y-4 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base">💾</div>
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">💾</div>
           <div>
-            <h3 class="text-base font-bold">导出板书 · Export Center</h3>
-            <p class="text-[11px] text-slate-400">选择输出文件格式与画质规格</p>
+            <h3 class="text-base font-bold" data-i18n="export_modal_title">导出板书 · Export Center</h3>
+            <p class="text-[11px] text-slate-400" data-i18n="export_modal_desc">选择输出文件格式与画质规格</p>
           </div>
         </div>
         <button id="btnCloseExportModal" class="text-slate-400 hover:text-white text-lg px-2">✕</button>
       </div>
 
+      <!-- 👑 Pro 全套特权说明横幅 -->
+      <div class="p-3 bg-gradient-to-r from-amber-500/15 via-amber-500/10 to-transparent border border-amber-500/30 rounded-2xl flex items-center justify-between text-xs">
+        <div>
+          <div class="font-bold text-amber-400 flex items-center gap-1.5">
+            <span>⭐ <span data-i18n="pro_banner_title">EazyOPC Pro 全套特权大礼包</span></span>
+            <span class="text-[9px] px-1.5 py-0.5 bg-amber-500/20 text-amber-300 rounded font-bold" data-i18n="pro_banner_tag">一次付费 · 永久使用</span>
+          </div>
+          <p class="text-[11px] text-slate-300 mt-1" data-i18n="pro_banner_desc">
+            只需单次 $4.99 USD，即可永久解锁下方全部 4K 超清、透明免扣图、Canva/Figma 矢量工程及 PDF 格式，无任何二次收费！
+          </p>
+        </div>
+        <div class="text-right flex-shrink-0 ml-3">
+          <span class="text-[10px] text-slate-400 line-through block">$19.99</span>
+          <span class="text-sm font-black text-amber-400 block">$4.99</span>
+        </div>
+      </div>
+
+      <!-- 格式选择列表 -->
       <div class="space-y-2 text-xs">
+        <!-- 1. 免费 1080P PNG -->
         <label class="export-card flex items-center justify-between p-3 rounded-2xl bg-slate-800/90 border-2 border-emerald-500 cursor-pointer transition">
           <div class="flex items-center gap-2.5">
             <input type="radio" name="exportFormat" value="png_free" checked class="w-4 h-4 accent-emerald-500" />
             <div>
               <div class="font-bold text-white flex items-center gap-1.5">
-                <span>🖼️ 1080P 标准黑板图</span>
-                <span class="text-[9px] px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded font-semibold">免费 Free</span>
+                <span data-i18n="fmt_png_free">🖼️ 1080P 标准黑板图</span>
+                <span class="text-[9px] px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded font-semibold" data-i18n="free_badge">免费 Free</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-0.5">带微小 EazyOPC 水印，课后温习首选</p>
+              <p class="text-[10px] text-slate-400 mt-0.5" data-i18n="fmt_png_free_desc">带微小 EazyOPC 水印，课后温习与快速分享首选</p>
             </div>
           </div>
-          <span class="font-bold text-emerald-400">$0 免费</span>
+          <span class="font-bold text-emerald-400" data-i18n="free_price">$0 免费</span>
         </label>
 
+        <!-- 2. 4K Ultra-HD 超清原画 -->
         <label class="export-card flex items-center justify-between p-3 rounded-2xl bg-slate-800/90 border-2 border-slate-700/60 cursor-pointer transition">
           <div class="flex items-center gap-2.5">
             <input type="radio" name="exportFormat" value="png_4k" class="w-4 h-4 accent-amber-500" />
             <div>
               <div class="font-bold text-white flex items-center gap-1.5">
-                <span>✨ 4K Ultra-HD 超清原画</span>
-                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold">⭐ Pro</span>
+                <span data-i18n="fmt_png_4k">✨ 4K Ultra-HD 超清板书</span>
+                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold" data-i18n="pro_tag">⭐ Pro</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-0.5">3840px 极清分辨率，永久纯净无水印</p>
+              <p class="text-[10px] text-slate-400 mt-0.5" data-i18n="fmt_png_4k_desc">3840px 极清分辨率，永久纯净去水印</p>
             </div>
           </div>
-          <span class="font-bold text-amber-400">$4.99 买断</span>
+          <span class="font-semibold text-amber-400 text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20" data-i18n="pro_included">Pro 包含 · 永久使用</span>
         </label>
 
+        <!-- 3. 透明背景 PNG -->
         <label class="export-card flex items-center justify-between p-3 rounded-2xl bg-slate-800/90 border-2 border-slate-700/60 cursor-pointer transition">
           <div class="flex items-center gap-2.5">
             <input type="radio" name="exportFormat" value="png_transparent" class="w-4 h-4 accent-amber-500" />
             <div>
               <div class="font-bold text-white flex items-center gap-1.5">
-                <span>🪟 透明背景 PNG (扣除黑板底色)</span>
-                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold">⭐ Pro</span>
+                <span data-i18n="fmt_png_transparent">🪟 透明背景 PNG (扣除黑板底色)</span>
+                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold" data-i18n="pro_tag">⭐ Pro</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-0.5">仅留纯净粉笔笔迹，可直接覆盖于讲义PPT</p>
+              <p class="text-[10px] text-slate-400 mt-0.5" data-i18n="fmt_png_transparent_desc">仅留纯净粉笔笔迹，做PPT课件贴图神器</p>
             </div>
           </div>
-          <span class="font-bold text-amber-400">$4.99 买断</span>
+          <span class="font-semibold text-amber-400 text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20" data-i18n="pro_included">Pro 包含 · 永久使用</span>
         </label>
 
+        <!-- 4. 🎨 Canva / Figma 矢量无损工程 (SVG) -->
         <label class="export-card flex items-center justify-between p-3 rounded-2xl bg-slate-800/90 border-2 border-slate-700/60 cursor-pointer transition">
           <div class="flex items-center gap-2.5">
             <input type="radio" name="exportFormat" value="svg_vector" class="w-4 h-4 accent-amber-500" />
             <div>
               <div class="font-bold text-white flex items-center gap-1.5">
-                <span>📐 矢量 SVG 原画 (无损无限缩放)</span>
-                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold">⭐ Pro</span>
+                <span data-i18n="fmt_svg_canva">🎨 Canva / Figma 矢量无损工程 (SVG)</span>
+                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold" data-i18n="pro_tag">⭐ Pro</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-0.5">数学贝塞尔曲线，无缝导入教研排版工具</p>
+              <p class="text-[10px] text-slate-400 mt-0.5" data-i18n="fmt_svg_canva_desc">100% 矢量贝塞尔曲线，可无缝直接导入 Canva、Figma、Illustrator 二次自由编辑</p>
             </div>
           </div>
-          <span class="font-bold text-amber-400">$4.99 买断</span>
+          <span class="font-semibold text-amber-400 text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20" data-i18n="pro_included">Pro 包含 · 永久使用</span>
         </label>
 
+        <!-- 5. 矢量 PDF 打印讲义 -->
         <label class="export-card flex items-center justify-between p-3 rounded-2xl bg-slate-800/90 border-2 border-slate-700/60 cursor-pointer transition">
           <div class="flex items-center gap-2.5">
             <input type="radio" name="exportFormat" value="pdf_pro" class="w-4 h-4 accent-amber-500" />
             <div>
               <div class="font-bold text-white flex items-center gap-1.5">
-                <span>📄 矢量 PDF 打印讲义</span>
-                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold">⭐ Pro</span>
+                <span data-i18n="fmt_pdf">📄 矢量 PDF 打印讲义</span>
+                <span class="text-[9px] px-1.5 py-0.2 bg-amber-500/20 text-amber-300 rounded font-semibold" data-i18n="pro_tag">⭐ Pro</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-0.5">高保真 A4 排版，打印学生课后练习必备</p>
+              <p class="text-[10px] text-slate-400 mt-0.5" data-i18n="fmt_pdf_desc">高保真排版，打印学生课后练习必备</p>
             </div>
           </div>
-          <span class="font-bold text-amber-400">$4.99 买断</span>
+          <span class="font-semibold text-amber-400 text-[11px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20" data-i18n="pro_included">Pro 包含 · 永久使用</span>
         </label>
       </div>
 
-      <div class="pt-2">
+      <!-- Canva / Figma 专属快捷联动动作坞 -->
+      <div id="canvaFigmaActions" class="hidden p-3 bg-slate-800/80 border border-indigo-500/40 rounded-2xl space-y-2 text-xs">
+        <div class="font-bold text-indigo-300 flex items-center gap-1.5">
+          <span>🚀</span> <span data-i18n="canva_figma_title">Canva & Figma 直连编辑工作流</span>
+        </div>
+        <p class="text-[11px] text-slate-400" data-i18n="canva_figma_desc">已专为设计与教学工具优化矢量格式，您可以一键复制矢量节点，或直接跳转到对应工具无缝编辑：</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 pt-1">
+          <button id="btnCopySvgToClipboard" class="py-2 px-2 bg-indigo-600/80 hover:bg-indigo-500 text-white rounded-xl text-[11px] font-semibold transition flex items-center justify-center gap-1 cursor-pointer">
+            <span>📋</span> <span data-i18n="btn_copy_svg">复制矢量到剪贴板</span>
+          </button>
+          <a href="https://www.canva.com" target="_blank" id="btnOpenCanva" class="py-2 px-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-[11px] font-semibold transition flex items-center justify-center gap-1 text-center">
+            <span>🎨</span> <span data-i18n="btn_open_canva">前往 Canva.com</span>
+          </a>
+          <a href="https://www.figma.com" target="_blank" id="btnOpenFigma" class="py-2 px-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-[11px] font-semibold transition flex items-center justify-center gap-1 text-center">
+            <span>⚡</span> <span data-i18n="btn_open_figma">前往 Figma.com</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pt-1">
         <button id="btnExecuteExport" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition-all text-xs flex items-center justify-center gap-2">
-          <span>⬇️</span> <span id="lblExecuteExport">免费导出 1080P 标准图 (带水印)</span>
+          <span>⬇️</span> <span id="lblExecuteExport" data-i18n="lbl_export_default">免费导出 1080P 标准图 (带水印)</span>
         </button>
       </div>
     </div>
@@ -670,40 +712,41 @@
   <div id="mobileSaveModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
     <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-3xl p-5 shadow-2xl text-white text-center space-y-3">
       <div class="flex justify-between items-center">
-        <h4 class="text-sm font-bold flex items-center gap-1">📸 <span>手机保存到相册</span></h4>
+        <h4 class="text-sm font-bold flex items-center gap-1">📸 <span data-i18n="mobile_save_title">手机保存到相册</span></h4>
         <button id="btnCloseMobileSave" class="text-slate-400 hover:text-white text-base">✕</button>
       </div>
-      <p class="text-[11px] text-amber-300 bg-amber-500/15 p-2 rounded-xl border border-amber-500/30">
+      <p class="text-[11px] text-amber-300 bg-amber-500/15 p-2 rounded-xl border border-amber-500/30" data-i18n="mobile_save_hint">
         👉 <strong>长按下方图片 1 秒</strong>，在系统菜单中选择<strong>「存储图像」</strong>或<strong>「保存到相册」</strong>即可！
       </p>
       <div class="rounded-xl overflow-hidden border border-slate-700 bg-slate-950 max-h-64 flex items-center justify-center">
         <img id="mobilePreviewImg" class="max-h-60 max-w-full object-contain" alt="Chalkboard Export Preview" />
       </div>
-      <button id="btnMobileFallbackDownload" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl font-medium">
+      <button id="btnMobileFallbackDownload" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl font-medium" data-i18n="mobile_download_btn">
         浏览器直接下载文件
       </button>
     </div>
   </div>
 
-  <!-- ================= 8. Creem $4.99 终身授权结账弹窗 ================= -->
+  <!-- ================= 8. Creem $4.99 永久使用授权结账弹窗 ================= -->
   <div id="proModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
     <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-3xl p-6 shadow-2xl text-white space-y-4">
       <div class="text-center space-y-1.5">
         <div class="inline-block p-3 bg-amber-500/15 text-amber-400 rounded-2xl text-2xl mb-1">⭐</div>
-        <h3 class="text-lg font-bold" data-i18n="pro_title">解锁 Chalkboard Pro 终身版</h3>
-        <p class="text-xs text-slate-400" data-i18n="pro_desc">一杯咖啡钱，永久买断 4K 原画、透明图、SVG 矢量及全套商业教学权益。</p>
+        <h3 class="text-lg font-bold" data-i18n="pro_title">解锁 Chalkboard Pro 永久使用版</h3>
+        <p class="text-xs text-slate-400" data-i18n="pro_desc">一次付费 $4.99，永久解锁 4K 原画、透明图、Canva/Figma 矢量工程、PDF 及全套教学权益，无后续订阅费。</p>
       </div>
 
       <div class="p-4 bg-slate-800/80 border border-slate-700/60 rounded-2xl space-y-2 text-xs text-slate-300">
-        <div class="flex items-center gap-2">✅ <strong>4K Ultra-HD 超清原画</strong>（永久纯净去水印）</div>
-        <div class="flex items-center gap-2">✅ <strong>透明背景 PNG</strong>（教师讲义与课件素材神器）</div>
-        <div class="flex items-center gap-2">✅ <strong>数学矢量 SVG 原画</strong>（无限放大不失真）</div>
-        <div class="flex items-center gap-2">✅ <strong>高保真 PDF 打印讲义</strong>（按选定画幅输出）</div>
+        <div class="flex items-center gap-2">✅ <span data-i18n="pro_perk_1"><strong>4K Ultra-HD 超清原画</strong>（永久纯净去水印）</span></div>
+        <div class="flex items-center gap-2">✅ <span data-i18n="pro_perk_2"><strong>透明背景 PNG</strong>（教师讲义与课件素材神器）</span></div>
+        <div class="flex items-center gap-2">✅ <span data-i18n="pro_perk_3"><strong>Canva / Figma 矢量无损工程 (SVG)</strong>（自由二次编辑）</span></div>
+        <div class="flex items-center gap-2">✅ <span data-i18n="pro_perk_4"><strong>高保真 PDF 打印讲义</strong>（按选定画幅输出）</span></div>
+        <div class="flex items-center gap-2">✅ <span data-i18n="pro_perk_5"><strong>一次付费 · 永久使用</strong>（全部功能统一打包，无后续收费）</span></div>
       </div>
 
       <div class="space-y-2.5">
         <a id="creemCheckoutBtn" href="https://www.creem.io/payment/prod_6vEqLscAYX5rqyZLVatoV7" target="_blank" class="block w-full text-center py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl shadow-lg transition-transform active:scale-95 text-xs" data-i18n="buy_btn">
-          立即以 $4.99 USD 买断终身授权
+          立即以 $4.99 USD 解锁永久使用
         </a>
         
         <div class="relative flex py-1 items-center">
@@ -713,7 +756,7 @@
         </div>
 
         <div class="flex gap-2">
-          <input id="licenseInput" type="text" placeholder="输入卡密 (如 EZPRO-...)" class="flex-1 bg-slate-800 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white outline-none focus:border-amber-500" />
+          <input id="licenseInput" type="text" placeholder="输入卡密 (如 EZPRO-...)" data-i18n-ph="license_placeholder" class="flex-1 bg-slate-800 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white outline-none focus:border-amber-500" />
           <button id="btnVerifyLicense" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-xs font-semibold rounded-xl transition" data-i18n="activate">激活</button>
         </div>
       </div>
@@ -726,46 +769,438 @@
   <script>
     const TRANSLATIONS = {
       zh: {
+        site_subtitle: '拟真粉笔音效与板书教学',
         lbl_ratio: '画幅', lbl_paper: '黑板', fullscreen: '全屏', exit_fullscreen: '退出全屏',
-        export: '导出', palette_title: '粉笔颜色', size: '粗细', theme_light: '白天', theme_dark: '夜间',
-        pro_title: '解锁 Chalkboard Pro 终身版', pro_desc: '一杯咖啡钱，永久买断 4K 原画、透明图、SVG 矢量及全套商业教学权益。',
-        buy_btn: '立即以 $4.99 USD 买断终身授权', has_license: '已有授权码？', activate: '激活', continue_free: '暂不解锁，继续免费使用'
+        export: '导出', palette_title: '粉笔颜色', size: '粗细', theme_light: '白天', theme_dark: '夜间', fit: '适中',
+        pro_title: '解锁 Chalkboard Pro 永久使用版',
+        pro_desc: '一次付费 $4.99，永久解锁 4K 原画、透明图、Canva/Figma 矢量工程、PDF 及全套教学权益，无后续订阅费。',
+        buy_btn: '立即以 $4.99 USD 解锁永久使用',
+        has_license: '已有授权码？', activate: '激活', continue_free: '暂不解锁，继续免费使用',
+        export_modal_title: '导出板书 · Export Center', export_modal_desc: '选择输出文件格式与画质规格',
+        pro_banner_title: 'EazyOPC Pro 全套特权大礼包', pro_banner_tag: '一次付费 · 永久使用',
+        pro_banner_desc: '只需单次 $4.99 USD，即可永久解锁下方全部 4K 超清、透明免扣图、Canva/Figma 矢量工程及 PDF 格式，无任何二次收费！',
+        fmt_png_free: '🖼️ 1080P 标准黑板图', fmt_png_free_desc: '带微小 EazyOPC 水印，课后温习与快速分享首选', free_badge: '免费 Free', free_price: '$0 免费',
+        fmt_png_4k: '✨ 4K Ultra-HD 超清板书', fmt_png_4k_desc: '3840px 极清分辨率，永久纯净去水印',
+        fmt_png_transparent: '🪟 透明背景 PNG (扣除黑板底色)', fmt_png_transparent_desc: '仅留纯净粉笔笔迹，做PPT课件贴图神器',
+        fmt_svg_canva: '🎨 Canva / Figma 矢量无损工程 (SVG)', fmt_svg_canva_desc: '100% 矢量贝塞尔曲线，可无缝直接导入 Canva、Figma、Illustrator 二次自由编辑',
+        fmt_pdf: '📄 矢量 PDF 打印讲义', fmt_pdf_desc: '高保真排版，打印学生课后练习必备',
+        pro_tag: '⭐ Pro', pro_included: 'Pro 包含 · 永久使用',
+        canva_figma_title: 'Canva & Figma 直连编辑工作流', canva_figma_desc: '已专为设计与教学工具优化矢量格式，您可以一键复制矢量节点，或直接跳转到对应工具无缝编辑：',
+        btn_copy_svg: '复制矢量到剪贴板', btn_open_canva: '前往 Canva.com', btn_open_figma: '前往 Figma.com',
+        lbl_export_default: '免费导出 1080P 标准图 (带水印)',
+        btn_export_free: '免费导出 1080P 标准图 (带水印)',
+        btn_export_pro_active: '立即以 Pro 权限导出',
+        btn_export_pro_buy: '⭐ 仅需 $4.99 永久解锁全部 Pro 特权 (包含当前格式)',
+        svg_copied_toast: '🎉 矢量 SVG 已成功复制到剪贴板！\n直接在 Canva、Figma 或 Illustrator 中按 Ctrl+V (Mac: Cmd+V)，即可立即无缝粘贴可自由编辑的矢量线稿！',
+        mobile_save_title: '手机保存到相册', mobile_save_hint: '👉 长按下方图片 1 秒，在系统菜单中选择「存储图像」或「保存到相册」即可！', mobile_download_btn: '浏览器直接下载文件',
+        pro_perk_1: '<strong>4K Ultra-HD 超清原画</strong>（永久纯净去水印）',
+        pro_perk_2: '<strong>透明背景 PNG</strong>（教师讲义与课件素材神器）',
+        pro_perk_3: '<strong>Canva / Figma 矢量工程 (SVG)</strong>（自由二次编辑）',
+        pro_perk_4: '<strong>高保真 PDF 打印讲义</strong>（按选定画幅输出）',
+        pro_perk_5: '<strong>一次付费 · 永久使用</strong>（全部功能统一打包，无后续收费）',
+        license_placeholder: '输入卡密 (如 EZPRO-...)',
+        tip_select: '↖️ 鼠标选择与调整 (快捷键 V，点选图片/文字可拖动、四角缩放或删除)',
+        tip_chalk: '👨‍🏫 真实粉笔 (颗粒碎屑质感，停顿吸附标准几何)',
+        tip_pen: '🖋️ 钢笔细线 (板书重点)',
+        tip_highlighter: '🖍️ 荧光高亮 (讲课板书批注)',
+        tip_text: '🔤 文本板书工具 (快捷键 T，点击任意位置打字)',
+        tip_eraser: '⚡ 智能笔迹橡皮 (快捷键 E，点中粉笔字瞬间全消)',
+        tip_lasso: '⭕ 套索圈选与平移 (画圈圈住板书即可整体拖动)',
+        tip_image: '🖼️ 插入课件/习题图片，支持 Ctrl+V 粘贴',
+        tip_axis_3d: '🌐 绘制三维空间坐标系 (XYZ)',
+        tip_axis_2d: '➕ 绘制二维平面直角坐标系 (XY)',
+        tip_laser: '🔦 激光教鞭 (讲课指示，1.2秒消散)',
+        tip_palette: '🎯 粉笔色彩与粗细调节',
+        tip_undo: '↩️ 撤销 (Ctrl+Z，移动端双指轻敲)',
+        tip_clear: '🗑️ 清空所有黑板字画',
+        tip_fit: '适应居中',
+        ratios: {
+          free: '♾️ 自适应满屏 (Responsive)',
+          16_9: '💻 16:9 课件宽屏 (Presentation)',
+          a4_l: '📄 A4 横向 (Landscape 297×210)',
+          a4_p: '📄 A4 纵向 (Portrait 210×297)',
+          4_3: '📱 4:3 经典黑板 (Tablet)',
+          9_16: '📱 9:16 移动竖屏 (Mobile Post)',
+          1_1: '🔲 1:1 正方形 (Square)'
+        },
+        papers: {
+          green_chalk: '复古墨绿黑板 (Green Board)',
+          black_chalk: '哑光碳黑黑板 (Black Board)',
+          square: '5mm 精密坐标纸 (5mm Grid)',
+          plain: '纯白讲台白板 (Plain White)'
+        }
       },
       en: {
+        site_subtitle: 'Realistic Chalkboard & Classroom Teaching',
         lbl_ratio: 'Ratio', lbl_paper: 'Board', fullscreen: 'Fullscreen', exit_fullscreen: 'Exit Fullscreen',
-        export: 'Export', palette_title: 'Chalk Palette', size: 'Size', theme_light: 'Day', theme_dark: 'Night',
-        pro_title: 'Unlock Chalkboard Pro Lifetime', pro_desc: 'Price of a coffee for lifetime 4K, Transparent PNG, SVG, and PDF exports.',
-        buy_btn: 'Buy Lifetime License for $4.99 USD', has_license: 'Have a license key?', activate: 'Activate', continue_free: 'Continue with free version'
+        export: 'Export', palette_title: 'Chalk Palette', size: 'Size', theme_light: 'Day', theme_dark: 'Night', fit: 'Fit',
+        pro_title: 'Unlock Chalkboard Pro Lifetime Access',
+        pro_desc: 'Pay $4.99 once for lifetime access to 4K, Transparent PNG, Canva/Figma Vector SVG, PDF, and all Pro perks with zero subscriptions.',
+        buy_btn: 'Unlock Lifetime Access for $4.99 USD',
+        has_license: 'Have a license key?', activate: 'Activate', continue_free: 'Continue with free version',
+        export_modal_title: 'Export Boardwork · Export Center', export_modal_desc: 'Select output format and quality',
+        pro_banner_title: 'EazyOPC Pro All-in-One Lifetime Bundle', pro_banner_tag: 'Pay Once · Lifetime Access',
+        pro_banner_desc: 'Just $4.99 USD permanently unlocks all formats below: 4K Ultra-HD, Transparent PNG, Canva/Figma SVG, and PDF with no extra charges!',
+        fmt_png_free: '🖼️ 1080P Standard Chalkboard PNG', fmt_png_free_desc: 'With subtle watermark, perfect for classroom review', free_badge: 'Free', free_price: '$0 Free',
+        fmt_png_4k: '✨ 4K Ultra-HD Crisp Artwork', fmt_png_4k_desc: '3840px ultra-crisp resolution, permanently watermark-free',
+        fmt_png_transparent: '🪟 Transparent Background PNG', fmt_png_transparent_desc: 'Leaves chalk strokes only, great for slides and handouts',
+        fmt_svg_canva: '🎨 Canva & Figma Vector Project (SVG)', fmt_svg_canva_desc: '100% vector curves, fully editable in Canva, Figma, and Illustrator',
+        fmt_pdf: '📄 Vector PDF Handout Document', fmt_pdf_desc: 'High-fidelity layout, ideal for printing student exercises',
+        pro_tag: '⭐ Pro', pro_included: 'Included in Pro · Lifetime',
+        canva_figma_title: 'Canva & Figma Direct Workflow', canva_figma_desc: 'Optimized vector format for design tools. Copy vector nodes or open directly in your favorite editor:',
+        btn_copy_svg: 'Copy Vector SVG to Clipboard', btn_open_canva: 'Open Canva.com', btn_open_figma: 'Open Figma.com',
+        lbl_export_default: 'Free Export 1080P (Watermarked)',
+        btn_export_free: 'Free Export 1080P (Watermarked)',
+        btn_export_pro_active: 'Export with Pro Access',
+        btn_export_pro_buy: '⭐ Unlock All Pro Formats ($4.99 Lifetime)',
+        svg_copied_toast: '🎉 Vector SVG copied to clipboard!\nPress Ctrl+V (Mac: Cmd+V) directly on Canva or Figma to paste fully editable vector curves!',
+        mobile_save_title: 'Save to Photos', mobile_save_hint: '👉 Press and hold the image below for 1 second, then tap "Save Image" or "Save to Photos"!', mobile_download_btn: 'Download File Directly',
+        pro_perk_1: '<strong>4K Ultra-HD Crisp Boardwork</strong> (Permanently watermark-free)',
+        pro_perk_2: '<strong>Transparent Background PNG</strong> (Great for slides & handouts)',
+        pro_perk_3: '<strong>Canva & Figma Vector Project (SVG)</strong> (Fully editable)',
+        pro_perk_4: '<strong>High-fidelity PDF Handout Document</strong> (Print-ready layout)',
+        pro_perk_5: '<strong>Pay Once · Lifetime Access</strong> (All features bundled, no recurring fee)',
+        license_placeholder: 'Enter license key (e.g., EZPRO-...)',
+        tip_select: '↖️ Select & Adjust (Key V: click image/text to drag, scale, or delete)',
+        tip_chalk: '👨‍🏫 Real Chalk (Dust particle texture, hold for shapes)',
+        tip_pen: '🖋️ Fine Pen (Notes & highlights)',
+        tip_highlighter: '🖍️ Chalk Highlighter (Key points)',
+        tip_text: '🔤 Text Tool (Key T: click anywhere to type)',
+        tip_eraser: '⚡ Stroke Eraser (Key E: click to delete entire stroke)',
+        tip_lasso: '⭕ Freehand Lasso (Key L: circle to select and move)',
+        tip_image: '🖼️ Insert Image / Paste screenshot with Ctrl+V',
+        tip_axis_3d: '🌐 Draw 3D Coordinate System (XYZ)',
+        tip_axis_2d: '➕ Draw 2D Cartesian Coordinate (XY)',
+        tip_laser: '🔦 Laser Pointer (Fades in 1.2s)',
+        tip_palette: '🎯 Chalk Color & Width',
+        tip_undo: '↩️ Undo (Ctrl+Z / 2-finger tap on mobile)',
+        tip_clear: '🗑️ Clear Chalkboard',
+        tip_fit: 'Fit to Screen',
+        ratios: {
+          free: '♾️ Responsive (Full Screen)',
+          16_9: '💻 16:9 Presentation',
+          a4_l: '📄 A4 Landscape',
+          a4_p: '📄 A4 Portrait',
+          4_3: '📱 4:3 Tablet',
+          9_16: '📱 9:16 Mobile Story',
+          1_1: '🔲 1:1 Square'
+        },
+        papers: {
+          green_chalk: 'Classic Green Board',
+          black_chalk: 'Matte Black Board',
+          square: '5mm Grid Paper',
+          plain: 'Plain Whiteboard'
+        }
       },
       ja: {
+        site_subtitle: 'リアルな粉筆音と板書授業黒板',
         lbl_ratio: '比率', lbl_paper: '黒板', fullscreen: '全画面', exit_fullscreen: '全画面終了',
-        export: '保存', palette_title: 'チョーク色', size: '太さ', theme_light: '昼', theme_dark: '夜',
-        pro_title: 'Chalkboard Pro 永久ライセンス', pro_desc: '4K超画質、透過PNG、SVGベクター出力を永久利用。',
-        buy_btn: '$4.99 で永久購入する', has_license: 'ライセンスをお持ちですか？', activate: '有効化', continue_free: '無料版を続ける'
+        export: '保存', palette_title: 'チョーク色', size: '太さ', theme_light: '昼', theme_dark: '夜', fit: '最適化',
+        pro_title: 'Chalkboard Pro 永久利用ライセンス',
+        pro_desc: '一回のお支払い $4.99 で、4K原画、透過PNG、Canva/FigmaベクターSVG、PDFなど全機能を永久利用。追加課金なし。',
+        buy_btn: '$4.99 で永久利用をアンロック',
+        has_license: 'ライセンスキーをお持ちですか？', activate: '有効化', continue_free: '無料版を続ける',
+        export_modal_title: '板書のエクスポート · Export Center', export_modal_desc: '出力フォーマットと画質を選択',
+        pro_banner_title: '⭐ EazyOPC Pro フル機能パック', pro_banner_tag: '一度の購入 · 永久利用',
+        pro_banner_desc: '$4.99 USD の一度の購入で、以下の 4K、透過PNG、Canva/Figmaベクター、PDF がすべて永久に利用可能になります！',
+        fmt_png_free: '🖼️ 1080P 標準黒板画像', fmt_png_free_desc: '控えめな透かし入り、復習や共有に最適', free_badge: '無料', free_price: '$0 無料',
+        fmt_png_4k: '✨ 4K Ultra-HD 超高精細原画', fmt_png_4k_desc: '3840px の最高解像度、完全透かしなし',
+        fmt_png_transparent: '🪟 背景透過 PNG (黒板除去)', fmt_png_transparent_desc: 'チョークの線画のみ抽出、スライドに最適',
+        fmt_svg_canva: '🎨 Canva / Figma ベクター無劣化 (SVG)', fmt_svg_canva_desc: '100% ベクター曲線、Canva、Figma、Illustrator で自由に再編集可能',
+        fmt_pdf: '📄 ベクター PDF 印刷プリント', fmt_pdf_desc: '高精度レイアウト、練習問題プリント作成に最適',
+        pro_tag: '⭐ Pro', pro_included: 'Pro に含む · 永久利用',
+        canva_figma_title: 'Canva & Figma 直接連携ワークフロー', canva_figma_desc: 'デザインツール向けに最適化されたベクター形式です。クリップボードにコピーして直接貼り付け可能：',
+        btn_copy_svg: 'ベクターをクリップボードにコピー', btn_open_canva: 'Canva.com を開く', btn_open_figma: 'Figma.com を開く',
+        lbl_export_default: '1080P 標準画像を無料保存 (透かしあり)',
+        btn_export_free: '1080P 標準画像を無料保存 (透かしあり)',
+        btn_export_pro_active: 'Pro 権限でエクスポート',
+        btn_export_pro_buy: '⭐ $4.99 で Pro 全機能を永久利用 (この形式を含む)',
+        svg_copied_toast: '🎉 ベクター SVG をクリップボードにコピーしました！\nCanva や Figma のキャンバス上で Ctrl+V (Mac: Cmd+V) を押すと、編集可能なベクターとして貼り付けできます！',
+        mobile_save_title: '写真を保存', mobile_save_hint: '👉 下の画像を1秒長押しし、メニューから「画像を保存」を選択してください！', mobile_download_btn: 'ブラウザから直接ダウンロード',
+        pro_perk_1: '<strong>4K Ultra-HD 超高精細板書</strong>（完全透かしなし）',
+        pro_perk_2: '<strong>背景透過 PNG</strong>（講義スライド用）',
+        pro_perk_3: '<strong>Canva / Figma ベクター (SVG)</strong>（自由編集）',
+        pro_perk_4: '<strong>高精度 PDF 印刷プリント</strong>（用紙比率対応）',
+        pro_perk_5: '<strong>一度の購入 · 永久利用</strong>（追加課金なしのフルパッケージ）',
+        license_placeholder: 'ライセンスキーを入力 (例: EZPRO-...)',
+        tip_select: '↖️ 選択と編集 (キー V: 移動・拡大縮小・削除)',
+        tip_chalk: '👨‍🏫 リアルチョーク (粒子感、長押しで自動吸着)',
+        tip_pen: '🖋️ 細字ペン (重点記入)',
+        tip_highlighter: '🖍️ 蛍光チョーク (ハイライト)',
+        tip_text: '🔤 テキスト入力 (キー T: クリックして入力)',
+        tip_eraser: '⚡ ストローク消しゴム (キー E: 一筆全消去)',
+        tip_lasso: '⭕ なげなわ選択 (キー L: 囲んで全体移動)',
+        tip_image: '🖼️ 画像挿入 / Ctrl+V で貼り付け',
+        tip_axis_3d: '🌐 3D空間座標系 (XYZ)',
+        tip_axis_2d: '➕ 2D平面直角座標系 (XY)',
+        tip_laser: '🔦 レーザーポインター (1.2秒で消去)',
+        tip_palette: '🎯 カラー＆太さ調整',
+        tip_undo: '↩️ 元に戻す (Ctrl+Z / 2本指タップ)',
+        tip_clear: '🗑️ 黒板を全消去',
+        tip_fit: '画面に合わせる',
+        ratios: {
+          free: '♾️ 全画面適応 (Responsive)',
+          16_9: '💻 16:9 授業プレゼン',
+          a4_l: '📄 A4 横向き',
+          a4_p: '📄 A4 縦向き',
+          4_3: '📱 4:3 タブレット',
+          9_16: '📱 9:16 モバイル縦画面',
+          1_1: '🔲 1:1 正方形'
+        },
+        papers: {
+          green_chalk: '深緑黒板 (Green Board)',
+          black_chalk: 'マット黒板 (Black Board)',
+          square: '5mm 方眼紙 (5mm Grid)',
+          plain: '白板 (Plain White)'
+        }
       },
       ko: {
+        site_subtitle: '리얼 분필 사운드 & 판서 강의 칠판',
         lbl_ratio: '비율', lbl_paper: '칠판', fullscreen: '전체화면', exit_fullscreen: '전체화면 종료',
-        export: '내보내기', palette_title: '분필 색상', size: '굵기', theme_light: '주간', theme_dark: '야간',
-        pro_title: 'Chalkboard Pro 평생 라이선스', pro_desc: '4K 초고화질, 투명 PNG, SVG 벡터 출력 영구 해제.',
-        buy_btn: '$4.99 USD 평생 구매', has_license: '인증 코드가 있으신가요?', activate: '활성화', continue_free: '무료 버전 유지'
+        export: '내보내기', palette_title: '분필 색상', size: '굵기', theme_light: '주간', theme_dark: '야간', fit: '화면맞춤',
+        pro_title: 'Chalkboard Pro 평생 이용 라이선스',
+        pro_desc: '한 번 $4.99 결제로 4K 원화, 투명 PNG, Canva/Figma 벡터 SVG, PDF 등 모든 프로 기능을 평생 이용하세요. 추가 요금 없음.',
+        buy_btn: '$4.99 로 평생 이용 잠금 해제',
+        has_license: '라이선스 키가 있으신가요?', activate: '활성화', continue_free: '무료 버전 유지',
+        export_modal_title: '판서 내보내기 · Export Center', export_modal_desc: '출력 파일 형식 및 화질 선택',
+        pro_banner_title: '⭐ EazyOPC Pro 올인원 평생 패키지', pro_banner_tag: '단 1회 결제 · 평생 이용',
+        pro_banner_desc: '$4.99 USD 단 한 번 결제로 아래 4K, 투명 배경, Canva/Figma 벡터, PDF 형식을 모두 평생 무제한 이용할 수 있습니다!',
+        fmt_png_free: '🖼️ 1080P 표준 칠판 이미지', fmt_png_free_desc: '은은한 워터마크 포함, 복습 및 빠른 공유용', free_badge: '무료 Free', free_price: '$0 무료',
+        fmt_png_4k: '✨ 4K Ultra-HD 초고화질 판서', fmt_png_4k_desc: '3840px 초고해상도, 영구 워터마크 제거',
+        fmt_png_transparent: '🪟 투명 배경 PNG (칠판색 제거)', fmt_png_transparent_desc: '분필 필기만 추출, 강의 PPT 제작 필수',
+        fmt_svg_canva: '🎨 Canva / Figma 벡터 무손실 프로젝트 (SVG)', fmt_svg_canva_desc: '100% 벡터 곡선, Canva, Figma, Illustrator 에서 자유롭게 2차 편집 가능',
+        fmt_pdf: '📄 벡터 PDF 인쇄 유인물', fmt_pdf_desc: '고품질 인쇄 레이아웃, 학생 연습 문제 인쇄용',
+        pro_tag: '⭐ Pro', pro_included: 'Pro 포함 · 평생 이용',
+        canva_figma_title: 'Canva & Figma 직접 연동 워크플로우', canva_figma_desc: '디자인 도구에 최적화된 벡터 형식입니다. 클립보드에 복사해 직접 붙여넣거나 바로 이동할 수 있습니다:',
+        btn_copy_svg: '벡터 클립보드 복사', btn_open_canva: 'Canva.com 열기', btn_open_figma: 'Figma.com 열기',
+        lbl_export_default: '무료 1080P 표준 저장 (워터마크 포함)',
+        btn_export_free: '무료 1080P 표준 저장 (워터마크 포함)',
+        btn_export_pro_active: 'Pro 권한으로 즉시 내보내기',
+        btn_export_pro_buy: '⭐ $4.99 로 모든 Pro 평생 이용 (현재 형식 포함)',
+        svg_copied_toast: '🎉 벡터 SVG 가 클립보드에 복사되었습니다!\nCanva 나 Figma 캔버스에서 Ctrl+V (Mac: Cmd+V) 를 누르면 편집 가능한 벡터로 즉시 붙여넣을 수 있습니다!',
+        mobile_save_title: '사진첩에 저장', mobile_save_hint: '👉 아래 이미지를 1초간 길게 눌러 메뉴에서 "이미지 저장"을 선택하세요!', mobile_download_btn: '브라우저로 직접 다운로드',
+        pro_perk_1: '<strong>4K Ultra-HD 초고화질 판서</strong> (영구 워터마크 제거)',
+        pro_perk_2: '<strong>투명 배경 PNG</strong> (강의 슬라이드 제작)',
+        pro_perk_3: '<strong>Canva / Figma 벡터 프로젝트 (SVG)</strong> (완전 편집 가능)',
+        pro_perk_4: '<strong>고품질 PDF 인쇄 유인물</strong> (비율 맞춤 레이아웃)',
+        pro_perk_5: '<strong>단 1회 결제 · 평생 이용</strong> (모든 기능 통합 번들, 추가 비용 없음)',
+        license_placeholder: '인증 코드 입력 (예: EZPRO-...)',
+        tip_select: '↖️ 마우스 선택 및 조절 (키 V: 드래그, 크기 조절, 삭제)',
+        tip_chalk: '👨‍🏫 리얼 분필 (입자 질감, 멈추면 표준 도형)',
+        tip_pen: '🖋️ 세밀 펜 (판서 강조)',
+        tip_highlighter: '🖍️ 형광 분필 (중요 포인트)',
+        tip_text: '🔤 텍스트 도구 (키 T: 클릭하여 입력)',
+        tip_eraser: '⚡ 스트로크 지우개 (키 E: 원클릭 전체 지우기)',
+        tip_lasso: '⭕ 자유 올가미 (키 L: 영역 선택 후 이동)',
+        tip_image: '🖼️ 이미지 삽입 / Ctrl+V 로 캡처 붙여넣기',
+        tip_axis_3d: '🌐 3차원 공간 좌표계 (XYZ)',
+        tip_axis_2d: '➕ 2차원 평면 직각 좌표계 (XY)',
+        tip_laser: '🔦 레이저 포인터 (1.2초 후 페이드)',
+        tip_palette: '🎯 분필 색상 및 굵기 조절',
+        tip_undo: '↩️ 실행 취소 (Ctrl+Z / 2손가락 탭)',
+        tip_clear: '🗑️ 칠판 전체 지우기',
+        tip_fit: '화면 맞춤',
+        ratios: {
+          free: '♾️ 반응형 전체화면 (Responsive)',
+          16_9: '💻 16:9 발표용 와이드',
+          a4_l: '📄 A4 가로 (297×210mm)',
+          a4_p: '📄 A4 세로 (210×297mm)',
+          4_3: '📱 4:3 클래식 칠판',
+          9_16: '📱 9:16 모바일 세로',
+          1_1: '🔲 1:1 정사각형'
+        },
+        papers: {
+          green_chalk: '클래식 칠판 초록 (Green Board)',
+          black_chalk: '매트 블랙 칠판 (Black Board)',
+          square: '5mm 모눈종이 (5mm Grid)',
+          plain: '순백색 화이트보드 (Plain White)'
+        }
       },
       de: {
+        site_subtitle: 'Realistische Kreide & Tafel-Unterricht',
         lbl_ratio: 'Format', lbl_paper: 'Tafel', fullscreen: 'Vollbild', exit_fullscreen: 'Vollbild beenden',
-        export: 'Export', palette_title: 'Kreidefarbe', size: 'Stärke', theme_light: 'Tag', theme_dark: 'Nacht',
-        pro_title: 'Chalkboard Pro Freischalten', pro_desc: 'Lebenslanger Export von 4K, transparentem PNG und Vektor-SVG.',
-        buy_btn: 'Lebenslang für $4.99 kaufen', has_license: 'Haben Sie einen Schlüssel?', activate: 'Aktivieren', continue_free: 'Kostenlos fortfahren'
+        export: 'Export', palette_title: 'Kreidefarbe', size: 'Stärke', theme_light: 'Tag', theme_dark: 'Nacht', fit: 'Einpassen',
+        pro_title: 'Chalkboard Pro Dauerhafte Nutzung Freischalten',
+        pro_desc: 'Einmalig $4.99 zahlen für lebenslange 4K-, transparente PNG-, Canva/Figma-Vektor-SVG- und PDF-Exporte ohne Abo.',
+        buy_btn: 'Dauerhafte Nutzung für $4.99 freischalten',
+        has_license: 'Haben Sie einen Schlüssel?', activate: 'Aktivieren', continue_free: 'Kostenlos fortfahren',
+        export_modal_title: 'Tafelbild exportieren · Export Center', export_modal_desc: 'Format und Qualität wählen',
+        pro_banner_title: '⭐ EazyOPC Pro Komplettpaket', pro_banner_tag: 'Einmal zahlen · Dauerhaft nutzen',
+        pro_banner_desc: 'Nur einmalig $4.99 USD für dauerhaften Zugriff auf 4K, transparente PNGs, Canva/Figma-Vektoren und PDFs!',
+        fmt_png_free: '🖼️ 1080P Standard-Tafelbild', fmt_png_free_desc: 'Mit dezentem Wasserzeichen, ideal für Notizen', free_badge: 'Kostenlos', free_price: '$0 Kostenlos',
+        fmt_png_4k: '✨ 4K Ultra-HD Tafelbild', fmt_png_4k_desc: '3840px gestochen scharf, dauerhaft ohne Wasserzeichen',
+        fmt_png_transparent: '🪟 Transparentes PNG', fmt_png_transparent_desc: 'Nur Kreidespuren, ideal für Unterrichtsfolien',
+        fmt_svg_canva: '🎨 Canva & Figma Vektor-Projekt (SVG)', fmt_svg_canva_desc: '100% Vektorkurven, frei bearbeitbar in Canva, Figma & Illustrator',
+        fmt_pdf: '📄 Vektor-PDF-Arbeitsblatt', fmt_pdf_desc: 'Präzises Layout, ideal für Schülerübungen',
+        pro_tag: '⭐ Pro', pro_included: 'In Pro enthalten · Dauerhaft',
+        canva_figma_title: 'Canva & Figma Direkt-Workflow', canva_figma_desc: 'Optimiert für Designtools. In Zwischenablage kopieren oder direkt im Editor öffnen:',
+        btn_copy_svg: 'Vektor-SVG kopieren', btn_open_canva: 'Canva.com öffnen', btn_open_figma: 'Figma.com öffnen',
+        lbl_export_default: '1080P kostenlos exportieren (Wasserzeichen)',
+        btn_export_free: '1080P kostenlos exportieren (Wasserzeichen)',
+        btn_export_pro_active: 'Mit Pro-Rechten exportieren',
+        btn_export_pro_buy: '⭐ Alle Pro-Funktionen für $4.99 freischalten (Dauerhaft)',
+        svg_copied_toast: '🎉 Vektor-SVG kopiert!\nDrücken Sie Strg+V in Canva oder Figma, um bearbeitbare Vektoren einzufügen!',
+        mobile_save_title: 'In Fotos speichern', mobile_save_hint: '👉 Bild 1 Sekunde gedrückt halten und "In Fotos sichern" wählen!', mobile_download_btn: 'Datei direkt herunterladen',
+        pro_perk_1: '<strong>4K Ultra-HD Tafelbild</strong> (Ohne Wasserzeichen)',
+        pro_perk_2: '<strong>Transparentes PNG</strong> (Für Folien & Handouts)',
+        pro_perk_3: '<strong>Canva & Figma Vektor (SVG)</strong> (Voll bearbeitbar)',
+        pro_perk_4: '<strong>Präzises PDF-Dokument</strong> (Druckfertig)',
+        pro_perk_5: '<strong>Einmal zahlen · Dauerhaft nutzen</strong> (Komplettpaket)',
+        license_placeholder: 'Lizenzschlüssel eingeben (z.B. EZPRO-...)',
+        tip_select: '↖️ Auswählen & Bearbeiten (Taste V)',
+        tip_chalk: '👨‍🏫 Echte Kreide (Partikeltextur)',
+        tip_pen: '🖋️ Feinschreiber',
+        tip_highlighter: '🖍️ Textmarker',
+        tip_text: '🔤 Textwerkzeug (Taste T)',
+        tip_eraser: '⚡ Strich-Radierer (Taste E)',
+        tip_lasso: '⭕ Lasso-Werkzeug (Taste L)',
+        tip_image: '🖼️ Bild einfügen / Strg+V',
+        tip_axis_3d: '🌐 3D-Koordinatensystem (XYZ)',
+        tip_axis_2d: '➕ 2D-Koordinatensystem (XY)',
+        tip_laser: '🔦 Laserpointer (1.2s)',
+        tip_palette: '🎯 Farbpalette & Stärke',
+        tip_undo: '↩️ Rückgängig (Strg+Z)',
+        tip_clear: '🗑️ Tafel leeren',
+        tip_fit: 'Einpassen',
+        ratios: {
+          free: '♾️ Vollbild (Responsive)',
+          16_9: '💻 16:9 Präsentation',
+          a4_l: '📄 A4 Querformat',
+          a4_p: '📄 A4 Hochformat',
+          4_3: '📱 4:3 Tablet',
+          9_16: '📱 9:16 Handy',
+          1_1: '🔲 1:1 Quadrat'
+        },
+        papers: {
+          green_chalk: 'Grüne Tafel (Green Board)',
+          black_chalk: 'Schwarze Tafel (Black Board)',
+          square: '5mm Karopapier (5mm Grid)',
+          plain: 'Weiße Tafel (Plain White)'
+        }
       },
       es: {
+        site_subtitle: 'Efectos Reales de Tiza y Pizarra de Clase',
         lbl_ratio: 'Proporción', lbl_paper: 'Pizarra', fullscreen: 'Pantalla completa', exit_fullscreen: 'Salir',
-        export: 'Exportar', palette_title: 'Tiza', size: 'Grosor', theme_light: 'Día', theme_dark: 'Noche',
-        pro_title: 'Desbloquear Chalkboard Pro', pro_desc: 'Exportación 4K, PNG transparente y SVG vectorial de por vida.',
-        buy_btn: 'Comprar vitalicio por $4.99', has_license: '¿Tienes clave?', activate: 'Activar', continue_free: 'Continuar gratis'
+        export: 'Exportar', palette_title: 'Tiza', size: 'Grosor', theme_light: 'Día', theme_dark: 'Noche', fit: 'Ajustar',
+        pro_title: 'Desbloquear Chalkboard Pro de Uso Permanente',
+        pro_desc: 'Pago único de $4.99 para uso permanente de 4K, PNG transparente, vectores Canva/Figma SVG y PDF sin suscripciones.',
+        buy_btn: 'Desbloquear Uso Permanente por $4.99 USD',
+        has_license: '¿Tienes clave?', activate: 'Activar', continue_free: 'Continuar gratis',
+        export_modal_title: 'Exportar Pizarra · Export Center', export_modal_desc: 'Elige formato y resolución de salida',
+        pro_banner_title: '⭐ Paquete Todo Incluido EazyOPC Pro', pro_banner_tag: 'Pago Único · Uso Permanente',
+        pro_banner_desc: '¡Por solo $4.99 USD desbloqueas para siempre todos los formatos: 4K, PNG transparente, vectores Canva/Figma y PDF!',
+        fmt_png_free: '🖼️ 1080P Estándar Pizarra PNG', fmt_png_free_desc: 'Con marca de agua sutil, ideal para repasar', free_badge: 'Gratis', free_price: '$0 Gratis',
+        fmt_png_4k: '✨ 4K Ultra-HD Obra Nítida', fmt_png_4k_desc: '3840px de ultra resolución, sin marcas de agua',
+        fmt_png_transparent: '🪟 PNG con Fondo Transparente', fmt_png_transparent_desc: 'Solo trazos de tiza, ideal para diapositivas',
+        fmt_svg_canva: '🎨 Proyecto Vectorial Canva / Figma (SVG)', fmt_svg_canva_desc: 'Curvas 100% vectoriales, editable en Canva, Figma e Illustrator',
+        fmt_pdf: '📄 Documento PDF para Imprimir', fmt_pdf_desc: 'Diseño a escala exacta, ideal para ejercicios de clase',
+        pro_tag: '⭐ Pro', pro_included: 'Incluido en Pro · Uso Permanente',
+        canva_figma_title: 'Flujo de Trabajo Directo Canva y Figma', canva_figma_desc: 'Formato vectorial optimizado para herramientas de diseño. Copia al portapapeles o abre directamente:',
+        btn_copy_svg: 'Copiar Vector SVG', btn_open_canva: 'Abrir Canva.com', btn_open_figma: 'Abrir Figma.com',
+        lbl_export_default: 'Exportar 1080P Gratis (con marca)',
+        btn_export_free: 'Exportar 1080P Gratis (con marca)',
+        btn_export_pro_active: 'Exportar con Acceso Pro',
+        btn_export_pro_buy: '⭐ Desbloquear Todo Pro por $4.99 (Uso Permanente)',
+        svg_copied_toast: '🎉 ¡Vector SVG copiado al portapapeles!\nPresiona Ctrl+V en Canva o Figma para pegar vectores editables al instante.',
+        mobile_save_title: 'Guardar en Fotos', mobile_save_hint: '👉 ¡Mantén presionada la imagen 1 segundo y selecciona "Guardar en Fotos"!', mobile_download_btn: 'Descargar archivo directamente',
+        pro_perk_1: '<strong>4K Ultra-HD Pizarra Nítida</strong> (Sin marcas de agua)',
+        pro_perk_2: '<strong>PNG con Fondo Transparente</strong> (Para diapositivas)',
+        pro_perk_3: '<strong>Proyecto Canva / Figma Vectorial</strong> (Editable)',
+        pro_perk_4: '<strong>Documento PDF Vectorial</strong> (Listo para imprimir)',
+        pro_perk_5: '<strong>Pago Único · Uso Permanente</strong> (Paquete completo)',
+        license_placeholder: 'Introduce clave (ej. EZPRO-...)',
+        tip_select: '↖️ Seleccionar y Ajustar (Tecla V)',
+        tip_chalk: '👨‍🏫 Tiza Real (Textura de polvo)',
+        tip_pen: '🖋️ Pluma Fina',
+        tip_highlighter: '🖍️ Tiza Resaltadora',
+        tip_text: '🔤 Texto (Tecla T)',
+        tip_eraser: '⚡ Borrador de Trazos (Tecla E)',
+        tip_lasso: '⭕ Lazo Libre (Tecla L)',
+        tip_image: '🖼️ Insertar Imagen / Ctrl+V',
+        tip_axis_3d: '🌐 Sistema 3D (XYZ)',
+        tip_axis_2d: '➕ Sistema 2D (XY)',
+        tip_laser: '🔦 Puntero láser (1.2s)',
+        tip_palette: '🎯 Paleta de tiza y grosor',
+        tip_undo: '↩️ Deshacer (Ctrl+Z)',
+        tip_clear: '🗑️ Limpiar pizarra',
+        tip_fit: 'Ajustar a pantalla',
+        ratios: {
+          free: '♾️ Pantalla completa (Adaptable)',
+          16_9: '💻 16:9 Presentación',
+          a4_l: '📄 A4 Horizontal',
+          a4_p: '📄 A4 Vertical',
+          4_3: '📱 4:3 Pizarra Tablet',
+          9_16: '📱 9:16 Historia Móvil',
+          1_1: '🔲 1:1 Cuadrado'
+        },
+        papers: {
+          green_chalk: 'Pizarra Verde (Green Board)',
+          black_chalk: 'Pizarra Negra (Black Board)',
+          square: 'Cuadrícula 5mm (5mm Grid)',
+          plain: 'Pizarra Blanca (Plain White)'
+        }
       },
       fr: {
+        site_subtitle: 'Craie Réaliste & Tableau Noir de Classe',
         lbl_ratio: 'Format', lbl_paper: 'Tableau', fullscreen: 'Plein écran', exit_fullscreen: 'Quitter plein écran',
-        export: 'Exporter', palette_title: 'Craie', size: 'Taille', theme_light: 'Jour', theme_dark: 'Nuit',
-        pro_title: 'Débloquer Chalkboard Pro à vie', pro_desc: 'Export 4K, PNG transparent et SVG vectoriel illimités.',
-        buy_btn: 'Acheter à vie pour 4,99 $', has_license: 'Avez-vous une clé ?', activate: 'Activer', continue_free: 'Continuer gratuitement'
+        export: 'Exporter', palette_title: 'Craie', size: 'Taille', theme_light: 'Jour', theme_dark: 'Nuit', fit: 'Ajuster',
+        pro_title: 'Débloquer Chalkboard Pro à Utilisation Permanente',
+        pro_desc: 'Paiement unique de 4,99 $ pour un accès permanent aux formats 4K, PNG transparent, vectoriel Canva/Figma SVG et PDF sans abonnement.',
+        buy_btn: 'Débloquer l\'Accès Permanent pour 4,99 $ USD',
+        has_license: 'Avez-vous une clé ?', activate: 'Activer', continue_free: 'Continuer gratuitement',
+        export_modal_title: 'Exporter le Tableau · Export Center', export_modal_desc: 'Choisissez le format et la résolution de sortie',
+        pro_banner_title: '⭐ Pack Tout-en-Un EazyOPC Pro', pro_banner_tag: 'Paiement Unique · Utilisation Permanente',
+        pro_banner_desc: 'Pour seulement 4,99 $ USD, débloquez à vie tous les formats ci-dessous : 4K, PNG transparent, vectoriel Canva/Figma et PDF !',
+        fmt_png_free: '🖼️ 1080P PNG Standard Tableau', fmt_png_free_desc: 'Avec filigrane discret, parfait pour réviser', free_badge: 'Gratuit', free_price: '0 $ Gratuit',
+        fmt_png_4k: '✨ 4K Ultra-HD Tableau Net', fmt_png_4k_desc: 'Résolution ultra-nette 3840px, sans filigrane',
+        fmt_png_transparent: '🪟 PNG à Fond Transparent', fmt_png_transparent_desc: 'Tracés de craie isolés, idéal pour diaporamas',
+        fmt_svg_canva: '🎨 Projet Vectoriel Canva / Figma (SVG)', fmt_svg_canva_desc: 'Courbes 100% vectorielles, modifiable dans Canva, Figma et Illustrator',
+        fmt_pdf: '📄 Document PDF pour Impression', fmt_pdf_desc: 'Mise en page haute fidélité, idéal pour fiches d\'exercices',
+        pro_tag: '⭐ Pro', pro_included: 'Inclus dans Pro · Permanent',
+        canva_figma_title: 'Flux de Travail Direct Canva & Figma', canva_figma_desc: 'Format vectoriel optimisé pour le design. Copiez dans le presse-papier ou ouvrez directement :',
+        btn_copy_svg: 'Copier le Vectoriel SVG', btn_open_canva: 'Ouvrir Canva.com', btn_open_figma: 'Ouvrir Figma.com',
+        lbl_export_default: 'Exporter 1080P Gratuit (avec filigrane)',
+        btn_export_free: 'Exporter 1080P Gratuit (avec filigrane)',
+        btn_export_pro_active: 'Exporter avec l\'Accès Pro',
+        btn_export_pro_buy: '⭐ Débloquer Tout Pro pour 4,99 $ (Permanent)',
+        svg_copied_toast: '🎉 Vectoriel SVG copié dans le presse-papier !\nAppuyez sur Ctrl+V dans Canva ou Figma pour coller des tracés vectoriels éditables !',
+        mobile_save_title: 'Enregistrer dans Photos', mobile_save_hint: '👉 Maintenez l\'image ci-dessous 1 seconde et choisissez "Enregistrer l\'image" !', mobile_download_btn: 'Télécharger le fichier directement',
+        pro_perk_1: '<strong>4K Ultra-HD Tableau Net</strong> (Sans filigrane)',
+        pro_perk_2: '<strong>PNG à Fond Transparent</strong> (Pour diaporamas)',
+        pro_perk_3: '<strong>Projet Vectoriel Canva / Figma (SVG)</strong> (Modifiable)',
+        pro_perk_4: '<strong>Document PDF pour Impression</strong> (Prêt à imprimer)',
+        pro_perk_5: '<strong>Paiement Unique · Utilisation Permanente</strong> (Pack complet)',
+        license_placeholder: 'Entrez la clé (ex: EZPRO-...)',
+        tip_select: '↖️ Sélectionner & Ajuster (Touche V)',
+        tip_chalk: '👨‍🏫 Vraie Craie (Effet poussière)',
+        tip_pen: '🖋️ Stylo Fin',
+        tip_highlighter: '🖍️ Craie Surligneur',
+        tip_text: '🔤 Texte (Touche T)',
+        tip_eraser: '⚡ Gomme de Tracé (Touche E)',
+        tip_lasso: '⭕ Lasso Libre (Touche L)',
+        tip_image: '🖼️ Insérer une Image / Ctrl+V',
+        tip_axis_3d: '🌐 Repère 3D (XYZ)',
+        tip_axis_2d: '➕ Repère 2D (XY)',
+        tip_laser: '🔦 Pointeur laser (1.2s)',
+        tip_palette: '🎯 Palette et épaisseur',
+        tip_undo: '↩️ Annuler (Ctrl+Z)',
+        tip_clear: '🗑️ Effacer le tableau',
+        tip_fit: 'Ajuster à l\'écran',
+        ratios: {
+          free: '♾️ Plein écran (Adaptable)',
+          16_9: '💻 16:9 Présentation',
+          a4_l: '📄 A4 Paysage',
+          a4_p: '📄 A4 Portrait',
+          4_3: '📱 4:3 Tableau Tablette',
+          9_16: '📱 9:16 Story Mobile',
+          1_1: '🔲 1:1 Carré'
+        },
+        papers: {
+          green_chalk: 'Tableau Vert (Green Board)',
+          black_chalk: 'Tableau Noir (Black Board)',
+          square: 'Grille 5mm (5mm Grid)',
+          plain: 'Tableau Blanc (Plain White)'
+        }
       }
     };
 
@@ -1819,6 +2254,10 @@
 
     function updateExportModalUI() {
       const fmt = getSelectedExportFormat();
+      const canvaBox = document.getElementById('canvaFigmaActions');
+      if (canvaBox) {
+        canvaBox.classList.toggle('hidden', fmt !== 'svg_vector');
+      }
       document.querySelectorAll('.export-card').forEach(card => {
         const input = card.querySelector('input');
         if (input.checked) {
@@ -1830,16 +2269,17 @@
         }
       });
 
+      const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.zh;
       if (fmt === 'png_free') {
         btnExecuteExport.className = 'w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition-all text-xs flex items-center justify-center gap-2';
-        lblExecuteExport.innerText = '免费导出 1080P 标准图 (带水印)';
+        lblExecuteExport.innerText = dict.btn_export_free || '免费导出 1080P 标准图 (带水印)';
       } else {
         if (appState.isPro) {
           btnExecuteExport.className = 'w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl shadow-lg transition-all text-xs flex items-center justify-center gap-2';
-          lblExecuteExport.innerText = '立即以 Pro 权限导出';
+          lblExecuteExport.innerText = dict.btn_export_pro_active || '立即以 Pro 权限导出';
         } else {
           btnExecuteExport.className = 'w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl shadow-lg transition-all text-xs flex items-center justify-center gap-2';
-          lblExecuteExport.innerText = '⭐ 解锁此格式 ($4.99 USD 终身买断)';
+          lblExecuteExport.innerText = dict.btn_export_pro_buy || '⭐ 仅需 $4.99 永久解锁全部 Pro 特权 (包含当前格式)';
         }
       }
     }
@@ -1888,7 +2328,7 @@
       }, 'image/png');
     }
 
-    function exportVectorSVG() {
+    function generateVectorSVGString() {
       let pathsSvg = '';
       for (const s of appState.strokes) {
         if (!s.points || s.points.length === 0) continue;
@@ -1908,14 +2348,41 @@
         pathsSvg += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.size}" stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}" />\n`;
       }
 
-      const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+      for (const t of appState.texts) {
+        pathsSvg += `<text x="${t.x}" y="${t.y}" font-size="${t.size}" fill="${t.color}" font-weight="600" font-family="sans-serif">${t.text}</text>\n`;
+      }
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cssWidth} ${cssHeight}" width="${cssWidth}" height="${cssHeight}">
-  <rect width="100%" height="100%" fill="#0c241b" />
+  <rect width="100%" height="100%" fill="${appState.paper.includes('green') ? '#0c241b' : (appState.paper.includes('black') ? '#121517' : '#1e293b')}" />
   ${pathsSvg}
 </svg>`;
+    }
 
+    function exportVectorSVG() {
+      const svgContent = generateVectorSVGString();
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       handleFileDownloadOrShare(blob, `Chalkboard-${Date.now()}.svg`, 'image/svg+xml');
+    }
+
+    const btnCopySvg = document.getElementById('btnCopySvgToClipboard');
+    if (btnCopySvg) {
+      btnCopySvg.onclick = async () => {
+        const svgContent = generateVectorSVGString();
+        const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.zh;
+        try {
+          await navigator.clipboard.writeText(svgContent);
+          alert(dict.svg_copied_toast || '🎉 矢量 SVG 已成功复制到剪贴板！可以直接在 Canva、Figma 或 Illustrator 中按 Ctrl+V (Mac: Cmd+V) 立即无缝粘贴可自由编辑的矢量线稿！');
+        } catch (err) {
+          const ta = document.createElement('textarea');
+          ta.value = svgContent;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+          alert(dict.svg_copied_toast || '🎉 矢量 SVG 已成功复制到剪贴板！可以直接在 Canva、Figma 或 Illustrator 中按 Ctrl+V (Mac: Cmd+V) 立即无缝粘贴可自由编辑的矢量线稿！');
+        }
+      };
     }
 
     function exportToPDF() {
@@ -2095,8 +2562,33 @@
         const key = el.getAttribute('data-i18n');
         if (dict[key]) el.textContent = dict[key];
       });
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (dict[key]) el.title = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) el.placeholder = dict[key];
+      });
+      if (dict.ratios) {
+        const ratioSel = document.getElementById('ratioSelector');
+        if (ratioSel) {
+          Array.from(ratioSel.options).forEach(opt => {
+            if (dict.ratios[opt.value]) opt.textContent = dict.ratios[opt.value];
+          });
+        }
+      }
+      if (dict.papers) {
+        const paperSel = document.getElementById('paperSelector');
+        if (paperSel) {
+          Array.from(paperSel.options).forEach(opt => {
+            if (dict.papers[opt.value]) opt.textContent = dict.papers[opt.value];
+          });
+        }
+      }
       const isLight = document.body.classList.contains('theme-light');
       if (themeLabel) themeLabel.innerText = isLight ? (dict.theme_light || '白天') : (dict.theme_dark || '夜间');
+      if (typeof updateExportModalUI === 'function') updateExportModalUI();
     }
 
     // 白天 / 夜间课堂模式控制 (Day/Night Theme)
@@ -2138,7 +2630,7 @@
         localStorage.setItem('eazyopc_pro_unlocked', 'true');
         appState.isPro = true;
         window.history.replaceState({}, document.title, window.location.pathname);
-        setTimeout(() => alert('🎉 恭喜！付款已确认，Chalkboard Pro 终身版权益已激活！'), 400);
+        setTimeout(() => alert('🎉 恭喜！付款已确认，Chalkboard Pro 永久使用权益已激活！'), 400);
       }
     } catch (e) {}
 
@@ -2147,7 +2639,7 @@
       if ((code.toUpperCase().startsWith('EZPRO-') && code.length >= 10) || code.length >= 8) {
         localStorage.setItem('eazyopc_pro_unlocked', 'true');
         appState.isPro = true;
-        alert('🎉 恭喜！已成功激活 Chalkboard Pro 终身版！');
+        alert('🎉 恭喜！已成功激活 Chalkboard Pro 永久使用版！');
         document.getElementById('proModal').classList.add('hidden');
       } else {
         alert('激活码无效，请核对购买收据邮件中的卡密。');
