@@ -3978,7 +3978,8 @@
           targetCtx.lineJoin = 'round';
           targetCtx.lineWidth = Math.max(1.2, s.size * 0.85);
         } else if (s.tool === 'highlighter') {
-          targetCtx.globalCompositeOperation = 'screen';
+          // 深色黑板用 screen 提亮；白板 / 坐标纸用 multiply，否则荧光笔在白底上完全看不见
+          targetCtx.globalCompositeOperation = isDarkPaper(appState.paper) ? 'screen' : 'multiply';
           targetCtx.strokeStyle = s.color;
           targetCtx.globalAlpha = 0.45;
           targetCtx.lineCap = 'square';
@@ -5280,7 +5281,7 @@
       }
 
       if (s.tool === 'highlighter') {
-        ctx.globalCompositeOperation = 'screen';
+        ctx.globalCompositeOperation = isDarkPaper(appState.paper) ? 'screen' : 'multiply';
         ctx.strokeStyle = s.color;
         ctx.globalAlpha = 0.45;
         ctx.lineCap = 'square';
