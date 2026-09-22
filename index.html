@@ -4383,7 +4383,9 @@
         if (e.target.dataset.handle || e.target.dataset.rot || e.target.closest('.selection-action-pill')) return;
         e.stopPropagation();
         e.preventDefault();
-        beginSelectionDrag(getCanvasCoordinates(e), e);
+        const bpos = getCanvasCoordinates(e);
+        if (appState.tool === 'select' && handleTextDoublePress(bpos)) return;
+        beginSelectionDrag(bpos, e);
       };
 
       // 🌟 8 方向手柄缩放 (手绘笔迹线条 + 图片 + 文本 完整缩放拉伸)
@@ -4637,6 +4639,31 @@
       }
       redrawAllStrokes();
       updateSelectionBoxUI();
+    }
+
+    // 选择工具下「双击文字 = 重新编辑」：第二下往往按在选区框上 (canvas 收不到，也没有 dblclick)，
+    // 所以在 canvas 与选区框的 pointerdown 里都用这个函数判断两次按下是否落在同一段文字上
+    function textUnderPoint(pos) {
+      for (let i = appState.texts.length - 1; i >= 0; i--) {
+        const t = appState.texts[i];
+        const tb = getTextBounds(t);
+        if (pos.x >= tb.x - 6 && pos.x <= tb.x + tb.width + 6 && pos.y >= tb.y - 6 && pos.y <= tb.y + tb.height + 6) return t;
+      }
+      return null;
+    }
+    function handleTextDoublePress(pos) {
+      const t = textUnderPoint(pos);
+      const now = performance.now();
+      if (t && appState._lastPressText === t && now - (appState._lastPressTime || 0) < 450) {
+        appState._lastPressText = null;
+        appState.isDraggingSelection = false;
+        appState._pendingDragHistory = null;
+        openRichTextEditor(t);
+        return true;
+      }
+      appState._lastPressText = t;
+      appState._lastPressTime = now;
+      return false;
     }
 
     // 开始拖动选区：撤销快照延迟到真正移动时才入栈 (只点选不拖动时不产生一步"空撤销")
@@ -5455,6 +5482,7 @@
         canvasCard.style.cursor = 'grab';
         canvas.classList.remove('cursor-pen-nib');
       } else if (appState.tool === 'select') {
+        if (handleTextDoublePress(pos)) return;
         if (appState.selectionBounds &&
             pos.x >= appState.selectionBounds.x &&
             pos.x <= appState.selectionBounds.x + appState.selectionBounds.width &&
@@ -5494,15 +5522,6 @@
           }
         }
         if (hitText) {
-          const now = performance.now();
-          if (appState._lastClickedText === hitText && (now - (appState._lastTextClickTime || 0)) < 380) {
-            openRichTextEditor(hitText);
-            appState._lastClickedText = null;
-            return;
-          }
-          appState._lastClickedText = hitText;
-          appState._lastTextClickTime = now;
-
           appState.selectedTexts = [hitText];
           appState.selectedImages = [];
           appState.selectedStrokes = [];
