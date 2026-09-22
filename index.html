@@ -4456,12 +4456,13 @@
           <input type="color" class="inline-color-input w-5 h-5 rounded cursor-pointer border-0 bg-transparent" value="${currentColor.startsWith('#') && currentColor.length === 7 ? currentColor : '#ffffff'}" title="文字色彩" />
           <button type="button" class="btn-inline-done px-2.5 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[11px] font-bold shadow transition">完成 ✔</button>
         </div>
-        <textarea id="inlineCanvasTextArea" class="bg-white/90 dark:bg-slate-900/90 border-2 border-dashed border-emerald-500 rounded-lg p-2 outline-none resize-none overflow-hidden shadow-2xl transition" placeholder="在此直接打字..." style="font-size:${currentSize}px; font-family:${currentFont}; color:${currentColor}; font-weight:${isBold ? 'bold' : 'normal'}; line-height:1.25; min-width:160px; min-height:${currentSize * 1.5}px;">${currentVal}</textarea>
+        <textarea id="inlineCanvasTextArea" class="bg-white/90 dark:bg-slate-900/90 border-2 border-dashed border-emerald-500 rounded-lg p-2 outline-none resize-none overflow-hidden shadow-2xl transition" placeholder="在此直接打字..." style="font-size:${currentSize}px; font-family:${currentFont}; color:${currentColor}; font-weight:${isBold ? 'bold' : 'normal'}; line-height:1.25; min-width:160px; min-height:${currentSize * 1.5}px;"></textarea>
       `;
 
       canvasCard.appendChild(wrapper);
 
       const textarea = wrapper.querySelector('#inlineCanvasTextArea');
+      textarea.value = currentVal; // 用 .value 赋值，避免把用户文字当 HTML 注入
       const fontSelect = wrapper.querySelector('.inline-font-select');
       const szMinus = wrapper.querySelector('.btn-sz-minus');
       const szPlus = wrapper.querySelector('.btn-sz-plus');
@@ -6043,12 +6044,22 @@
       }, 'image/png');
     }
 
+    // XML 转义 (SVG 文本 / 属性)
+    function escapeXml(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    }
+
     function generateVectorSVGString() {
       let pathsSvg = '';
       for (const s of appState.strokes) {
         if (!s.points || s.points.length === 0) continue;
         if (s.points.length === 1) {
-          pathsSvg += `<circle cx="${s.points[0].x}" cy="${s.points[0].y}" r="${s.size / 2}" fill="${s.color}" />\n`;
+          pathsSvg += `<circle cx="${s.points[0].x}" cy="${s.points[0].y}" r="${s.size / 2}" fill="${escapeXml(s.color)}" />\n`;
           continue;
         }
         let d = `M ${s.points[0].x} ${s.points[0].y}`;
@@ -6060,16 +6071,24 @@
           d += ` Q ${p1.x} ${p1.y} ${midX} ${midY}`;
         }
         const opacity = s.tool === 'highlighter' ? '0.35' : '1';
-        pathsSvg += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.size}" stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}" />\n`;
+        pathsSvg += `<path d="${d}" fill="none" stroke="${escapeXml(s.color)}" stroke-width="${s.size}" stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}" />\n`;
       }
 
       for (const t of appState.texts) {
-        pathsSvg += `<text x="${t.x}" y="${t.y}" font-size="${t.size}" fill="${t.color}" font-weight="600" font-family="sans-serif">${t.text}</text>\n`;
+        const fs = Number(t.size) || 24;
+        const lines = String(t.text || '').split('\n');
+        const tspans = lines.map((line, li) =>
+          `<tspan x="${Number(t.x) || 0}" dy="${li === 0 ? 0 : Math.round(fs * 1.25)}">${escapeXml(line)}</tspan>`).join('');
+        pathsSvg += `<text x="${Number(t.x) || 0}" y="${Number(t.y) || 0}" font-size="${fs}" fill="${escapeXml(t.color || '#ffffff')}" font-weight="${t.bold ? 700 : 600}" font-family="sans-serif">${tspans}</text>\n`;
       }
 
+      // 与画布底纹一致 (纯白 / 坐标纸之前被错误地导出成深色底)
+      const svgPaperFill = appState.paper === 'green_chalk' ? '#0c241b'
+        : appState.paper === 'black_chalk' ? '#171717'
+        : appState.paper === 'square' ? '#f8fafc' : '#ffffff';
       return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${cssWidth} ${cssHeight}" width="${cssWidth}" height="${cssHeight}">
-  <rect width="100%" height="100%" fill="${appState.paper.includes('green') ? '#0c241b' : (appState.paper.includes('black') ? '#121517' : '#1e293b')}" />
+  <rect width="100%" height="100%" fill="${svgPaperFill}" />
   ${pathsSvg}
 </svg>`;
     }
@@ -6112,26 +6131,21 @@
       const pdfW = pdf.internal.pageSize.getWidth();
       const pdfH = pdf.internal.pageSize.getHeight();
 
-      const origIndex = appState.currentPageIndex;
       const offCanvas = document.createElement('canvas');
       offCanvas.width = Math.round(cssWidth * 2);
       offCanvas.height = Math.round(cssHeight * 2);
       const offCtx = offCanvas.getContext('2d');
 
-      // 逐页绘制并打包多页 PDF（漫画分镜本）
+      // 逐页绘制并打包多页 PDF：以只读方式把每页数据传给渲染器，绝不改写 appState / pages
       appState.pages.forEach((p, idx) => {
         if (idx > 0) pdf.addPage();
-        appState.strokes = p.strokes || [];
-        appState.texts = p.texts || [];
-        appState.images = p.images || [];
+        const src = idx === appState.currentPageIndex ? appState : p;
         offCtx.clearRect(0, 0, offCanvas.width, offCanvas.height);
-        redrawAllStrokes(offCtx, 2, false);
+        redrawAllStrokes(offCtx, 2, false, src);
         const imgData = offCanvas.toDataURL('image/jpeg', 0.95);
         pdf.addImage(imgData, 'JPEG', 0, 0, pdfW, pdfH);
       });
 
-      // 恢复原激活页
-      loadPage(origIndex);
       pdf.save(`Chalkboard-Story-${Date.now()}.pdf`);
     }
 
