@@ -1897,7 +1897,7 @@
       <span id="pageIndicator" class="font-mono whitespace-nowrap text-emerald-400 shrink-0 px-1 sm:px-2 text-[11px] sm:text-xs font-semibold">第 1 / 1 页</span>
       <button id="btnNextPage" class="p-1 hover:bg-slate-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition" title="下一页 (Page Down)">▶</button>
       <span class="hidden sm:inline text-slate-600">|</span>
-      <button id="btnAddPage" class="flex items-center gap-1.5 px-2 sm:px-3 py-1 shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow transition active:scale-95" title="新建黑板 / 漫画下一页 (+)"><svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span data-i18n="add_page" class="hidden sm:inline text-white font-bold">加页</span></button>
+      <button id="btnAddPage" class="flex items-center gap-1.5 px-2 sm:px-3 py-1 shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow transition active:scale-95" title="新建一页黑板" data-i18n-title="tip_add_page"><svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span data-i18n="add_page" class="hidden sm:inline text-white font-bold">加页</span></button>
       <button id="btnToggleDualView" class="flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-semibold shadow transition active:scale-95" title="双板并排独立书写模式 (支持同时独立书写左侧与右侧画板)"><span>📖</span><span id="lblDualView" class="hidden sm:inline">双板并排</span></button>
       <button id="btnDeletePage" class="p-1 hover:bg-rose-950/60 text-rose-400 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition" title="删除当前页">🗑️</button>
     </div>
@@ -9575,6 +9575,7 @@ ${body}</svg>`;
       // =====================================================================
       Object.assign(TRANSLATIONS.zh, {
         empty_hint: '✍️ 拿起粉笔开始写吧 · 按 ? 查看快捷键',
+        tip_add_page: '新建一页黑板',
         shortcuts_title: '键盘快捷键', tip_shortcuts: '键盘快捷键 (?)',
         sc_select: '选择 / 移动', sc_hand: '抓手平移 (或按住空格拖动)', sc_chalk: '粉笔', sc_eraser: '橡皮擦', sc_lasso: '套索圈选', sc_text: '打字',
         sc_compass: '圆规', sc_delete: '删除选中内容', sc_undo: '撤销', sc_redo: '重做', sc_save: '保存作品', sc_open: '打开作品',
@@ -9582,6 +9583,7 @@ ${body}</svg>`;
       });
       Object.assign(TRANSLATIONS.en, {
         empty_hint: '✍️ Pick up the chalk and start writing · press ? for shortcuts',
+        tip_add_page: 'Add a new board page',
         shortcuts_title: 'Keyboard shortcuts', tip_shortcuts: 'Keyboard shortcuts (?)',
         sc_select: 'Select / move', sc_hand: 'Hand pan (or hold Space and drag)', sc_chalk: 'Chalk', sc_eraser: 'Eraser', sc_lasso: 'Lasso select', sc_text: 'Type text',
         sc_compass: 'Compass', sc_delete: 'Delete selection', sc_undo: 'Undo', sc_redo: 'Redo', sc_save: 'Save work', sc_open: 'Open work',
