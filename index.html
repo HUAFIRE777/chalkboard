@@ -1390,6 +1390,22 @@
         </div>
         <button id="btnToggleRuler" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition">显示直尺</button>
       </div>
+
+      <!-- 4. 📐 量角器 & 🧭 圆规 -->
+      <div class="p-2 bg-stone-50 dark:bg-slate-800/80 rounded-xl border border-stone-200 dark:border-slate-700/80 flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-xs font-bold" data-i18n="protractor_title">📐 量角器 (从圆心起笔显示角度)</div>
+          <div class="text-[10px] text-stone-400" data-i18n="protractor_hint">拖动刻度环移动 · 拖动右端圆点旋转</div>
+        </div>
+        <button id="btnToggleProtractor" class="shrink-0 px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition" data-i18n="protractor_show">显示</button>
+      </div>
+      <div class="p-2 bg-stone-50 dark:bg-slate-800/80 rounded-xl border border-stone-200 dark:border-slate-700/80 flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-xs font-bold" data-i18n="compass_title">🧭 圆规 (快捷键 C)</div>
+          <div class="text-[10px] text-stone-400" data-i18n="compass_hint">先拖出半径，再拖动扫出圆弧；双击画整圆</div>
+        </div>
+        <button id="btnUseCompass" class="shrink-0 px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition" data-i18n="compass_use">使用</button>
+      </div>
     </div>
 
     <!-- 🎬 媒体插入菜单 (本地视频 / 临摹课件) -->
@@ -1722,6 +1738,13 @@
           <div class="w-full flex justify-between text-[9px] font-mono text-amber-900 font-bold border-b border-amber-800 pb-1">
             <span>0</span><span>|</span><span>2</span><span>|</span><span>4</span><span>|</span><span>6</span><span>|</span><span>8</span><span>|</span><span>10 cm</span>
           </div>
+        </div>
+        <!-- 圆规 / 量角器 实时辅助线 (不写入板书) -->
+        <canvas id="toolGuideCanvas" class="absolute inset-0 pointer-events-none z-20"></canvas>
+        <!-- 📐 量角器浮层：拖动刻度环移动，拖动右端圆点旋转；从圆心起笔画射线并实时显示角度 -->
+        <div id="protractorOverlay" class="hidden absolute z-30 select-none" style="left:0;top:0;width:300px;height:150px;transform-origin:50% 100%;pointer-events:none">
+          <svg id="protractorSvg" width="300" height="150" viewBox="0 0 300 150" style="overflow:visible;display:block;touch-action:none"></svg>
+          <div id="protractorReadout" class="hidden absolute px-2 py-0.5 rounded-lg text-xs font-bold font-mono shadow-lg" style="pointer-events:none"></div>
         </div>
         <div id="laserLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
         <div id="stickyLayer" class="absolute inset-0 pointer-events-none"></div>
@@ -4388,7 +4411,7 @@
 
     // 🌟 多页黑板管理系统 (Multi-Page Engine)
     // 双板规则：左板 #referenceCanvasCard 固定 = pages[0]；右板 #canvasCard = pages[currentPageIndex] (双板时始终 ≥ 1)
-    const NON_STROKE_TOOLS = new Set(['select', 'lasso', 'text', 'laser', 'hand', 'eraser']);
+    const NON_STROKE_TOOLS = new Set(['select', 'lasso', 'text', 'laser', 'hand', 'eraser', 'compass']);
     function isStrokeTool(tool) { return !!tool && !NON_STROKE_TOOLS.has(tool); }
     function sprayRadiusFor(size) { return Math.max(4, (Number(size) || 3) * 2.2); }
 
@@ -6940,7 +6963,7 @@ ${body}</svg>`;
       } else if (appState.tool === 'lasso') {
         canvasCard.style.cursor = 'crosshair';
         canvasCard.classList.remove('cursor-pen-nib');
-      } else if (appState.tool === 'laser') {
+      } else if (appState.tool === 'laser' || appState.tool === 'compass') {
         canvasCard.style.cursor = 'crosshair';
         canvasCard.classList.remove('cursor-pen-nib');
       } else if (appState.tool === 'text') {
@@ -8455,6 +8478,380 @@ ${body}</svg>`;
       function pickPdf() { if (pdfFileInput) { pdfFileInput.value = ''; pdfFileInput.click(); } }
       if (pdfFileInput) pdfFileInput.onchange = (e) => { const f = e.target.files && e.target.files[0]; if (f) importPdf(f); };
       ['btnImportPdfAction', 'btnImportPdfDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); pickPdf(); }; });
+
+      // =====================================================================
+      // 📐 量角器 & 🧭 圆规
+      // =====================================================================
+      Object.assign(TRANSLATIONS.zh, {
+        protractor_title: '📐 量角器 (从圆心起笔显示角度)', protractor_hint: '拖动刻度环移动 · 拖动右端圆点旋转',
+        protractor_show: '显示', protractor_hide: '收起', tool_protractor: '量角器',
+        compass_title: '🧭 圆规 (快捷键 C)', compass_hint: '先拖出半径，再拖动扫出圆弧；双击画整圆', compass_use: '使用', tool_compass: '圆规 (C)',
+        compass_ready_toast: '🧭 半径已定：拖动扫出圆弧，双击画整圆；按住圆心可重新定位',
+        compass_step1_toast: '🧭 圆规：在圆心按下并拖出半径'
+      });
+      Object.assign(TRANSLATIONS.en, {
+        protractor_title: '📐 Protractor (start a line at the center to read the angle)', protractor_hint: 'Drag the scale ring to move · drag the right dot to rotate',
+        protractor_show: 'Show', protractor_hide: 'Hide', tool_protractor: 'Protractor',
+        compass_title: '🧭 Compass (shortcut C)', compass_hint: 'Drag out a radius, then drag to sweep an arc; double-click for a full circle', compass_use: 'Use', tool_compass: 'Compass (C)',
+        compass_ready_toast: '🧭 Radius set: drag to sweep an arc, double-click for a full circle; press the center to move it',
+        compass_step1_toast: '🧭 Compass: press at the center and drag out the radius'
+      });
+
+      const guideCanvas = $('toolGuideCanvas');
+      const guideCtx = guideCanvas ? guideCanvas.getContext('2d') : null;
+      function syncGuideCanvas() {
+        if (!guideCanvas) return;
+        const w = Math.round(cssWidth * dpr), h = Math.round(cssHeight * dpr);
+        if (guideCanvas.width !== w || guideCanvas.height !== h) { guideCanvas.width = w; guideCanvas.height = h; }
+        guideCanvas.style.width = cssWidth + 'px';
+        guideCanvas.style.height = cssHeight + 'px';
+      }
+      function clearGuide() {
+        if (!guideCtx) return;
+        syncGuideCanvas();
+        guideCtx.setTransform(1, 0, 0, 1, 0, 0);
+        guideCtx.clearRect(0, 0, guideCanvas.width, guideCanvas.height);
+      }
+      function guideBegin() { clearGuide(); guideCtx.save(); guideCtx.scale(dpr, dpr); }
+      function accentColor() { return isDarkPaper(appState.paper) ? '#fde047' : '#2563eb'; }
+      // 用画布同款渲染器把「预览笔画」画到辅助层 (透明底)，抬笔后再写入板书
+      function drawPreviewStroke(stroke) {
+        syncGuideCanvas();
+        redrawAllStrokes(guideCtx, dpr, true, { strokes: [stroke], texts: [], images: [] });
+      }
+      function currentBrushTool() {
+        const t = appState.tool;
+        if (isStrokeTool(t)) return t;
+        const b = $('btnCurrentBrush');
+        return (b && b.dataset.tool) || 'chalk';
+      }
+      function commitStroke(stroke) {
+        appState.strokes.push(stroke);
+        clearGuide();
+        redrawAllStrokes();
+        scheduleAutosave();
+      }
+      const normAngle = (a) => { while (a <= -Math.PI) a += Math.PI * 2; while (a > Math.PI) a -= Math.PI * 2; return a; };
+
+      // ---------- 量角器 ----------
+      const protEl = $('protractorOverlay');
+      const protSvg = $('protractorSvg');
+      const protReadout = $('protractorReadout');
+      const PROT_R = 150;
+      const prot = { visible: false, cx: 0, cy: 0, angle: 0 };
+
+      function buildProtractorSvg() {
+        if (!protSvg) return;
+        const dark = isDarkPaper(appState.paper);
+        const ink = dark ? 'rgba(255,255,255,0.92)' : 'rgba(15,23,42,0.9)';
+        const fill = dark ? 'rgba(255,255,255,0.10)' : 'rgba(37,99,235,0.08)';
+        const R = PROT_R, cx = R, cy = R, inner = R - 34;
+        let ticks = '', labels = '';
+        for (let d = 0; d <= 180; d++) {
+          const a = d * Math.PI / 180;
+          const len = d % 10 === 0 ? 14 : (d % 5 === 0 ? 9 : 5);
+          const x1 = cx + Math.cos(a) * R, y1 = cy - Math.sin(a) * R;
+          const x2 = cx + Math.cos(a) * (R - len), y2 = cy - Math.sin(a) * (R - len);
+          ticks += `M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}`;
+          if (d % 10 === 0) {
+            const lx = cx + Math.cos(a) * (R - 24), ly = cy - Math.sin(a) * (R - 24);
+            labels += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" font-size="9" font-family="ui-monospace,monospace" font-weight="700" fill="${ink}" text-anchor="middle" dominant-baseline="middle">${d}</text>`;
+          }
+        }
+        const band = `M${cx - R} ${cy} A${R} ${R} 0 0 1 ${cx + R} ${cy} L${cx + inner} ${cy} A${inner} ${inner} 0 0 0 ${cx - inner} ${cy} Z`;
+        protSvg.innerHTML = `
+          <path id="protBand" d="${band}" fill="${fill}" stroke="${ink}" stroke-width="1.2" style="pointer-events:visiblePainted;cursor:move"/>
+          <path d="${ticks}" stroke="${ink}" stroke-width="1" style="pointer-events:none"/>
+          ${labels}
+          <line x1="${cx - R}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="${ink}" stroke-width="1.4" style="pointer-events:none"/>
+          <line x1="${cx}" y1="${cy - 10}" x2="${cx}" y2="${cy}" stroke="${ink}" stroke-width="1.2" style="pointer-events:none"/>
+          <circle cx="${cx}" cy="${cy}" r="4" fill="none" stroke="${accentColor()}" stroke-width="2" style="pointer-events:none"/>
+          <circle id="protRotate" cx="${cx + R}" cy="${cy}" r="9" fill="${accentColor()}" stroke="#ffffff" stroke-width="2" style="pointer-events:all;cursor:grab"><title>${escapeXml(tr('protractor_hint'))}</title></circle>
+          <g id="protClose" style="pointer-events:all;cursor:pointer"><circle cx="${cx - R}" cy="${cy}" r="9" fill="#ef4444" stroke="#ffffff" stroke-width="2"/><path d="M${cx - R - 3.5} ${cy - 3.5}l7 7M${cx - R + 3.5} ${cy - 3.5}l-7 7" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></g>`;
+      }
+      function layoutProtractor() {
+        if (!protEl) return;
+        protEl.style.left = (prot.cx - PROT_R) + 'px';
+        protEl.style.top = (prot.cy - PROT_R) + 'px';
+        protEl.style.width = (PROT_R * 2) + 'px';
+        protEl.style.height = PROT_R + 'px';
+        protEl.style.transform = `rotate(${prot.angle}rad)`;
+      }
+      function setProtractorVisible(v) {
+        prot.visible = !!v;
+        if (prot.visible && !prot.cx) { prot.cx = Math.round(cssWidth / 2); prot.cy = Math.round(Math.min(cssHeight - 40, cssHeight / 2 + PROT_R / 2)); }
+        if (prot.visible) { buildProtractorSvg(); layoutProtractor(); }
+        if (protEl) protEl.classList.toggle('hidden', !prot.visible);
+        const b = $('btnToggleProtractor');
+        if (b) { b.textContent = prot.visible ? tr('protractor_hide', '收起') : tr('protractor_show', '显示'); b.removeAttribute('data-i18n'); }
+      }
+      window.cbProtractor = prot;
+      window.cbSetProtractorVisible = setProtractorVisible;
+      const btnProt = $('btnToggleProtractor');
+      if (btnProt) btnProt.onclick = (e) => { e.stopPropagation(); setProtractorVisible(!prot.visible); };
+      const btnProtDrawer = $('btnToggleProtractorDrawer');
+      if (btnProtDrawer) btnProtDrawer.onclick = (e) => { e.stopPropagation(); setProtractorVisible(!prot.visible); closeFileMenus(); };
+      const paperSelEl = $('paperSelector');
+      if (paperSelEl) paperSelEl.addEventListener('change', () => { if (prot.visible) buildProtractorSvg(); });
+
+      // 拖动刻度环 / 旋转 / 关闭
+      if (protSvg) {
+        let drag = null;
+        protSvg.addEventListener('pointerdown', (e) => {
+          const t = e.target;
+          if (t.closest && t.closest('#protClose')) { e.preventDefault(); e.stopPropagation(); setProtractorVisible(false); return; }
+          const pos = getCanvasCoordinates(e);
+          if (t.id === 'protRotate') drag = { mode: 'rotate' };
+          else if (t.id === 'protBand') drag = { mode: 'move', dx: pos.x - prot.cx, dy: pos.y - prot.cy };
+          else return;
+          e.preventDefault(); e.stopPropagation();
+          try { protSvg.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+        protSvg.addEventListener('pointermove', (e) => {
+          if (!drag) return;
+          e.preventDefault();
+          const rect = canvasCard.getBoundingClientRect();
+          const pos = { x: (e.clientX - rect.left) * cssWidth / rect.width, y: (e.clientY - rect.top) * cssHeight / rect.height };
+          if (drag.mode === 'move') { prot.cx = pos.x - drag.dx; prot.cy = pos.y - drag.dy; }
+          else {
+            let a = Math.atan2(pos.y - prot.cy, pos.x - prot.cx);
+            const deg = a * 180 / Math.PI;
+            const snap = Math.round(deg / 15) * 15; // 靠近 15° 整数倍时吸附
+            if (Math.abs(deg - snap) < 2.5) a = snap * Math.PI / 180;
+            prot.angle = a;
+          }
+          layoutProtractor();
+        });
+        const end = (e) => { if (!drag) return; drag = null; try { protSvg.releasePointerCapture(e.pointerId); } catch (_) {} };
+        protSvg.addEventListener('pointerup', end);
+        protSvg.addEventListener('pointercancel', end);
+      }
+
+      // 相对量角器底边 (逆时针) 的角度，0~360
+      function protAngleOf(pos) {
+        const dx = pos.x - prot.cx, dy = pos.y - prot.cy;
+        const ca = Math.cos(prot.angle), sa = Math.sin(prot.angle);
+        const vx = dx * ca + dy * sa, vy = -dx * sa + dy * ca;
+        let deg = Math.atan2(-vy, vx) * 180 / Math.PI;
+        if (deg < 0) deg += 360;
+        return deg;
+      }
+
+      let protLine = null;   // { stroke, pointerId }
+      function showReadout(text, pos) {
+        if (!protReadout) return;
+        const dark = isDarkPaper(appState.paper);
+        protReadout.textContent = text;
+        protReadout.style.background = dark ? '#fde047' : '#1d4ed8';
+        protReadout.style.color = dark ? '#0f172a' : '#ffffff';
+        protReadout.classList.remove('hidden');
+        // 读数显示在指针旁 (换算回量角器自身旋转前的局部坐标)
+        const dx = pos.x - prot.cx, dy = pos.y - prot.cy;
+        const ca = Math.cos(-prot.angle), sa = Math.sin(-prot.angle);
+        const lx = dx * ca - dy * sa + PROT_R, ly = dx * sa + dy * ca + PROT_R;
+        protReadout.style.left = (lx + 14) + 'px';
+        protReadout.style.top = (ly - 30) + 'px';
+        protReadout.style.transform = `rotate(${-prot.angle}rad)`;
+      }
+      function hideReadout() { if (protReadout) protReadout.classList.add('hidden'); }
+
+      // ---------- 圆规 ----------
+      const comp = { phase: 'idle', cx: 0, cy: 0, r: 0, start: 0, last: 0, accum: 0, stroke: null, pointerId: null };
+      function resetCompass() { comp.phase = 'idle'; comp.r = 0; comp.stroke = null; comp.pointerId = null; clearGuide(); }
+      window.cbCompass = comp;
+      function arcPoints(cx, cy, r, a0, sweep) {
+        const n = Math.max(8, Math.ceil(Math.abs(sweep) * r / 3));
+        const pts = [];
+        for (let i = 0; i <= n; i++) {
+          const a = a0 + sweep * i / n;
+          pts.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, pressure: 0.5 });
+        }
+        return pts;
+      }
+      function newArcStroke(points) {
+        return { id: Date.now() + Math.random(), tool: currentBrushTool(), color: appState.currentColor, size: Number(appState.brushSize) || 3, points };
+      }
+      function drawCompassGuide(pointer) {
+        if (!guideCtx) return;
+        syncGuideCanvas();
+        // 有预览圆弧时先用画布渲染器画出 (会清空辅助层)，再在上面补画圆规辅助线
+        if (comp.stroke) redrawAllStrokes(guideCtx, dpr, true, { strokes: [comp.stroke], texts: [], images: [] });
+        else clearGuide();
+        guideCtx.save();
+        guideCtx.setTransform(1, 0, 0, 1, 0, 0);
+        guideCtx.scale(dpr, dpr);
+        const col = accentColor();
+        guideCtx.strokeStyle = col; guideCtx.fillStyle = col;
+        if (comp.r > 0) {
+          guideCtx.lineWidth = 1.5;
+          guideCtx.setLineDash([6, 6]);
+          guideCtx.globalAlpha = 0.45;
+          guideCtx.beginPath(); guideCtx.arc(comp.cx, comp.cy, comp.r, 0, Math.PI * 2); guideCtx.stroke();
+          guideCtx.globalAlpha = 1;
+          guideCtx.setLineDash([]);
+        }
+        const tip = pointer || { x: comp.cx + comp.r * Math.cos(comp.last), y: comp.cy + comp.r * Math.sin(comp.last) };
+        guideCtx.lineWidth = 2;
+        guideCtx.beginPath(); guideCtx.moveTo(comp.cx, comp.cy); guideCtx.lineTo(tip.x, tip.y); guideCtx.stroke();
+        guideCtx.beginPath(); guideCtx.arc(comp.cx, comp.cy, 4, 0, Math.PI * 2); guideCtx.fill();
+        guideCtx.font = '700 12px ui-monospace, monospace';
+        if (comp.phase === 'sweep') {
+          guideCtx.fillText(`${Math.round(Math.abs(comp.accum) * 180 / Math.PI)}°`, tip.x + 10, tip.y - 10);
+        } else if (comp.r > 0) {
+          guideCtx.fillText(`r = ${Math.round(comp.r)}`, (comp.cx + tip.x) / 2 + 8, (comp.cy + tip.y) / 2 - 8);
+        }
+        guideCtx.restore();
+      }
+
+      function onBoardPointerDown(e) {
+        if (e.target !== canvas) return;
+        if (e.button > 0) return;
+        if (appState.isSpaceDown) return;
+        const tool = appState.tool;
+        const pos = getCanvasCoordinates(e);
+
+        if (tool === 'compass') {
+          e.preventDefault(); e.stopPropagation();
+          try { closeAllFlyouts(); } catch (_) {}
+          appState.lastActiveBoard = 'right';
+          comp.pointerId = e.pointerId;
+          try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+          if (comp.phase === 'ready' && Math.hypot(pos.x - comp.cx, pos.y - comp.cy) > 14) {
+            comp.phase = 'sweep';
+            comp.start = comp.last = Math.atan2(pos.y - comp.cy, pos.x - comp.cx);
+            comp.accum = 0;
+            comp.stroke = newArcStroke(arcPoints(comp.cx, comp.cy, comp.r, comp.start, 0));
+            drawCompassGuide(pos);
+          } else {
+            comp.phase = 'radius';
+            comp.cx = pos.x; comp.cy = pos.y; comp.r = 0; comp.stroke = null;
+            drawCompassGuide(pos);
+          }
+          return;
+        }
+
+        if (prot.visible && isStrokeTool(tool) && Math.hypot(pos.x - prot.cx, pos.y - prot.cy) <= 20) {
+          e.preventDefault(); e.stopPropagation();
+          try { closeAllFlyouts(); } catch (_) {}
+          appState.lastActiveBoard = 'right';
+          const stroke = { id: Date.now() + Math.random(), tool, color: appState.currentColor, size: Number(appState.brushSize) || 3, points: [{ x: prot.cx, y: prot.cy, pressure: 0.5 }, { x: prot.cx, y: prot.cy, pressure: 0.5 }] };
+          protLine = { stroke, pointerId: e.pointerId };
+          try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+        }
+      }
+
+      function onBoardPointerMove(e) {
+        if (protLine && e.pointerId === protLine.pointerId) {
+          e.preventDefault(); e.stopPropagation();
+          const pos = getCanvasCoordinates(e);
+          let deg = protAngleOf(pos);
+          const snapped = Math.round(deg); // 以 1° 为单位吸附，读数与线条一致
+          const len = Math.hypot(pos.x - prot.cx, pos.y - prot.cy);
+          const worldA = prot.angle - snapped * Math.PI / 180;
+          const end = { x: prot.cx + Math.cos(worldA) * len, y: prot.cy + Math.sin(worldA) * len, pressure: 0.5 };
+          protLine.stroke.points[1] = end;
+          drawPreviewStroke(protLine.stroke);
+          // 预览笔画会清空辅助层：补画角度弧
+          guideCtx.save(); guideCtx.setTransform(1, 0, 0, 1, 0, 0); guideCtx.scale(dpr, dpr);
+          guideCtx.strokeStyle = accentColor(); guideCtx.lineWidth = 2;
+          guideCtx.beginPath(); guideCtx.arc(prot.cx, prot.cy, Math.min(42, len), prot.angle, worldA, snapped % 360 > 0); guideCtx.stroke();
+          guideCtx.restore();
+          showReadout(`${snapped % 360}°`, end);
+          return;
+        }
+        if (appState.tool === 'compass' && comp.pointerId === e.pointerId && (comp.phase === 'radius' || comp.phase === 'sweep')) {
+          e.preventDefault(); e.stopPropagation();
+          const pos = getCanvasCoordinates(e);
+          if (comp.phase === 'radius') {
+            comp.r = Math.hypot(pos.x - comp.cx, pos.y - comp.cy);
+            comp.last = Math.atan2(pos.y - comp.cy, pos.x - comp.cx);
+            drawCompassGuide(pos);
+          } else {
+            const a = Math.atan2(pos.y - comp.cy, pos.x - comp.cx);
+            comp.accum += normAngle(a - comp.last);
+            comp.accum = Math.max(-Math.PI * 2, Math.min(Math.PI * 2, comp.accum));
+            comp.last = a;
+            comp.stroke.points = arcPoints(comp.cx, comp.cy, comp.r, comp.start, comp.accum);
+            const tip = { x: comp.cx + comp.r * Math.cos(comp.start + comp.accum), y: comp.cy + comp.r * Math.sin(comp.start + comp.accum) };
+            drawCompassGuide(tip);
+          }
+        }
+      }
+
+      function onBoardPointerUp(e) {
+        if (protLine && e.pointerId === protLine.pointerId) {
+          const st = protLine.stroke;
+          protLine = null;
+          hideReadout();
+          try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+          if (Math.hypot(st.points[1].x - st.points[0].x, st.points[1].y - st.points[0].y) >= 4) { saveHistory(); commitStroke(st); }
+          else clearGuide();
+          return;
+        }
+        if (appState.tool === 'compass' && comp.pointerId === e.pointerId) {
+          comp.pointerId = null;
+          try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+          if (comp.phase === 'radius') {
+            if (comp.r >= 6) { comp.phase = 'ready'; drawCompassGuide(); toast(tr('compass_ready_toast'), 4200); }
+            else { resetCompass(); }
+          } else if (comp.phase === 'sweep') {
+            const st = comp.stroke;
+            comp.stroke = null;
+            comp.phase = 'ready';
+            if (st && Math.abs(comp.accum) > 0.03) { saveHistory(); commitStroke(st); }
+            drawCompassGuide();
+          }
+        }
+      }
+
+      if (canvasCard) {
+        canvasCard.addEventListener('pointerdown', onBoardPointerDown, true);
+      }
+      window.addEventListener('pointermove', onBoardPointerMove, true);
+      window.addEventListener('pointerup', onBoardPointerUp, true);
+      window.addEventListener('pointercancel', (e) => {
+        if (protLine && e.pointerId === protLine.pointerId) { protLine = null; hideReadout(); clearGuide(); }
+        if (comp.pointerId === e.pointerId) { comp.pointerId = null; if (comp.phase === 'sweep') { comp.phase = 'ready'; comp.stroke = null; drawCompassGuide(); } else if (comp.phase === 'radius') resetCompass(); }
+      }, true);
+      canvas.addEventListener('dblclick', (e) => {
+        if (appState.tool !== 'compass' || comp.phase !== 'ready' || comp.r < 6) return;
+        e.preventDefault();
+        saveHistory();
+        commitStroke(newArcStroke(arcPoints(comp.cx, comp.cy, comp.r, 0, Math.PI * 2)));
+        drawCompassGuide();
+      });
+
+      // 切换工具 / 翻页时清掉圆规状态
+      const _updateToolButtonsUI = window.updateToolButtonsUI;
+      if (typeof _updateToolButtonsUI === 'function') {
+        window.updateToolButtonsUI = function () {
+          const r = _updateToolButtonsUI.apply(this, arguments);
+          if (appState.tool !== 'compass' && comp.phase !== 'idle') resetCompass();
+          return r;
+        };
+      }
+      const _loadPage = window.loadPage;
+      if (typeof _loadPage === 'function') {
+        window.loadPage = function () { resetCompass(); return _loadPage.apply(this, arguments); };
+      }
+      function useCompass() {
+        appState.tool = 'compass';
+        updateToolButtonsUI();
+        resetCompass();
+        toast(tr('compass_step1_toast'), 3000);
+      }
+      const btnUseCompass = $('btnUseCompass');
+      if (btnUseCompass) btnUseCompass.onclick = (e) => { e.stopPropagation(); useCompass(); const m = $('classroomToolsMenu'); if (m) m.classList.add('hidden'); };
+      document.querySelectorAll('.tool-btn[data-tool="compass"]').forEach(b => b.addEventListener('click', () => { resetCompass(); toast(tr('compass_step1_toast'), 3000); closeFileMenus(); }));
+
+      window.addEventListener('keydown', (e) => {
+        const tgt = e.target;
+        if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA' || tgt.tagName === 'SELECT' || tgt.isContentEditable)) return;
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const k = (e.key || '').toLowerCase();
+        if (k === 'c') { useCompass(); }
+        else if (k === 'escape') { if (comp.phase !== 'idle') resetCompass(); }
+      });
 
       /*R4_MORE*/
     })();
