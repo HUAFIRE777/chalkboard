@@ -5803,9 +5803,12 @@
         appState.lassoPath = [];
         return;
       }
+      // 荧光笔实时预览是逐段叠加的半透明方头线段 (会出现条纹)，抬笔后按完整路径重绘一次
+      const finishedHighlighter = isDrawing && currentStroke && currentStroke.tool === 'highlighter';
       isDrawing = false;
       currentStroke = null;
       activePointerId = null;
+      if (finishedHighlighter) redrawAllStrokes();
     });
     window.addEventListener('pointercancel', (e) => {
       if (activePointerId !== null && e.pointerId === activePointerId) {
