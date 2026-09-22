@@ -5174,6 +5174,7 @@
         currentFont = fontSelect.value;
         textarea.style.fontFamily = currentFont;
         autoResize();
+        textarea.focus();
       };
 
       szMinus.onclick = (e) => {
@@ -5182,6 +5183,7 @@
         szVal.innerText = `${currentSize}px`;
         textarea.style.fontSize = `${currentSize}px`;
         autoResize();
+        textarea.focus();
       };
 
       szPlus.onclick = (e) => {
@@ -5190,6 +5192,7 @@
         szVal.innerText = `${currentSize}px`;
         textarea.style.fontSize = `${currentSize}px`;
         autoResize();
+        textarea.focus();
       };
 
       btnBold.onclick = (e) => {
@@ -5198,12 +5201,16 @@
         btnBold.className = `btn-bold-toggle px-2 py-0.5 rounded text-[11px] font-bold ${isBold ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`;
         textarea.style.fontWeight = isBold ? 'bold' : 'normal';
         autoResize();
+        textarea.focus();
       };
 
       colorInput.oninput = () => {
         currentColor = colorInput.value;
         textarea.style.color = currentColor;
       };
+      colorInput.onchange = () => textarea.focus();
+      // 工具条按钮不抢焦点：点 A+ / B 之后可以继续直接打字
+      wrapper.querySelectorAll('.inline-text-toolbar button').forEach(b => b.addEventListener('mousedown', (ev) => ev.preventDefault()));
 
       let committed = false;
       function commitAndClose() {
