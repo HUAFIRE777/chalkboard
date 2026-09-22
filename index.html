@@ -961,6 +961,43 @@
     body.theme-light .pro-chip { background: #fef3c7; color: #92400e; }
     @media (prefers-reduced-motion: reduce) { .rec-dot-live { animation: none; } }
 
+    /* 统一弹窗：头部 (图标 + 标题 + 关闭) / 内容 / 底部按钮 */
+    .r4-modal-card { background: #0f172a; color: #e2e8f0; border: 1px solid rgba(148, 163, 184, 0.22); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); max-height: 92vh; overflow-y: auto; }
+    .r4-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px 12px; border-bottom: 1px solid rgba(148, 163, 184, 0.16); }
+    .r4-modal-body { padding: 16px 20px; }
+    .r4-modal-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px 16px; border-top: 1px solid rgba(148, 163, 184, 0.16); }
+    .r4-modal-icon { width: 36px; height: 36px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; background: rgba(16, 185, 129, 0.14); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); flex-shrink: 0; }
+    .r4-modal .r4-muted { color: #94a3b8; }
+    .r4-input { background: #020617; color: #f1f5f9; border: 1px solid #334155; border-radius: var(--r-sm); padding: 8px 10px; outline: none; }
+    .r4-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+    .r4-chip { height: 28px; padding: 0 10px; border-radius: var(--r-sm); border: 1px solid #334155; background: #1e293b; color: #e2e8f0; font-weight: 600; }
+    .r4-chip:hover { border-color: var(--accent); }
+    .r4-chip:focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 1px; }
+    .formula-preview { background: #0c241b; border: 1px solid rgba(16, 185, 129, 0.25); }
+    .formula-preview svg { max-width: 100%; height: auto; }
+    .formula-swatch { width: 22px; height: 22px; border-radius: 9999px; border: 2px solid rgba(148, 163, 184, 0.5); }
+    .formula-swatch.is-active { box-shadow: 0 0 0 2px var(--accent); border-color: #fff; }
+    .kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 22px; padding: 0 6px; border-radius: 6px; font: 700 11px ui-monospace, SFMono-Regular, Menlo, monospace; background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-bottom-width: 2px; }
+    body.theme-light .r4-modal-card { background: #ffffff; color: #0f172a; border-color: #cbd5e1; }
+    body.theme-light .r4-modal-card :is(h3, h4, strong, label, dt, dd, span, p) { color: #0f172a; }
+    body.theme-light .r4-modal-card h3 { font-weight: 800; }
+    body.theme-light .r4-modal-card :is(label, dd, p, span) { font-weight: 700; }
+    body.theme-light .r4-modal-head, body.theme-light .r4-modal-foot { border-color: #e2e8f0; }
+    body.theme-light .r4-modal .r4-muted { color: #334155 !important; }
+    body.theme-light .r4-modal-icon { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+    body.theme-light .r4-input { background: #ffffff; color: #0f172a; border: 1.5px solid #334155; }
+    body.theme-light .r4-chip { background: #f8fafc; color: #0f172a; border: 1.5px solid #334155; font-weight: 700; }
+    body.theme-light .r4-modal .r4-btn-primary { background: #0f172a; color: #ffffff; }
+    body.theme-light .r4-modal .r4-btn-primary:hover { background: #334155; }
+    body.theme-light .r4-modal .r4-btn-ghost { color: #0f172a; border: 1.5px solid #0f172a; }
+    body.theme-light .r4-modal .r4-icon-btn { color: #0f172a; }
+    body.theme-light .kbd { background: #f8fafc; color: #0f172a; border-color: #334155; }
+    body.theme-light #formulaError { color: #be123c !important; }
+    /* 弹窗入场动画 (150ms)，尊重减少动态效果 */
+    @keyframes r4ModalIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+    :is(#exportModal, #proModal, #restoreModal, #feedbackModal, #mobileSaveModal, #formulaModal, #shortcutsModal):not(.hidden) > div { animation: r4ModalIn 150ms ease-out; }
+    @media (prefers-reduced-motion: reduce) { :is(#exportModal, #proModal, #restoreModal, #feedbackModal, #mobileSaveModal, #formulaModal, #shortcutsModal):not(.hidden) > div { animation: none; } }
+
     /* ================= 📱 小屏布局 (< 640px)：避免整页横向滚动 ================= */
     .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -2614,6 +2651,72 @@
     </div>
   </div>
 
+  <!-- ================= ∑ 插入公式 (Pro，LaTeX → 矢量 SVG) ================= -->
+  <div id="formulaModal" class="r4-modal hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4" role="dialog" aria-modal="true" aria-labelledby="formulaModalTitle">
+    <div class="r4-modal-card w-full max-w-lg">
+      <div class="r4-modal-head">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="r4-modal-icon font-serif text-lg font-black">∑</div>
+          <div class="min-w-0">
+            <h3 id="formulaModalTitle" class="text-base font-bold tracking-tight" data-i18n="formula_title">插入公式</h3>
+            <p class="r4-muted text-[11px]" data-i18n="formula_desc">输入 LaTeX，实时预览，插入后可像图片一样拖动、缩放、旋转</p>
+          </div>
+        </div>
+        <button id="btnCloseFormula" type="button" class="r4-icon-btn" aria-label="close">✕</button>
+      </div>
+      <div class="r4-modal-body space-y-3">
+        <div id="formulaTemplates" class="flex flex-wrap gap-1.5 text-[11px]">
+          <button type="button" class="r4-chip" data-tex="\frac{a}{b}">a/b</button>
+          <button type="button" class="r4-chip" data-tex="\sqrt{x}">√x</button>
+          <button type="button" class="r4-chip" data-tex="x^{2}">x²</button>
+          <button type="button" class="r4-chip" data-tex="a_{n}">aₙ</button>
+          <button type="button" class="r4-chip" data-tex="\sum_{i=1}^{n} i">Σ</button>
+          <button type="button" class="r4-chip" data-tex="\int_{a}^{b} f(x)\,dx">∫</button>
+          <button type="button" class="r4-chip" data-tex="\lim_{x \to 0}">lim</button>
+          <button type="button" class="r4-chip" data-tex="\begin{cases} x + y = 1 \\ x - y = 3 \end{cases}">{ }</button>
+          <button type="button" class="r4-chip" data-tex="\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}">( ▦ )</button>
+          <button type="button" class="r4-chip" data-tex="\alpha \beta \gamma \theta \pi">αβπ</button>
+          <button type="button" class="r4-chip" data-tex="\angle ABC = 90^{\circ}">∠</button>
+        </div>
+        <textarea id="formulaInput" rows="3" spellcheck="false" class="r4-input w-full font-mono text-sm" placeholder="x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}" data-i18n-ph="formula_placeholder">x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</textarea>
+        <div id="formulaPreview" class="formula-preview rounded-xl flex items-center justify-center min-h-[96px] max-h-[220px] overflow-auto p-3" aria-live="polite"></div>
+        <p id="formulaError" class="hidden text-[11px] font-semibold text-rose-500"></p>
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <label class="flex items-center gap-1.5"><span class="font-semibold" data-i18n="formula_size">大小</span>
+            <select id="formulaSize" class="r4-input py-1 text-xs">
+              <option value="28" data-i18n="formula_size_s">小</option>
+              <option value="40" selected data-i18n="formula_size_m">中</option>
+              <option value="60" data-i18n="formula_size_l">大</option>
+            </select>
+          </label>
+          <div class="flex items-center gap-1.5"><span class="font-semibold" data-i18n="formula_color">颜色</span>
+            <div id="formulaColors" class="flex items-center gap-1"></div>
+          </div>
+        </div>
+      </div>
+      <div class="r4-modal-foot">
+        <button id="btnCancelFormula" type="button" class="r4-btn r4-btn-ghost" data-i18n="btn_cancel">取消</button>
+        <button id="btnInsertFormula" type="button" class="r4-btn r4-btn-primary" data-i18n="formula_insert">插入到黑板</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ⌨️ 快捷键面板 ================= -->
+  <div id="shortcutsModal" class="r4-modal hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+    <div class="r4-modal-card w-full max-w-md">
+      <div class="r4-modal-head">
+        <div class="flex items-center gap-2.5">
+          <div class="r4-modal-icon">⌨️</div>
+          <h3 id="shortcutsTitle" class="text-base font-bold tracking-tight" data-i18n="shortcuts_title">键盘快捷键</h3>
+        </div>
+        <button id="btnCloseShortcuts" type="button" class="r4-icon-btn" aria-label="close">✕</button>
+      </div>
+      <div class="r4-modal-body">
+        <dl id="shortcutsList" class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs"></dl>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= 8. Creem $4.99 永久使用授权结账弹窗 ================= -->
   <!-- ================= 8. Creem $4.99 永久使用授权结账弹窗 ================= -->
   <div id="proModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
@@ -2631,6 +2734,8 @@
         <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="pro_perk_2"><strong>透明背景 PNG</strong>（设计师抠图与贴纸神器）</span></div>
         <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="pro_perk_3"><strong>Canva / Figma 矢量无损工程 (SVG)</strong>（自由二次编辑）</span></div>
         <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="pro_perk_4"><strong>高清打印 PDF（300 DPI）</strong>（按所选纸张尺寸、导出全部页面）</span></div>
+        <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="pro_perk_6"><strong>录制讲解视频</strong>（无水印、不限时长）</span></div>
+        <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="pro_perk_7"><strong>插入 LaTeX 公式</strong>（矢量清晰，可缩放旋转）</span></div>
         <div class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> <span data-i18n="pro_perk_5"><strong>一次付费 · 永久使用</strong>（全部功能统一打包，无后续收费）</span></div>
       </div>
 
@@ -2650,6 +2755,8 @@
           <button id="btnVerifyLicense" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-xs font-semibold rounded-xl transition" data-i18n="activate">激活</button>
         </div>
       </div>
+
+      <p id="proSchoolNote" class="text-center text-[11px] text-slate-400"><span data-i18n="pro_school_note">学校 / 班级批量授权请联系</span> <a href="mailto:huafire777@gmail.com?subject=Chalkboard%20school%20license" class="font-bold text-amber-400 hover:underline">huafire777@gmail.com</a></p>
 
       <button id="btnCloseProModal" class="w-full text-center text-xs text-slate-400 hover:text-slate-300 py-1 transition" data-i18n="continue_free">暂不解锁，继续免费使用</button>
     </div>
@@ -3305,6 +3412,7 @@
         const rec = { id: im.id, src, x: im.x, y: im.y, width: im.width, height: im.height, rotation: im.rotation || 0 };
         if (im.locked) rec.locked = true;
         if (im.kind) rec.kind = im.kind;
+        if (im.latex) rec.latex = im.latex;
         out.push(rec);
       }
       return out;
@@ -3391,7 +3499,8 @@
             height: Number(im.height) || img.height || 100,
             rotation: Number(im.rotation) || 0,
             locked: !!im.locked,
-            kind: im.kind || undefined
+            kind: im.kind || undefined,
+            latex: im.latex || undefined
           };
         });
 
@@ -9223,6 +9332,182 @@ ${body}</svg>`;
       const btnRecPause = $('btnRecPause'); if (btnRecPause) btnRecPause.onclick = togglePauseRecording;
       const btnRecStop = $('btnRecStop'); if (btnRecStop) btnRecStop.onclick = () => stopRecording(false);
       window.addEventListener('beforeunload', (e) => { if (rec.state === 'recording' || rec.state === 'paused') { e.preventDefault(); e.returnValue = tr('rec_confirm_leave'); return e.returnValue; } });
+
+      // =====================================================================
+      // ∑ 插入公式 (Pro)：MathJax 3 (cdnjs, 点击时才加载) 把 LaTeX 渲染成纯矢量 SVG 路径，
+      //   作为图片元素插入。纯路径 SVG 不含 foreignObject / 外部字体，画到 canvas 不会「污染」画布，
+      //   PNG / PDF / SVG 导出与作品文件都能正常保存。
+      // =====================================================================
+      Object.assign(TRANSLATIONS.zh, {
+        insert_formula: '插入公式', formula_title: '插入公式', formula_desc: '输入 LaTeX，实时预览，插入后可像图片一样拖动、缩放、旋转',
+        formula_placeholder: '例如 x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}', formula_size: '大小', formula_size_s: '小', formula_size_m: '中', formula_size_l: '大',
+        formula_color: '颜色', formula_insert: '插入到黑板', btn_cancel: '取消',
+        formula_loading: '⏳ 正在加载公式组件…', formula_load_failed: '⚠️ 公式组件加载失败，请检查网络后重试',
+        formula_error: '公式有误：{msg}', formula_empty: '请先输入公式', formula_inserted: '✅ 公式已插入，可拖动四角缩放',
+        pro_perk_6: '<strong>录制讲解视频</strong>（无水印、不限时长）',
+        pro_perk_7: '<strong>插入 LaTeX 公式</strong>（矢量清晰，可缩放旋转）',
+        pro_school_note: '学校 / 班级批量授权请联系'
+      });
+      Object.assign(TRANSLATIONS.en, {
+        insert_formula: 'Insert formula', formula_title: 'Insert formula', formula_desc: 'Type LaTeX, preview it live, then move, resize and rotate it like an image',
+        formula_placeholder: 'e.g. x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}', formula_size: 'Size', formula_size_s: 'Small', formula_size_m: 'Medium', formula_size_l: 'Large',
+        formula_color: 'Color', formula_insert: 'Insert on board', btn_cancel: 'Cancel',
+        formula_loading: '⏳ Loading the formula engine…', formula_load_failed: '⚠️ Could not load the formula engine. Check your connection and try again',
+        formula_error: 'Formula error: {msg}', formula_empty: 'Type a formula first', formula_inserted: '✅ Formula inserted. Drag the corners to resize',
+        pro_perk_6: '<strong>Record lesson videos</strong> (no watermark, no time limit)',
+        pro_perk_7: '<strong>Insert LaTeX formulas</strong> (crisp vector, resize and rotate)',
+        pro_school_note: 'School / class licenses: contact'
+      });
+
+      const MATHJAX_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js';
+      let mathjaxPromise = null;
+      function loadMathJax() {
+        if (window.MathJax && window.MathJax.tex2svgPromise) return Promise.resolve(window.MathJax);
+        if (mathjaxPromise) return mathjaxPromise;
+        window.MathJax = {
+          loader: { load: [] },
+          tex: { packages: { '[+]': [] } },
+          svg: { fontCache: 'none' },
+          startup: { typeset: false }
+        };
+        mathjaxPromise = loadScriptOnce(MATHJAX_SRC)
+          .then(() => (window.MathJax.startup && window.MathJax.startup.promise) ? window.MathJax.startup.promise : null)
+          .then(() => { if (!window.MathJax.tex2svgPromise) throw new Error('MathJax not ready'); return window.MathJax; })
+          .catch((e) => { mathjaxPromise = null; throw e; });
+        return mathjaxPromise;
+      }
+
+      const fModal = $('formulaModal'), fInput = $('formulaInput'), fPreview = $('formulaPreview'), fError = $('formulaError');
+      const fSize = $('formulaSize'), fColors = $('formulaColors');
+      const FORMULA_COLORS = ['#f8fafc', '#fde047', '#fda4af', '#93c5fd', '#86efac', '#0f172a', '#dc2626'];
+      let fColor = '#f8fafc';
+      let fLast = null; // { svg, wEx, hEx }
+      let fTimer = 0;
+
+      function renderFormulaSwatches() {
+        if (!fColors) return;
+        fColors.innerHTML = '';
+        for (const c of FORMULA_COLORS) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'formula-swatch' + (c === fColor ? ' is-active' : '');
+          b.style.background = c;
+          b.setAttribute('aria-label', c);
+          b.onclick = () => { fColor = c; renderFormulaSwatches(); renderFormulaPreview(); };
+          fColors.appendChild(b);
+        }
+      }
+
+      async function texToSvg(tex) {
+        const MJ = await loadMathJax();
+        const node = await MJ.tex2svgPromise(tex, { display: true });
+        const svg = node.querySelector('svg');
+        if (!svg) throw new Error('no svg');
+        const err = svg.querySelector('[data-mjx-error]');
+        if (err) throw new Error(err.getAttribute('data-mjx-error') || 'LaTeX');
+        const wEx = parseFloat(svg.getAttribute('width')) || 10;
+        const hEx = parseFloat(svg.getAttribute('height')) || 3;
+        return { svg, wEx, hEx };
+      }
+
+      // 生成可独立使用的 SVG 字符串 (像素尺寸 + 指定颜色)
+      function buildFormulaSvgString(res, fontPx, color) {
+        const clone = res.svg.cloneNode(true);
+        const exPx = fontPx * 0.5; // MathJax 默认 1ex = 0.5em
+        const w = Math.max(4, Math.round(res.wEx * exPx)), h = Math.max(4, Math.round(res.hEx * exPx));
+        clone.setAttribute('width', w);
+        clone.setAttribute('height', h);
+        clone.removeAttribute('style');
+        clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        clone.setAttribute('color', color);
+        let xml = new XMLSerializer().serializeToString(clone);
+        xml = xml.replace(/currentColor/g, color);
+        return { xml, w, h };
+      }
+
+      async function renderFormulaPreview() {
+        if (!fInput || !fPreview) return;
+        const tex = fInput.value.trim();
+        fError.classList.add('hidden');
+        if (!tex) { fPreview.innerHTML = ''; fLast = null; return; }
+        try {
+          const res = await texToSvg(tex);
+          if (fInput.value.trim() !== tex) return; // 已有更新的输入
+          fLast = { ...res, tex };
+          const size = Number(fSize && fSize.value) || 40;
+          const out = buildFormulaSvgString(res, Math.min(size, 44), fColor);
+          fPreview.innerHTML = out.xml;
+          fPreview.style.background = isDarkPaper(appState.paper) ? '' : '#ffffff';
+        } catch (err) {
+          fLast = null;
+          fPreview.innerHTML = '';
+          fError.textContent = (err && /load failed/.test(err.message)) ? tr('formula_load_failed') : tr('formula_error', '', { msg: (err && err.message) || 'LaTeX' });
+          fError.classList.remove('hidden');
+        }
+      }
+
+      async function openFormulaModal() {
+        closeFileMenus();
+        if (!appState.isPro) { $('proModal').classList.remove('hidden'); return; }
+        fColor = isDarkPaper(appState.paper) ? '#f8fafc' : '#0f172a';
+        renderFormulaSwatches();
+        fModal.classList.remove('hidden');
+        setTimeout(() => { try { fInput.focus(); fInput.select(); } catch (e) {} }, 60);
+        if (!(window.MathJax && window.MathJax.tex2svgPromise)) {
+          fPreview.innerHTML = `<span class="r4-muted text-xs">${escapeXml(tr('formula_loading'))}</span>`;
+        }
+        renderFormulaPreview();
+      }
+      function closeFormulaModal() { fModal.classList.add('hidden'); }
+
+      async function insertFormula() {
+        const tex = (fInput.value || '').trim();
+        if (!tex) { fError.textContent = tr('formula_empty'); fError.classList.remove('hidden'); return; }
+        let res = fLast && fLast.tex === tex ? fLast : null;
+        try { if (!res) res = { ...(await texToSvg(tex)), tex }; } catch (err) { fError.textContent = tr('formula_error', '', { msg: err.message }); fError.classList.remove('hidden'); return; }
+        const size = Number(fSize && fSize.value) || 40;
+        const out = buildFormulaSvgString(res, size, fColor);
+        // 板面太小时等比缩小，保证整条公式放得下
+        const maxW = cssWidth * 0.9, maxH = cssHeight * 0.6;
+        const k = Math.min(1, maxW / out.w, maxH / out.h);
+        const w = Math.round(out.w * k), h = Math.round(out.h * k);
+        const src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(out.xml)));
+        const img = new Image();
+        img.onload = () => {
+          saveHistory();
+          const item = { id: Date.now() + Math.random(), img, src, x: Math.round((cssWidth - w) / 2), y: Math.round((cssHeight - h) / 2), width: w, height: h, rotation: 0, kind: 'formula', latex: tex };
+          appState.images.push(item);
+          appState.tool = 'select';
+          updateToolButtonsUI();
+          appState.selectedImages = [item];
+          appState.selectedTexts = [];
+          appState.selectedStrokes = [];
+          redrawAllStrokes();
+          updateSelectionBoxUI();
+          scheduleAutosave();
+          toast(tr('formula_inserted'), 2800);
+        };
+        img.onerror = () => toast(tr('formula_error', '', { msg: 'image' }), 4000);
+        img.src = src;
+        closeFormulaModal();
+      }
+      window.cbInsertFormula = async (tex, opts) => { fInput.value = tex; if (opts && opts.color) fColor = opts.color; await insertFormula(); };
+
+      ['btnInsertFormulaDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); openFormulaModal(); }; });
+      if (fInput) fInput.addEventListener('input', () => { clearTimeout(fTimer); fTimer = setTimeout(renderFormulaPreview, 250); });
+      if (fInput) fInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); insertFormula(); } });
+      if (fSize) fSize.addEventListener('change', renderFormulaPreview);
+      document.querySelectorAll('#formulaTemplates [data-tex]').forEach(b => b.addEventListener('click', () => {
+        const t = b.getAttribute('data-tex');
+        const s0 = fInput.selectionStart || 0, s1 = fInput.selectionEnd || 0, v = fInput.value;
+        fInput.value = v.slice(0, s0) + t + v.slice(s1);
+        fInput.focus();
+        const pos = s0 + t.length; fInput.setSelectionRange(pos, pos);
+        renderFormulaPreview();
+      }));
+      const bIns = $('btnInsertFormula'); if (bIns) bIns.onclick = insertFormula;
+      ['btnCancelFormula', 'btnCloseFormula'].forEach(id => { const b = $(id); if (b) b.onclick = closeFormulaModal; });
+      if (fModal) fModal.addEventListener('click', (e) => { if (e.target === fModal) closeFormulaModal(); });
 
       /*R4_MORE*/
     })();
