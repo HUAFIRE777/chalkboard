@@ -121,6 +121,11 @@
 
   <!-- Tailwind CSS & jsPDF CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // dark: 变体跟随站内主题 (html.dark)，而不是跟随系统设置 —— 否则夜间模式下工具坞仍是白色
+    try { tailwind.config = { darkMode: 'class' }; } catch (e) {}
+    try { if ((localStorage.getItem('eazyopc_theme') || 'dark') !== 'light') document.documentElement.classList.add('dark'); } catch (e) { document.documentElement.classList.add('dark'); }
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   
   <style>
@@ -499,9 +504,9 @@
       color: #0f172a !important;
     }
     body.theme-light #leftSidebar .tool-btn-active {
-      background: #4f46e5 !important;
+      background: #059669 !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
     }
     body.theme-light #zoomDock,
     body.theme-light #pageManagerDock,
@@ -636,13 +641,13 @@
       color: #0f172a !important;
     }
     body.theme-light #pageManagerDock #pageIndicator {
-      color: #3730a3 !important;
+      color: #065f46 !important;
       font-weight: 800 !important;
     }
     body.theme-light #pageManagerDock #btnAddPage {
-      background: #4f46e5 !important;
+      background: #059669 !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
     }
     body.theme-light #pageManagerDock #btnAddPage * {
       color: #ffffff !important;
@@ -760,13 +765,13 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
     }
     body.theme-light #pageManagerDock span#pageIndicator {
-      color: #4338ca !important;
+      color: #065f46 !important;
     }
     body.theme-light #pageManagerDock button:not(#btnAddPage) {
       color: #334155 !important;
     }
     body.theme-light #pageManagerDock #btnAddPage {
-      background-color: #4f46e5 !important;
+      background-color: #059669 !important;
       color: #ffffff !important;
     }
     body.theme-light #pageManagerDock #btnAddPage * {
@@ -960,6 +965,55 @@
     .pro-chip { font-size: 9px; font-weight: 800; padding: 0 5px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; line-height: 16px; }
     body.theme-light .pro-chip { background: #fef3c7; color: #92400e; }
     @media (prefers-reduced-motion: reduce) { .rec-dot-live { animation: none; } }
+
+    /* 浮动坞：夜间 = 深色玻璃；白天 = 白色玻璃 (白天规则见上方 body.theme-light) */
+    body:not(.theme-light) :is(#leftSidebar, #zoomDock, #pageManagerDock) {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--glass-text);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      backdrop-filter: blur(14px) saturate(1.4);
+      box-shadow: var(--shadow-md);
+    }
+    body:not(.theme-light) :is(#moreToolsDrawer, #classroomToolsMenu, #mediaMenu, #layersPanel, #brushStudioFlyout, #paletteFlyout) {
+      background: var(--glass-bg-strong);
+      border-color: var(--glass-border);
+      color: var(--glass-text);
+      box-shadow: var(--shadow-lg);
+    }
+    body:not(.theme-light) #leftSidebar button:not(.tool-btn-active):hover,
+    body:not(.theme-light) #zoomDock button:hover { background: var(--glass-hover); }
+    body:not(.theme-light) #leftSidebar > .h-px { background: var(--glass-sep); }
+    #leftSidebar button, #zoomDock button, #pageManagerDock button, #moreToolsDrawer button, #topNavbar button { outline: none; }
+    #leftSidebar button:focus-visible, #zoomDock button:focus-visible, #pageManagerDock button:focus-visible,
+    #moreToolsDrawer button:focus-visible, #topNavbar button:focus-visible, #topNavbar select:focus-visible, .drawer-action:focus-visible {
+      box-shadow: 0 0 0 2px var(--accent-ring);
+    }
+    #leftSidebar > button, #leftSidebar #btnTogglePalette { border-radius: var(--r-md); }
+    .drawer-action { border-color: #e7e5e4; }
+    .drawer-action:hover { background: #f5f5f4; border-color: var(--accent); }
+    body:not(.theme-light) .drawer-action { border-color: rgba(148, 163, 184, 0.25); color: var(--glass-text); }
+    body:not(.theme-light) .drawer-action:hover { background: var(--glass-hover); border-color: var(--accent); }
+    body.theme-light .drawer-action { color: #0f172a; font-weight: 700; border-color: #cbd5e1; }
+    body.theme-light #activeColorDot { box-shadow: 0 0 0 1.5px rgba(15, 23, 42, 0.45); }
+    body.theme-light #leftSidebar #btnRecordLesson.tool-btn-active { background: #e11d48 !important; }
+    #leftSidebar #btnRecordLesson.tool-btn-active { background: linear-gradient(135deg, #e11d48, #f43f5e) !important; box-shadow: 0 4px 14px rgba(225, 29, 72, 0.45); }
+    /* 空画板提示 */
+    .empty-hint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; user-select: none; z-index: 5;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; color: rgba(255, 255, 255, 0.38); transition: opacity .2s; }
+    .empty-hint.on-light { color: rgba(15, 23, 42, 0.42); }
+    .empty-hint.is-hidden { opacity: 0; }
+    @media (max-width: 480px) { .empty-hint { font-size: 12px; white-space: normal; text-align: center; width: 80%; } }
+    /* 介绍区排版 */
+    #seoArticleSection p { line-height: 1.7; }
+    #seoArticleSection .hero-lead { max-width: 68ch; margin-left: auto; margin-right: auto; }
+    #seoArticleSection h3 { letter-spacing: -0.01em; }
+    #seoArticleSection .feature-card { display: flex; flex-direction: column; height: 100%; }
+    /* 手机：触控目标 ≥ 36px */
+    @media (max-width: 639px) {
+      #leftSidebar > button, #leftSidebar #btnTogglePalette { min-width: 36px; min-height: 36px; }
+      #pageManagerDock button { min-width: 36px; min-height: 36px; }
+    }
 
     /* 统一弹窗：头部 (图标 + 标题 + 关闭) / 内容 / 底部按钮 */
     .r4-modal-card { background: #0f172a; color: #e2e8f0; border: 1px solid rgba(148, 163, 184, 0.22); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); max-height: 92vh; overflow-y: auto; }
@@ -1363,7 +1417,7 @@
     </aside>
 
     <!-- 🗄️ PS 式「更多工具」二级收拢抽屉 -->
-    <div id="moreToolsDrawer" class="hidden absolute left-14 sm:left-18 top-16 sm:top-20 z-40 bg-white/95 dark:bg-slate-900/95 border border-stone-200 dark:border-slate-700 backdrop-blur-md rounded-2xl p-2.5 shadow-2xl space-y-2 w-56 text-stone-800 dark:text-white transition-all">
+    <div id="moreToolsDrawer" class="hidden absolute left-14 sm:left-18 top-16 sm:top-20 z-40 max-h-[calc(100%-5.5rem)] overflow-y-auto no-scrollbar bg-white/95 dark:bg-slate-900/95 border border-stone-200 dark:border-slate-700 backdrop-blur-md rounded-2xl p-2.5 shadow-2xl space-y-2 w-60 text-stone-800 dark:text-white transition-all">
       <div class="flex items-center justify-between pb-1.5 border-b border-stone-200 dark:border-slate-800 text-xs font-bold text-stone-700 dark:text-slate-300">
         <span class="flex items-center gap-1"><span>🧰</span> <span data-i18n="more_tools_title">更多板书工具</span></span>
         <button id="btnCloseMoreTools" class="text-stone-400 hover:text-stone-700 dark:hover:text-white text-xs">✕</button>
@@ -1384,6 +1438,9 @@
         </button>
         <button id="btnRecordDrawer" type="button" class="drawer-action flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
           <span>🎥</span> <span class="text-[11px] font-semibold" data-i18n="record_lesson_short">录制讲解</span>
+        </button>
+        <button id="btnShortcutsDrawer" type="button" class="drawer-action col-span-2 flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
+          <span>⌨️</span> <span class="text-[11px] font-semibold" data-i18n="shortcuts_title">键盘快捷键</span> <span class="kbd ml-auto">?</span>
         </button>
       </div>
       <div class="grid grid-cols-2 gap-1.5 text-xs pt-1.5 border-t border-stone-200 dark:border-slate-800">
@@ -1830,6 +1887,8 @@
       <button id="btnZoomIn" class="w-6 h-6 flex items-center justify-center hover:bg-slate-800 rounded-lg font-bold" title="放大 (Ctrl+滚轮)">+</button>
       <span class="text-slate-600">|</span>
       <button id="btnZoomFit" class="px-1.5 py-0.5 hover:bg-slate-800 rounded-lg text-[11px]" data-i18n-title="tip_fit" title="适应居中">📐 <span data-i18n="fit">适中</span></button>
+      <span class="text-slate-600">|</span>
+      <button id="btnShowShortcuts" type="button" class="w-6 h-6 flex items-center justify-center hover:bg-slate-800 rounded-lg font-bold" data-i18n-title="tip_shortcuts" title="键盘快捷键 (?)">?</button>
     </div>
 
     <!-- 漫画分镜与无限纸张多页管理器 (Page Manager Dock) -->
@@ -1872,6 +1931,7 @@
         <div id="laserLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
         <div id="stickyLayer" class="absolute inset-0 pointer-events-none"></div>
         <div id="selectionOverlay" class="absolute inset-0 pointer-events-none"></div>
+        <div id="emptyHint" class="empty-hint is-hidden" data-i18n="empty_hint">✍️ 拿起粉笔开始写吧 · 按 ? 查看快捷键</div>
         <div id="rightPageBadge" class="hidden absolute bottom-2 right-3 px-2 py-0.5 rounded-md bg-stone-900/60 text-[10px] text-emerald-300 font-mono select-none pointer-events-none border border-emerald-800/50 backdrop-blur-sm">第 2 页</div>
       </div>
     </div>
@@ -2847,7 +2907,7 @@
         license_placeholder: '输入卡密 (如 EZPRO-...)',
         tip_select: '↖️ 鼠标选择与调整 (快捷键 V，点选图片/文字可拖动、四角缩放或删除)',
         tip_hand: '✋ 画板抓手平移 (快捷键 H，按住空格键也可拖动)',
-        tip_chalk: '👨‍🏫 真实粉笔 (颗粒碎屑质感，停顿吸附标准几何)',
+        tip_chalk: '👨‍🏫 真实粉笔 (P)：颗粒碎屑质感，停顿吸附标准几何',
         tip_pen: '🖋️ 钢笔细线 (板书重点)',
         tip_highlighter: '🖍️ 荧光高亮 (讲课板书批注)',
         tip_text: '🔤 文本板书工具 (快捷键 T，点击任意位置打字)',
@@ -2966,7 +3026,7 @@
         pro_perk_5: '<strong>Pay Once · Lifetime Access</strong> (All features bundled, no recurring fee)',
         license_placeholder: 'Enter license key (e.g., EZPRO-...)',
         tip_select: '↖️ Select & Adjust (Key V: click image/text to drag, scale, or delete)',
-        tip_chalk: '👨‍🏫 Real Chalk (Dust particle texture, hold for shapes)',
+        tip_chalk: '👨‍🏫 Real chalk (P): dust texture, hold to snap shapes',
         tip_pen: '🖋️ Fine Pen (Notes & highlights)',
         tip_highlighter: '🖍️ Chalk Highlighter (Key points)',
         tip_text: '🔤 Text Tool (Key T: click anywhere to type)',
@@ -6722,7 +6782,7 @@ ${body}</svg>`;
         const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.zh;
         try {
           await navigator.clipboard.writeText(svgContent);
-          alert(dict.svg_copied_toast || '🎉 矢量 SVG 已成功复制到剪贴板！可以直接在 Canva、Figma 或 Illustrator 中按 Ctrl+V (Mac: Cmd+V) 立即无缝粘贴可自由编辑的矢量线稿！');
+          showCreatorToast(escapeXml(dict.svg_copied_toast || tr('svg_copied_toast')), 6000);
         } catch (err) {
           const ta = document.createElement('textarea');
           ta.value = svgContent;
@@ -6730,7 +6790,7 @@ ${body}</svg>`;
           ta.select();
           document.execCommand('copy');
           ta.remove();
-          alert(dict.svg_copied_toast || '🎉 矢量 SVG 已成功复制到剪贴板！可以直接在 Canva、Figma 或 Illustrator 中按 Ctrl+V (Mac: Cmd+V) 立即无缝粘贴可自由编辑的矢量线稿！');
+          showCreatorToast(escapeXml(dict.svg_copied_toast || tr('svg_copied_toast')), 6000);
         }
       };
     }
@@ -7297,6 +7357,7 @@ ${body}</svg>`;
     function applyTheme(theme) {
       const isLight = theme === 'light';
       document.body.classList.toggle('theme-light', isLight);
+      document.documentElement.classList.toggle('dark', !isLight);
       if (themeIcon) themeIcon.innerText = isLight ? '☀️' : '🌙';
       const dict = TRANSLATIONS[appState.lang] || TRANSLATIONS.zh;
       if (themeLabel) themeLabel.innerText = isLight ? (dict.theme_light || '白天') : (dict.theme_dark || '夜间');
@@ -9509,7 +9570,78 @@ ${body}</svg>`;
       ['btnCancelFormula', 'btnCloseFormula'].forEach(id => { const b = $(id); if (b) b.onclick = closeFormulaModal; });
       if (fModal) fModal.addEventListener('click', (e) => { if (e.target === fModal) closeFormulaModal(); });
 
-      /*R4_MORE*/
+      // =====================================================================
+      // ✨ UI：空画板提示 · 快捷键面板 (?) · 翻页快捷键 · Esc 关闭
+      // =====================================================================
+      Object.assign(TRANSLATIONS.zh, {
+        empty_hint: '✍️ 拿起粉笔开始写吧 · 按 ? 查看快捷键',
+        shortcuts_title: '键盘快捷键', tip_shortcuts: '键盘快捷键 (?)',
+        sc_select: '选择 / 移动', sc_hand: '抓手平移 (或按住空格拖动)', sc_chalk: '粉笔', sc_eraser: '橡皮擦', sc_lasso: '套索圈选', sc_text: '打字',
+        sc_compass: '圆规', sc_delete: '删除选中内容', sc_undo: '撤销', sc_redo: '重做', sc_save: '保存作品', sc_open: '打开作品',
+        sc_zoom: '缩放画板', sc_paste: '粘贴图片', sc_pages: '上一页 / 下一页', sc_help: '显示本面板', sc_esc: '关闭弹窗 / 取消圆规', sc_wheel: '滚轮'
+      });
+      Object.assign(TRANSLATIONS.en, {
+        empty_hint: '✍️ Pick up the chalk and start writing · press ? for shortcuts',
+        shortcuts_title: 'Keyboard shortcuts', tip_shortcuts: 'Keyboard shortcuts (?)',
+        sc_select: 'Select / move', sc_hand: 'Hand pan (or hold Space and drag)', sc_chalk: 'Chalk', sc_eraser: 'Eraser', sc_lasso: 'Lasso select', sc_text: 'Type text',
+        sc_compass: 'Compass', sc_delete: 'Delete selection', sc_undo: 'Undo', sc_redo: 'Redo', sc_save: 'Save work', sc_open: 'Open work',
+        sc_zoom: 'Zoom the board', sc_paste: 'Paste an image', sc_pages: 'Previous / next page', sc_help: 'Show this panel', sc_esc: 'Close dialogs / cancel compass', sc_wheel: 'wheel'
+      });
+
+      // ---- 空画板提示：当前页没有任何内容时显示，画下第一笔即消失 ----
+      const emptyHint = $('emptyHint');
+      function updateEmptyHint() {
+        if (!emptyHint) return;
+        const empty = !(appState.strokes || []).length && !(appState.texts || []).length && !(appState.images || []).length && !(appState.videos || []).length;
+        emptyHint.classList.toggle('is-hidden', !empty);
+        emptyHint.classList.toggle('on-light', !isDarkPaper(appState.paper));
+      }
+      const _redraw = window.redrawAllStrokes;
+      if (typeof _redraw === 'function') {
+        window.redrawAllStrokes = function (targetCtx, scale, transparent, src) {
+          const r = _redraw.apply(this, arguments);
+          if ((targetCtx === undefined || targetCtx === ctx) && (!src || src === appState)) updateEmptyHint();
+          return r;
+        };
+      }
+      // 画第一笔时 (笔画实时绘制，尚未整体重绘) 立即隐藏提示
+      if (canvasCard) canvasCard.addEventListener('pointerdown', () => { if (emptyHint && isStrokeTool(appState.tool)) emptyHint.classList.add('is-hidden'); });
+      updateEmptyHint();
+
+      // ---- 快捷键面板 ----
+      const scModal = $('shortcutsModal'), scList = $('shortcutsList');
+      const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+      const MOD = isMac ? '⌘' : 'Ctrl';
+      function renderShortcuts() {
+        if (!scList) return;
+        const rows = [
+          [['V'], 'sc_select'], [['H'], 'sc_hand'], [['P'], 'sc_chalk'], [['E'], 'sc_eraser'], [['L'], 'sc_lasso'], [['T'], 'sc_text'], [['C'], 'sc_compass'],
+          [['Delete'], 'sc_delete'], [[MOD, 'Z'], 'sc_undo'], [[MOD, '⇧', 'Z'], 'sc_redo'], [[MOD, 'S'], 'sc_save'], [[MOD, 'O'], 'sc_open'],
+          [[MOD, tr('sc_wheel', '滚轮')], 'sc_zoom'], [[MOD, 'V'], 'sc_paste'], [['PgUp', 'PgDn'], 'sc_pages'], [['?'], 'sc_help'], [['Esc'], 'sc_esc']
+        ];
+        scList.innerHTML = rows.map(([keys, label]) =>
+          `<dt class="flex items-center gap-1 whitespace-nowrap">${keys.map(k => `<span class="kbd">${escapeXml(k)}</span>`).join('')}</dt><dd class="self-center">${escapeXml(tr(label))}</dd>`).join('');
+      }
+      function openShortcuts() { closeFileMenus(); renderShortcuts(); scModal.classList.remove('hidden'); const c = $('btnCloseShortcuts'); if (c) c.focus(); }
+      function closeShortcuts() { scModal.classList.add('hidden'); }
+      ['btnShowShortcuts', 'btnShortcutsDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); openShortcuts(); }; });
+      const scClose = $('btnCloseShortcuts'); if (scClose) scClose.onclick = closeShortcuts;
+      if (scModal) scModal.addEventListener('click', (e) => { if (e.target === scModal) closeShortcuts(); });
+
+      window.addEventListener('keydown', (e) => {
+        const tgt = e.target;
+        const typing = tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA' || tgt.tagName === 'SELECT' || tgt.isContentEditable);
+        if (e.key === 'Escape') {
+          const open = ['shortcutsModal', 'formulaModal'].map($).find(m => m && !m.classList.contains('hidden'));
+          if (open) { e.preventDefault(); open.classList.add('hidden'); return; }
+        }
+        if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+        if (e.key === '?') { e.preventDefault(); if (scModal.classList.contains('hidden')) openShortcuts(); else closeShortcuts(); return; }
+        if (e.key === 'PageUp' || e.key === 'PageDown') {
+          const btn = $(e.key === 'PageUp' ? 'btnPrevPage' : 'btnNextPage');
+          if (btn && !btn.disabled) { e.preventDefault(); btn.click(); }
+        }
+      });
     })();
   </script>
   <!-- Google AdSense Auto Ads: injected only for non-Pro users -->
