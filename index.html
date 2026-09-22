@@ -503,6 +503,11 @@
       background: #f1f5f9 !important;
       color: #0f172a !important;
     }
+    #btnCurrentBrush .brush-studio-caret {
+      position: absolute; right: 3px; bottom: 3px; width: 0; height: 0;
+      border-left: 5px solid transparent; border-top: 5px solid transparent; border-bottom: 5px solid currentColor;
+      opacity: .7; pointer-events: none;
+    }
     body.theme-light #leftSidebar .tool-btn-active {
       background: #059669 !important;
       color: #ffffff !important;
@@ -1367,8 +1372,9 @@
       <div class="w-6 h-px bg-stone-200 dark:bg-slate-700 my-0.5"></div>
 
       <!-- 3. 真实粉笔 (Chalk - P) -->
-      <button id="btnCurrentBrush" class="tool-btn p-2 rounded-xl text-stone-700 dark:text-slate-300 hover:bg-stone-100 dark:hover:bg-slate-800 text-xs transition flex items-center justify-center tool-btn-active relative" data-tool="chalk" data-i18n-title="tip_chalk" title="🖍️ 真实教学粉笔 (带自然碎屑感)">
+      <button id="btnCurrentBrush" class="tool-btn p-2 rounded-xl text-stone-700 dark:text-slate-300 hover:bg-stone-100 dark:hover:bg-slate-800 text-xs transition flex items-center justify-center tool-btn-active relative" data-tool="chalk" data-i18n-title="tip_chalk" title="🖍️ 当前笔刷 (P)：粉笔颗粒质感 · 再点一次打开 16 款笔刷工坊">
         <span id="curBrushIcon" class="text-sm">🖍️</span>
+        <span class="brush-studio-caret" aria-hidden="true"></span>
       </button>
 
       <!-- 4. 真实木质粉笔擦 (Eraser - E) -->
@@ -2906,7 +2912,7 @@
         license_placeholder: '输入卡密 (如 EZPRO-...)',
         tip_select: '↖️ 鼠标选择与调整 (快捷键 V，点选图片/文字可拖动、四角缩放或删除)',
         tip_hand: '✋ 画板抓手平移 (快捷键 H，按住空格键也可拖动)',
-        tip_chalk: '👨‍🏫 真实粉笔 (P)：颗粒碎屑质感，停顿吸附标准几何',
+        tip_chalk: '🖍️ 当前笔刷 (P)：粉笔颗粒质感，停顿吸附标准几何 · 再点一次打开 16 款笔刷工坊',
         tip_pen: '🖋️ 钢笔细线 (板书重点)',
         tip_highlighter: '🖍️ 荧光高亮 (讲课板书批注)',
         tip_text: '🔤 文本板书工具 (快捷键 T，点击任意位置打字)',
@@ -3025,7 +3031,7 @@
         pro_perk_5: '<strong>Pay Once · Lifetime Access</strong> (All features bundled, no recurring fee)',
         license_placeholder: 'Enter license key (e.g., EZPRO-...)',
         tip_select: '↖️ Select & Adjust (Key V: click image/text to drag, scale, or delete)',
-        tip_chalk: '👨‍🏫 Real chalk (P): dust texture, hold to snap shapes',
+        tip_chalk: '🖍️ Current brush (P): chalk texture, hold to snap shapes · click again for the 16-brush studio',
         tip_pen: '🖋️ Fine Pen (Notes & highlights)',
         tip_highlighter: '🖍️ Chalk Highlighter (Key points)',
         tip_text: '🔤 Text Tool (Key T: click anywhere to type)',
@@ -3094,7 +3100,7 @@
         pro_perk_5: '<strong>一度の購入 · 永久利用</strong>（追加課金なしのフルパッケージ）',
         license_placeholder: 'ライセンスキーを入力 (例: EZPRO-...)',
         tip_select: '↖️ 選択と編集 (キー V: 移動・拡大縮小・削除)',
-        tip_chalk: '👨‍🏫 リアルチョーク (粒子感、長押しで自動吸着)',
+        tip_chalk: '🖍️ 現在のブラシ (P)・もう一度クリックで 16 種のブラシ',
         tip_pen: '🖋️ 細字ペン (重点記入)',
         tip_highlighter: '🖍️ 蛍光チョーク (ハイライト)',
         tip_text: '🔤 テキスト入力 (キー T: クリックして入力)',
@@ -3164,7 +3170,7 @@
         pro_perk_5: '<strong>단 1회 결제 · 평생 이용</strong> (모든 기능 통합 번들, 추가 비용 없음)',
         license_placeholder: '인증 코드 입력 (예: EZPRO-...)',
         tip_select: '↖️ 마우스 선택 및 조절 (키 V: 드래그, 크기 조절, 삭제)',
-        tip_chalk: '👨‍🏫 리얼 분필 (입자 질감, 멈추면 표준 도형)',
+        tip_chalk: '🖍️ 현재 브러시 (P) · 다시 클릭하면 16종 브러시',
         tip_pen: '🖋️ 세밀 펜 (판서 강조)',
         tip_highlighter: '🖍️ 형광 분필 (중요 포인트)',
         tip_text: '🔤 텍스트 도구 (키 T: 클릭하여 입력)',
@@ -3234,7 +3240,7 @@
         pro_perk_5: '<strong>Einmal zahlen · Dauerhaft nutzen</strong> (Komplettpaket)',
         license_placeholder: 'Lizenzschlüssel eingeben (z.B. EZPRO-...)',
         tip_select: '↖️ Auswählen & Bearbeiten (Taste V)',
-        tip_chalk: '👨‍🏫 Echte Kreide (Partikeltextur)',
+        tip_chalk: '🖍️ Aktueller Pinsel (P) · erneut klicken: 16 Pinsel',
         tip_pen: '🖋️ Feinschreiber',
         tip_highlighter: '🖍️ Textmarker',
         tip_text: '🔤 Textwerkzeug (Taste T)',
@@ -3304,7 +3310,7 @@
         pro_perk_5: '<strong>Pago Único · Uso Permanente</strong> (Paquete completo)',
         license_placeholder: 'Introduce clave (ej. EZPRO-...)',
         tip_select: '↖️ Seleccionar y Ajustar (Tecla V)',
-        tip_chalk: '👨‍🏫 Tiza Real (Textura de polvo)',
+        tip_chalk: '🖍️ Pincel actual (P) · clic otra vez: 16 pinceles',
         tip_pen: '🖋️ Pluma Fina',
         tip_highlighter: '🖍️ Tiza Resaltadora',
         tip_text: '🔤 Texto (Tecla T)',
@@ -3374,7 +3380,7 @@
         pro_perk_5: '<strong>Paiement Unique · Utilisation Permanente</strong> (Pack complet)',
         license_placeholder: 'Entrez la clé (ex: EZPRO-...)',
         tip_select: '↖️ Sélectionner & Ajuster (Touche V)',
-        tip_chalk: '👨‍🏫 Vraie Craie (Effet poussière)',
+        tip_chalk: '🖍️ Pinceau actuel (P) · recliquez : 16 pinceaux',
         tip_pen: '🖋️ Stylo Fin',
         tip_highlighter: '🖍️ Craie Surligneur',
         tip_text: '🔤 Texte (Touche T)',
@@ -7961,9 +7967,17 @@ ${body}</svg>`;
       }
 
       if (btnCurrentBrush && brushStudioFlyout) {
+        // 第一次点击 = 切到当前笔刷；已经在用这支笔时再点一次 = 打开 / 收起 16 款笔刷工坊
         btnCurrentBrush.onclick = (e) => {
           e.stopPropagation();
-          appState.tool = btnCurrentBrush.dataset.tool || 'gpen';
+          const brush = btnCurrentBrush.dataset.tool || 'chalk';
+          if (appState.tool === brush) {
+            const isHidden = brushStudioFlyout.classList.contains('hidden');
+            closeAllFlyouts('brushStudioFlyout');
+            brushStudioFlyout.classList.toggle('hidden', !isHidden);
+            return;
+          }
+          appState.tool = brush;
           updateToolButtonsUI();
         };
       }
