@@ -4549,6 +4549,20 @@
       });
 
       selectionOverlay.appendChild(box);
+
+      // 操作胶囊不超出黑板左右 / 下边 (手机窄屏、选中靠边的文字时会被裁掉一半)
+      const pill = box.querySelector('.selection-action-pill');
+      if (pill) {
+        const inv = parseFloat(getComputedStyle(canvasCard).getPropertyValue('--ui-inv')) || 1;
+        const pw = pill.offsetWidth * inv;
+        const ph = pill.offsetHeight * inv;
+        const center = minX + boxW / 2;
+        let shift = 0;
+        if (center - pw / 2 < 4) shift = 4 - (center - pw / 2);
+        else if (center + pw / 2 > cssWidth - 4) shift = (cssWidth - 4) - (center + pw / 2);
+        if (shift) pill.style.marginLeft = `${shift}px`;
+        if (minY + boxH + 10 * inv + ph > cssHeight) { pill.style.bottom = 'auto'; pill.style.top = `${Math.max(4, boxH - ph - 4)}px`; }
+      }
     }
 
     function rotateSelectedItems(angleDelta) {
