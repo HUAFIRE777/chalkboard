@@ -4376,9 +4376,7 @@
         if (e.target.dataset.handle || e.target.dataset.rot || e.target.closest('.selection-action-pill')) return;
         e.stopPropagation();
         e.preventDefault();
-        saveHistory();
-        appState.isDraggingSelection = true;
-        appState.dragStartPos = getCanvasCoordinates(e);
+        beginSelectionDrag(getCanvasCoordinates(e), e);
       };
 
       // 🌟 8 方向手柄缩放 (手绘笔迹线条 + 图片 + 文本 完整缩放拉伸)
@@ -4632,6 +4630,14 @@
       }
       redrawAllStrokes();
       updateSelectionBoxUI();
+    }
+
+    // 开始拖动选区：撤销快照延迟到真正移动时才入栈 (只点选不拖动时不产生一步"空撤销")
+    function beginSelectionDrag(pos, e) {
+      appState._pendingDragHistory = makeHistorySnapshot(appState.strokes, appState.texts, appState.images);
+      appState.isDraggingSelection = true;
+      appState.dragStartPos = pos;
+      if (e && e.pointerId !== undefined) { try { canvas.setPointerCapture(e.pointerId); } catch (_) {} }
     }
 
     function clearSelection() {
@@ -5051,7 +5057,9 @@
     }
 
     // ✏️ 沉浸式行内富文本编辑器 (支持 9 款开源商用字体、实时字号/变色/粗体/多行编辑)
+    let _commitOpenTextEditor = null; // 已打开的文字编辑器的提交函数 (打开新编辑器前先提交旧的，避免丢字)
     function openRichTextEditor(targetText, posX, posY) {
+      if (_commitOpenTextEditor) { try { _commitOpenTextEditor(); } catch (_) {} }
       const existing = document.getElementById('inlineCanvasTextWrapper');
       if (existing) existing.remove();
 
@@ -5167,6 +5175,8 @@
       function commitAndClose() {
         if (committed) return;
         committed = true;
+        document.removeEventListener('pointerdown', onOutClick, true);
+        if (_commitOpenTextEditor === commitAndClose) _commitOpenTextEditor = null;
         const val = textarea.value.trim();
         if (targetText) {
           targetText._editing = false;
@@ -5215,18 +5225,22 @@
           commitAndClose();
         } else if (e.key === 'Escape') {
           e.preventDefault();
+          committed = true;
+          document.removeEventListener('pointerdown', onOutClick, true);
+          if (_commitOpenTextEditor === commitAndClose) _commitOpenTextEditor = null;
           if (targetText) targetText._editing = false;
           wrapper.remove();
           redrawAllStrokes();
         }
       };
 
-      document.addEventListener('pointerdown', function onOutClick(e) {
-        if (!wrapper.contains(e.target)) {
-          document.removeEventListener('pointerdown', onOutClick);
-          commitAndClose();
-        }
-      });
+      // 点击编辑器外部 = 提交。必须等打开编辑器的这次 pointerdown 冒泡结束后再监听，
+      // 否则同一次点击冒泡到 document 时会立刻把刚打开的编辑器关掉 (文字工具"点了没反应")
+      function onOutClick(e) {
+        if (!wrapper.contains(e.target)) commitAndClose();
+      }
+      _commitOpenTextEditor = commitAndClose;
+      setTimeout(() => { if (!committed) document.addEventListener('pointerdown', onOutClick, true); }, 0);
     }
 
     let isDrawing = false;
@@ -5439,9 +5453,7 @@
             pos.x <= appState.selectionBounds.x + appState.selectionBounds.width &&
             pos.y >= appState.selectionBounds.y &&
             pos.y <= appState.selectionBounds.y + appState.selectionBounds.height) {
-          saveHistory();
-          appState.isDraggingSelection = true;
-          appState.dragStartPos = pos;
+          beginSelectionDrag(pos, e);
           return;
         }
 
@@ -5502,17 +5514,20 @@
           }
         }
         if (hitStroke) {
-          saveHistory();
           appState.selectedStrokes = [hitStroke];
           appState.selectedImages = [];
           appState.selectedTexts = [];
           updateSelectionBoxUI();
-          appState.isDraggingSelection = true;
-          appState.dragStartPos = pos;
+          beginSelectionDrag(pos, e);
           return;
         }
 
+        // 空白处按下：拉框多选 (Marquee)
         clearSelection();
+        appState.isMarqueeSelecting = true;
+        appState.marqueeStart = pos;
+        appState.marqueeCurrent = pos;
+        try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
         return;
       }
 
@@ -5522,9 +5537,7 @@
             pos.x <= appState.selectionBounds.x + appState.selectionBounds.width &&
             pos.y >= appState.selectionBounds.y &&
             pos.y <= appState.selectionBounds.y + appState.selectionBounds.height) {
-          saveHistory();
-          appState.isDraggingSelection = true;
-          appState.dragStartPos = pos;
+          beginSelectionDrag(pos, e);
           return;
         }
         clearSelection();
@@ -5709,6 +5722,7 @@
         const dy = pos.y - appState.dragStartPos.y;
         if (dx === 0 && dy === 0) return;
         appState.dragStartPos = pos;
+        if (appState._pendingDragHistory) { pushHistoryEntry(appState, appState._pendingDragHistory); appState._pendingDragHistory = null; }
 
         for (const s of (appState.selectedStrokes || [])) {
           for (const pt of s.points) { pt.x += dx; pt.y += dy; }
@@ -5766,6 +5780,7 @@
       }
       if (appState.isDraggingSelection) {
         appState.isDraggingSelection = false;
+        appState._pendingDragHistory = null;
         updateSelectionBoxUI();
         return;
       }
