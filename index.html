@@ -213,6 +213,19 @@
     .selection-handle-w  { top: 50%; left: -5px; transform: translateY(-50%); cursor: ew-resize; }
     .selection-handle-e  { top: 50%; right: -5px; transform: translateY(-50%); cursor: ew-resize; }
     
+    /* 双板缩小显示时反向放大交互控件 (--ui-inv 由 applyDualDisplayScale 设置，单板为 1) */
+    #canvasCard .selection-handle { width: calc(9px * var(--ui-inv, 1)); height: calc(9px * var(--ui-inv, 1)); }
+    #canvasCard .selection-handle-nw, #canvasCard .selection-handle-ne, #canvasCard .selection-handle-n { top: calc(-5px * var(--ui-inv, 1)); }
+    #canvasCard .selection-handle-sw, #canvasCard .selection-handle-se, #canvasCard .selection-handle-s { bottom: calc(-5px * var(--ui-inv, 1)); }
+    #canvasCard .selection-handle-nw, #canvasCard .selection-handle-sw, #canvasCard .selection-handle-w { left: calc(-5px * var(--ui-inv, 1)); }
+    #canvasCard .selection-handle-ne, #canvasCard .selection-handle-se, #canvasCard .selection-handle-e { right: calc(-5px * var(--ui-inv, 1)); }
+    #canvasCard .selection-rot-stem { top: calc(-24px * var(--ui-inv, 1)); height: calc(24px * var(--ui-inv, 1)); }
+    #canvasCard .selection-rot-handle { top: calc(-30px * var(--ui-inv, 1)); width: calc(12px * var(--ui-inv, 1)); height: calc(12px * var(--ui-inv, 1)); }
+    #canvasCard .selection-action-pill { transform: translateX(-50%) scale(var(--ui-inv, 1)); transform-origin: 50% 0; }
+    #canvasCard .inline-text-toolbar { transform: scale(var(--ui-inv, 1)); transform-origin: 0 100%; }
+    #rightPageBadge { transform: scale(var(--ui-inv, 1)); transform-origin: 100% 100%; }
+    #leftPageBadge { transform: scale(var(--ui-inv, 1)); transform-origin: 0 100%; }
+
     /* 顶部 360° 旋转连杆与旋转手柄 */
     .selection-rot-stem {
       position: absolute;
@@ -1913,7 +1926,7 @@
       <!-- 📄 左侧画板 (第 1 页，双板模式) -->
       <div id="referenceCanvasCard" class="hidden relative rounded-2xl shadow-2xl ring-2 ring-emerald-950 overflow-hidden flex items-center justify-center bg-[#0c241b] origin-center">
         <canvas id="referenceCanvas" class="cursor-crosshair touch-none"></canvas>
-        <div class="absolute bottom-2 left-3 px-2 py-0.5 rounded-md bg-stone-900/60 text-[10px] text-emerald-300 font-mono select-none pointer-events-none border border-emerald-800/50 backdrop-blur-sm">第 1 页</div>
+        <div id="leftPageBadge" class="absolute bottom-2 left-3 px-2 py-0.5 rounded-md bg-stone-900/60 text-[10px] text-emerald-300 font-mono select-none pointer-events-none border border-emerald-800/50 backdrop-blur-sm">第 1 页</div>
       </div>
 
       <!-- ✏️ 当前主绘制画板 (Active Drawing Canvas) -->
@@ -3748,6 +3761,8 @@
     function applyDualDisplayScale(cards, scale) {
       for (const card of cards) {
         if (!card) continue;
+        // --ui-inv：双板缩小显示时，把选区手柄 / 操作胶囊 / 文字工具条反向放大回正常屏幕尺寸，保证能点中
+        card.style.setProperty('--ui-inv', scale < 1 ? String(Math.round(1000 / scale) / 1000) : '1');
         if (scale < 1) {
           card.style.transformOrigin = 'top left';
           card.style.transform = `scale(${scale})`;
@@ -4734,6 +4749,8 @@
       }
       const rightBadge = document.getElementById('rightPageBadge');
       if (rightBadge) rightBadge.textContent = tr('page_badge', '第 {n} 页', { n: cur });
+      const leftBadge = document.getElementById('leftPageBadge');
+      if (leftBadge) leftBadge.textContent = tr('page_badge', '第 {n} 页', { n: 1 });
       const btnPrev = document.getElementById('btnPrevPage');
       const btnNext = document.getElementById('btnNextPage');
       if (btnPrev) btnPrev.disabled = appState.currentPageIndex <= (appState.isDualSpread ? 1 : 0);
@@ -5142,7 +5159,14 @@
 
       // 放进画布后按实际宽度再夹一次，避免文字工具条超出画板右边
 
-      { const ww = wrapper.offsetWidth; const left = parseFloat(wrapper.style.left) || 0; if (ww && left + ww > cssWidth - 6) wrapper.style.left = `${Math.max(6, cssWidth - ww - 6)}px`; }
+      {
+        // 双板缩小显示时工具条被反向放大 (--ui-inv)，按放大后的宽度夹紧
+        const inv = parseFloat(getComputedStyle(canvasCard).getPropertyValue('--ui-inv')) || 1;
+        const tb = wrapper.querySelector('.inline-text-toolbar');
+        const ww = Math.max(wrapper.offsetWidth, tb ? tb.offsetWidth * inv : 0);
+        const left = parseFloat(wrapper.style.left) || 0;
+        if (ww && left + ww > cssWidth - 6) wrapper.style.left = `${Math.max(6, cssWidth - ww - 6)}px`;
+      }
 
       const textarea = wrapper.querySelector('#inlineCanvasTextArea');
       textarea.value = currentVal; // 用 .value 赋值，避免把用户文字当 HTML 注入
