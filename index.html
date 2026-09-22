@@ -1119,6 +1119,16 @@
         <span class="hidden sm:inline" data-i18n="fullscreen">全屏</span>
       </button>
 
+      <button id="btnSaveWork" type="button" class="hidden md:flex p-1.5 sm:px-2.5 sm:py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-200 rounded-xl text-xs items-center gap-1.5 transition" data-i18n-title="tip_save_work" title="保存作品到本机文件 (Ctrl/Cmd+S)">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
+        <span class="hidden lg:inline" data-i18n="save_work">保存作品</span>
+      </button>
+      <button id="btnOpenWork" type="button" class="hidden md:flex p-1.5 sm:px-2.5 sm:py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-200 rounded-xl text-xs items-center gap-1.5 transition" data-i18n-title="tip_open_work" title="打开本机作品文件 .eazyopc (Ctrl/Cmd+O)">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span class="hidden lg:inline" data-i18n="open_work">打开作品</span>
+      </button>
+      <input type="file" id="workFileInput" accept=".eazyopc,application/json" class="hidden" />
+
       <button id="btnExport" class="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold px-2 sm:px-3 py-1.5 rounded-xl shadow-lg transition-transform active:scale-95">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
         <span class="hidden sm:inline" data-i18n="export">导出</span>
@@ -1219,7 +1229,31 @@
         <span class="flex items-center gap-1"><span>🧰</span> <span data-i18n="more_tools_title">更多板书工具</span></span>
         <button id="btnCloseMoreTools" class="text-stone-400 hover:text-stone-700 dark:hover:text-white text-xs">✕</button>
       </div>
+      <!-- 📁 作品文件与课件 (免费) -->
       <div class="grid grid-cols-2 gap-1.5 text-xs">
+        <button id="btnSaveWorkDrawer" type="button" class="drawer-action flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
+          <span>💾</span> <span class="text-[11px] font-semibold" data-i18n="save_work">保存作品</span>
+        </button>
+        <button id="btnOpenWorkDrawer" type="button" class="drawer-action flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
+          <span>📂</span> <span class="text-[11px] font-semibold" data-i18n="open_work">打开作品</span>
+        </button>
+        <button id="btnImportPdfDrawer" type="button" class="drawer-action col-span-2 flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
+          <span>📄</span> <span class="text-[11px] font-semibold" data-i18n="import_pdf">导入 PDF 课件</span>
+        </button>
+        <button id="btnInsertFormulaDrawer" type="button" class="drawer-action flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
+          <span class="font-serif font-bold">∑</span> <span class="text-[11px] font-semibold" data-i18n="insert_formula">插入公式</span> <span class="pro-chip">Pro</span>
+        </button>
+        <button id="btnRecordDrawer" type="button" class="drawer-action flex items-center gap-1.5 p-1.5 rounded-xl border transition text-left">
+          <span>🎥</span> <span class="text-[11px] font-semibold" data-i18n="record_lesson_short">录制讲解</span>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-1.5 text-xs pt-1.5 border-t border-stone-200 dark:border-slate-800">
+        <button class="tool-btn flex items-center gap-2 p-1.5 rounded-xl hover:bg-stone-100 dark:hover:bg-slate-800 border border-transparent transition text-left" data-tool="compass">
+          <span>🧭</span> <span class="text-[11px] font-medium" data-i18n="tool_compass">圆规 (C)</span>
+        </button>
+        <button id="btnToggleProtractorDrawer" type="button" class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-stone-100 dark:hover:bg-slate-800 border border-transparent transition text-left">
+          <span>📐</span> <span class="text-[11px] font-medium" data-i18n="tool_protractor">量角器</span>
+        </button>
         <button class="tool-btn flex items-center gap-2 p-1.5 rounded-xl hover:bg-stone-100 dark:hover:bg-slate-800 border border-transparent transition text-left" data-tool="pen">
           <span>🖋️</span> <span class="text-[11px] font-medium" data-i18n="brush_pen">动态钢笔</span>
         </button>
@@ -1365,6 +1399,15 @@
         </div>
       </button>
       <input type="file" id="imageFileInput" accept="image/*" class="hidden" />
+
+      <button id="btnImportPdfAction" class="w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-stone-200 dark:border-slate-700 transition text-left group">
+        <span class="text-lg">📄</span>
+        <div>
+          <div class="text-xs font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400" data-i18n="import_pdf">导入 PDF 课件</div>
+          <div class="text-[10px] text-stone-400 dark:text-slate-500" data-i18n="import_pdf_hint">每页 PDF 生成一块黑板 (锁定底图，可直接批注)，最多 50 页</div>
+        </div>
+      </button>
+      <input type="file" id="pdfFileInput" accept="application/pdf,.pdf" class="hidden" />
     </div>
 
     <!-- 📑 专业图层管理器面板 (Layer Manager) -->
@@ -3134,7 +3177,10 @@
         if (!im) continue;
         const src = im.src || (im.img && im.img.src) || '';
         if (!src || src.startsWith('blob:')) continue;
-        out.push({ id: im.id, src, x: im.x, y: im.y, width: im.width, height: im.height, rotation: im.rotation || 0 });
+        const rec = { id: im.id, src, x: im.x, y: im.y, width: im.width, height: im.height, rotation: im.rotation || 0 };
+        if (im.locked) rec.locked = true;
+        if (im.kind) rec.kind = im.kind;
+        out.push(rec);
       }
       return out;
     }
@@ -3168,11 +3214,16 @@
         localStorage.setItem(AUTOSAVE_KEY, json);
         lastAutosaveJson = json;
       } catch (err) {
-        // 多半是配额超限 (图片太大)：退而只保存笔画与文字，静默处理
+        // 多半是配额超限 (图片太大)：退而只保存笔画与文字，并提示用户用「保存作品」保留图片
         try {
           const json = JSON.stringify(buildAutosaveDoc(false));
           localStorage.setItem(AUTOSAVE_KEY, json);
           lastAutosaveJson = json;
+          const now = Date.now();
+          if (now - (window.__cbQuotaToastAt || 0) > 90000) {
+            window.__cbQuotaToastAt = now;
+            try { showCreatorToast(escapeXml(tr('autosave_quota_toast', '⚠️ 图片太大，浏览器自动保存只保留了笔迹与文字。请点「保存作品」把图片一起存成文件。')), 6500); } catch (e) {}
+          }
         } catch (err2) { /* 存储不可用 (隐私模式等)：静默忽略 */ }
       }
     }
@@ -3189,6 +3240,11 @@
         const raw = localStorage.getItem(AUTOSAVE_KEY);
         if (raw) doc = JSON.parse(raw);
       } catch (err) { doc = null; }
+      return applySavedDoc(doc);
+    }
+
+    // 把一份存档 (自动保存或 .eazyopc 作品文件) 套用到画板；返回是否成功
+    function applySavedDoc(doc) {
       if (!doc || !Array.isArray(doc.pages) || doc.pages.length === 0) return false;
 
       const rebuildImages = (list) => (Array.isArray(list) ? list : [])
@@ -3208,7 +3264,9 @@
             y: Number(im.y) || 0,
             width: Number(im.width) || img.width || 100,
             height: Number(im.height) || img.height || 100,
-            rotation: Number(im.rotation) || 0
+            rotation: Number(im.rotation) || 0,
+            locked: !!im.locked,
+            kind: im.kind || undefined
           };
         });
 
@@ -5081,6 +5139,7 @@
         let hitImg = null;
         for (let i = appState.images.length - 1; i >= 0; i--) {
           const im = appState.images[i];
+          if (im.locked) continue; // 锁定的 PDF 课件底图不可点选
           if (pos.x >= im.x && pos.x <= im.x + im.width && pos.y >= im.y && pos.y <= im.y + im.height) {
             hitImg = im;
             break;
@@ -5390,7 +5449,7 @@
               const tb = getTextBounds(t);
               return !(tb.x + tb.width < rect.x || tb.x > rect.x + rect.width || tb.y + tb.height < rect.y || tb.y > rect.y + rect.height);
             });
-            appState.selectedImages = appState.images.filter(im =>
+            appState.selectedImages = appState.images.filter(im => !im.locked &&
               !(im.x + im.width < rect.x || im.x > rect.x + rect.width || im.y + im.height < rect.y || im.y > rect.y + rect.height)
             );
             redrawAllStrokes();
@@ -5410,7 +5469,7 @@
         if (appState.lassoPath.length > 2) {
           appState.selectedStrokes = appState.strokes.filter(s => s.points.some(pt => pointInPolygon(pt, appState.lassoPath)));
           appState.selectedTexts = appState.texts.filter(t => pointInPolygon({x: t.x, y: t.y}, appState.lassoPath));
-          appState.selectedImages = appState.images.filter(im => pointInPolygon({x: im.x + im.width/2, y: im.y + im.height/2}, appState.lassoPath));
+          appState.selectedImages = appState.images.filter(im => !im.locked && pointInPolygon({x: im.x + im.width/2, y: im.y + im.height/2}, appState.lassoPath));
           redrawAllStrokes();
           updateSelectionBoxUI();
         }
@@ -5484,6 +5543,8 @@
       e.preventDefault();
       if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
         const file = e.dataTransfer.files[0];
+        // .eazyopc 作品文件 / PDF 课件：交给文件模块 (见下方 Round 4 脚本)
+        if (typeof window.cbHandleDroppedFile === 'function' && window.cbHandleDroppedFile(file)) return;
         if (file.type.startsWith('image/')) {
           const reader = new FileReader();
           reader.onload = (ev) => addImageToCanvas(ev.target.result);
@@ -6872,7 +6933,7 @@
       const dict = TRANSLATIONS[lang];
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        const val = dict[key];
+        const val = dict[key] || (lang !== 'zh' && TRANSLATIONS.en ? TRANSLATIONS.en[key] : '');
         if (!val || typeof val !== 'string') return;
         // 词典为站内静态常量 (受信任)：含 <strong> 等标签的词条用 innerHTML，其余一律 textContent
         if (I18N_HTML_RE.test(val)) el.innerHTML = val;
@@ -6880,7 +6941,8 @@
       });
       document.querySelectorAll('[data-i18n-title]').forEach(el => {
         const key = el.getAttribute('data-i18n-title');
-        if (dict[key]) el.title = dict[key];
+        const tv = dict[key] || (lang !== 'zh' && TRANSLATIONS.en ? TRANSLATIONS.en[key] : '');
+        if (tv) el.title = tv;
       });
       document.querySelectorAll('[data-i18n-ph], [data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-ph') || el.getAttribute('data-i18n-placeholder');
@@ -7382,8 +7444,15 @@
 
       if (appState.images) {
         appState.images.forEach((im, idx) => {
-          const item = createLayerDOMItem('🖼️', `课件图片 #${idx + 1}`, true, false, 1, {
+          const label = im.kind === 'pdf' ? tr('layer_pdf_bg', 'PDF 课件底图') : (im.kind === 'formula' ? tr('layer_formula', '公式') : tr('layer_image', '课件图片'));
+          const item = createLayerDOMItem(im.kind === 'pdf' ? '📄' : (im.kind === 'formula' ? '∑' : '🖼️'), `${label} #${idx + 1}`, true, !!im.locked, 1, {
+            onToggleLock: (locked) => {
+              im.locked = locked;
+              if (locked) { appState.selectedImages = (appState.selectedImages || []).filter(x => x !== im); updateSelectionBoxUI(); }
+              scheduleAutosave();
+            },
             onDelete: () => {
+              saveHistory();
               appState.images = appState.images.filter(x => x.id !== im.id);
               redrawAllStrokes();
               renderLayersUI();
@@ -8001,6 +8070,273 @@
       }
     };
 
+  </script>
+  <!-- ================= Round 4：作品文件 · PDF 课件 · 量角器 / 圆规 · 讲解录制 · 公式 · 快捷键 ================= -->
+  <script>
+    (function () {
+      'use strict';
+      const $ = (id) => document.getElementById(id);
+      const SITE = 'chalkboard';
+
+      // ---------- i18n (zh + en；其余语言回退英文) ----------
+      const R4_I18N = {
+        zh: {
+          save_work: '保存作品', open_work: '打开作品',
+          tip_save_work: '保存作品到本机文件 (Ctrl/Cmd+S)', tip_open_work: '打开本机作品文件 .eazyopc (Ctrl/Cmd+O)',
+          work_saved_toast: '✅ 已保存作品文件：{name}',
+          work_opened_toast: '✅ 已打开作品（共 {n} 页）',
+          work_open_invalid: '⚠️ 无法识别的文件：请选择由 EazyOPC 保存的 .eazyopc 作品文件',
+          work_open_other_site: '这个作品是在「{site}」里保存的，仍要在黑板中打开吗？',
+          work_open_replace: '打开作品会替换当前所有黑板页的内容，确定继续吗？',
+          autosave_quota_toast: '⚠️ 图片太大，浏览器自动保存只保留了笔迹与文字。请点「保存作品」把图片一起存成文件。',
+          import_pdf: '导入 PDF 课件', import_pdf_hint: '每页 PDF 生成一块黑板 (锁定底图，可直接批注)，最多 50 页',
+          pdf_loading_lib: '⏳ 正在加载 PDF 解析组件…',
+          pdf_progress: '⏳ 正在导入 PDF 第 {i} / {n} 页…',
+          pdf_done: '✅ 已导入 {n} 页 PDF 课件，底图已锁定（可在「图层」里解锁）',
+          pdf_done_capped: '✅ 已导入前 {n} 页（共 {total} 页，单次最多 50 页）',
+          pdf_failed: '⚠️ PDF 导入失败：{msg}',
+          pdf_password: '⚠️ 该 PDF 有密码保护，请先解除密码再导入',
+          pdf_busy: '⏳ 正在导入上一份 PDF，请稍候…',
+          layer_pdf_bg: 'PDF 课件底图', layer_formula: '公式', layer_image: '课件图片'
+        },
+        en: {
+          save_work: 'Save work', open_work: 'Open work',
+          tip_save_work: 'Save your board to a file on this device (Ctrl/Cmd+S)', tip_open_work: 'Open a saved .eazyopc work file (Ctrl/Cmd+O)',
+          work_saved_toast: '✅ Saved work file: {name}',
+          work_opened_toast: '✅ Work opened ({n} pages)',
+          work_open_invalid: '⚠️ Unrecognized file. Please choose a .eazyopc file saved by EazyOPC',
+          work_open_other_site: 'This work was saved in "{site}". Open it on the chalkboard anyway?',
+          work_open_replace: 'Opening a work file replaces every board page you have now. Continue?',
+          autosave_quota_toast: '⚠️ Images are too large for browser autosave, so only strokes and text were kept. Use "Save work" to keep images in a file.',
+          import_pdf: 'Import PDF slides', import_pdf_hint: 'Each PDF page becomes a board page with a locked background (up to 50 pages)',
+          pdf_loading_lib: '⏳ Loading the PDF reader…',
+          pdf_progress: '⏳ Importing PDF page {i} / {n}…',
+          pdf_done: '✅ Imported {n} PDF pages. Backgrounds are locked (unlock them in Layers)',
+          pdf_done_capped: '✅ Imported the first {n} pages ({total} in total, max 50 per import)',
+          pdf_failed: '⚠️ PDF import failed: {msg}',
+          pdf_password: '⚠️ This PDF is password-protected. Remove the password and try again',
+          pdf_busy: '⏳ Still importing the previous PDF…',
+          layer_pdf_bg: 'PDF background', layer_formula: 'Formula', layer_image: 'Image'
+        }
+      };
+      for (const lang of Object.keys(R4_I18N)) {
+        TRANSLATIONS[lang] = Object.assign(TRANSLATIONS[lang] || {}, R4_I18N[lang]);
+      }
+
+      // ---------- 共享轻提示 (非阻塞) ----------
+      function toast(msg, ms) {
+        try { showCreatorToast(escapeXml(msg), ms || 3200); } catch (e) {}
+      }
+      window.cbToast = toast;
+
+      function loadScriptOnce(src, globalName) {
+        loadScriptOnce.cache = loadScriptOnce.cache || {};
+        if (globalName && window[globalName]) return Promise.resolve(window[globalName]);
+        if (loadScriptOnce.cache[src]) return loadScriptOnce.cache[src];
+        loadScriptOnce.cache[src] = new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = src;
+          s.async = true;
+          s.crossOrigin = 'anonymous';
+          s.onload = () => resolve(globalName ? window[globalName] : true);
+          s.onerror = () => { delete loadScriptOnce.cache[src]; reject(new Error('load failed: ' + src)); };
+          document.head.appendChild(s);
+        });
+        return loadScriptOnce.cache[src];
+      }
+      window.cbLoadScriptOnce = loadScriptOnce;
+
+      function stamp() {
+        const d = new Date();
+        const p = (n) => String(n).padStart(2, '0');
+        return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+      }
+      window.cbStamp = stamp;
+
+      function closeFileMenus() {
+        ['moreToolsDrawer', 'mediaMenu'].forEach(id => { const el = $(id); if (el) el.classList.add('hidden'); });
+      }
+
+      // =====================================================================
+      // 💾 作品文件：保存 (.eazyopc JSON) / 打开 / 拖入
+      // =====================================================================
+      function buildWorkFile() {
+        const doc = buildAutosaveDoc(true); // 复用自动保存的序列化 (含图片 dataURL)
+        return {
+          app: 'eazyopc',
+          site: SITE,
+          v: 1,
+          savedAt: new Date().toISOString(),
+          paper: doc.paper,
+          ratio: doc.ratio,
+          currentPageIndex: doc.currentPageIndex,
+          board: { width: cssWidth, height: cssHeight },
+          pages: doc.pages
+        };
+      }
+
+      function saveWork() {
+        let json;
+        try { json = JSON.stringify(buildWorkFile()); } catch (e) { toast(tr('pdf_failed', '⚠️ {msg}', { msg: e.message })); return; }
+        const name = `Chalkboard-${stamp()}.eazyopc`;
+        const blob = new Blob([json], { type: 'application/json' });
+        handleFileDownloadOrShare(blob, name, 'application/json');
+        toast(tr('work_saved_toast', '✅ 已保存作品文件：{name}', { name }));
+        closeFileMenus();
+      }
+
+      function boardHasContent() {
+        syncCurrentPageToState();
+        return appState.pages.some(p => p && (((p.strokes || []).length) || ((p.texts || []).length) || ((p.images || []).length)));
+      }
+
+      function loadWorkDoc(doc) {
+        if (appState.isDualSpread) toggleDualSpreadView(); // 先回到单板 (内部 loadPage(0))
+        clearSelection();
+        if (!applySavedDoc(doc)) { toast(tr('work_open_invalid')); return false; }
+        loadPage(0);
+        resizeCanvas();   // 画幅可能改变
+        updatePageUI();
+        saveDocNow();
+        toast(tr('work_opened_toast', '✅ 已打开作品（共 {n} 页）', { n: appState.pages.length }));
+        return true;
+      }
+
+      function openWorkFromFile(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          let doc = null;
+          try { doc = JSON.parse(String(reader.result || '')); } catch (e) { doc = null; }
+          if (!doc || doc.app !== 'eazyopc' || !Array.isArray(doc.pages) || !doc.pages.length) {
+            toast(tr('work_open_invalid'), 5000);
+            return;
+          }
+          if (doc.site && doc.site !== SITE && !confirm(tr('work_open_other_site', '', { site: doc.site }))) return;
+          if (boardHasContent() && !confirm(tr('work_open_replace'))) return;
+          loadWorkDoc(doc);
+        };
+        reader.onerror = () => toast(tr('work_open_invalid'), 5000);
+        reader.readAsText(file);
+      }
+
+      const workFileInput = $('workFileInput');
+      function pickWorkFile() { if (workFileInput) { workFileInput.value = ''; workFileInput.click(); } closeFileMenus(); }
+      if (workFileInput) workFileInput.onchange = (e) => { const f = e.target.files && e.target.files[0]; if (f) openWorkFromFile(f); };
+      ['btnSaveWork', 'btnSaveWorkDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); saveWork(); }; });
+      ['btnOpenWork', 'btnOpenWorkDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); pickWorkFile(); }; });
+
+      window.addEventListener('keydown', (e) => {
+        const mod = e.ctrlKey || e.metaKey;
+        if (!mod || e.altKey || e.shiftKey) return;
+        const k = (e.key || '').toLowerCase();
+        if (k === 's') { e.preventDefault(); saveWork(); }
+        else if (k === 'o') { e.preventDefault(); pickWorkFile(); }
+      }, true);
+
+      // 拖入画板：.eazyopc → 打开作品；PDF → 导入课件 (图片仍走原有逻辑)
+      window.cbHandleDroppedFile = function (file) {
+        if (!file) return false;
+        const name = (file.name || '').toLowerCase();
+        if (name.endsWith('.eazyopc') || file.type === 'application/json' || name.endsWith('.json')) { openWorkFromFile(file); return true; }
+        if (file.type === 'application/pdf' || name.endsWith('.pdf')) { importPdf(file); return true; }
+        return false;
+      };
+
+      // =====================================================================
+      // 📄 PDF 课件导入 (pdf.js 3.x，点击时才加载)
+      // =====================================================================
+      const PDFJS_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const PDF_MAX_PAGES = 50;
+      const RATIO_ASPECTS = { a4_p: 210 / 297, a4_l: 297 / 210, letter_p: 8.5 / 11, '16_9': 16 / 9, '16_10': 16 / 10, '4_3': 4 / 3, '1_1': 1, '3_4': 3 / 4, '9_16': 9 / 16 };
+      let pdfBusy = false;
+
+      function pageIsEmpty(p) { return !p || (!(p.strokes || []).length && !(p.texts || []).length && !(p.images || []).length); }
+
+      async function importPdf(file) {
+        if (!file) return;
+        if (pdfBusy) { toast(tr('pdf_busy')); return; }
+        pdfBusy = true;
+        closeFileMenus();
+        try {
+          toast(tr('pdf_loading_lib'), 60000);
+          const lib = await loadScriptOnce(PDFJS_SRC, 'pdfjsLib');
+          lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+          const data = new Uint8Array(await file.arrayBuffer());
+          const pdf = await lib.getDocument({ data }).promise;
+          const total = Math.min(pdf.numPages, PDF_MAX_PAGES);
+
+          syncCurrentPageToState();
+          // 整份文档都是空的且为自适应画幅：按 PDF 页面比例自动选最接近的画幅，底图更大更清楚
+          if (appState.ratio === 'free' && appState.pages.every(pageIsEmpty)) {
+            const first = await pdf.getPage(1);
+            const vp = first.getViewport({ scale: 1 });
+            const aspect = vp.width / vp.height;
+            let best = null, bestD = Infinity;
+            for (const [k, a] of Object.entries(RATIO_ASPECTS)) { const d = Math.abs(Math.log(a / aspect)); if (d < bestD) { bestD = d; best = k; } }
+            if (best && bestD < 0.12) {
+              appState.ratio = best;
+              const sel = $('ratioSelector'); if (sel) sel.value = best;
+              resizeCanvas();
+            }
+          }
+
+          const startIdx = pageIsEmpty(appState) ? appState.currentPageIndex : appState.pages.length;
+          for (let i = 1; i <= total; i++) {
+            toast(tr('pdf_progress', '', { i, n: total }), 60000);
+            const page = await pdf.getPage(i);
+            const vp1 = page.getViewport({ scale: 1 });
+            const fit = Math.min(cssWidth / vp1.width, cssHeight / vp1.height);
+            const w = vp1.width * fit, h = vp1.height * fit;
+            // 渲染分辨率：约 2× 显示尺寸，长边封顶 2400px，兼顾清晰与内存
+            let rs = fit * Math.max(2, Math.min(3, dpr));
+            const longSide = Math.max(vp1.width, vp1.height) * rs;
+            if (longSide > 2400) rs *= 2400 / longSide;
+            const vp = page.getViewport({ scale: rs });
+            const c = document.createElement('canvas');
+            c.width = Math.ceil(vp.width); c.height = Math.ceil(vp.height);
+            const cx = c.getContext('2d');
+            cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, c.width, c.height);
+            await page.render({ canvasContext: cx, viewport: vp }).promise;
+            const src = c.toDataURL('image/jpeg', 0.86);
+            try { page.cleanup(); } catch (e) {}
+            c.width = c.height = 0;
+            const img = new Image();
+            img.onload = () => { redrawAllStrokes(); if (appState.isDualSpread) renderReferenceBoard(); };
+            img.src = src;
+            const imObj = { id: Date.now() + Math.random(), img, src, x: Math.round((cssWidth - w) / 2), y: Math.round((cssHeight - h) / 2), width: Math.round(w), height: Math.round(h), rotation: 0, locked: true, kind: 'pdf' };
+            const idx = startIdx + i - 1;
+            if (idx === appState.currentPageIndex) {
+              saveHistory();
+              appState.images.unshift(imObj); // 底图放在最下层
+            } else {
+              appState.pages.splice(idx, 0, { id: Date.now() + i, strokes: [], texts: [], images: [imObj], history: [], redoStack: [] });
+            }
+          }
+          try { pdf.destroy(); } catch (e) {}
+          loadPage(startIdx);
+          // 白底课件上白色粉笔看不见：自动换成红色批注笔
+          if (isColorTooLight(appState.currentColor)) syncColorUI('#ef4444');
+          saveDocNow();
+          if (pdf.numPages > PDF_MAX_PAGES) toast(tr('pdf_done_capped', '', { n: total, total: pdf.numPages }), 6000);
+          else toast(tr('pdf_done', '', { n: total }), 5000);
+        } catch (err) {
+          const msg = (err && (err.name === 'PasswordException')) ? tr('pdf_password') : tr('pdf_failed', '', { msg: (err && err.message) || String(err) });
+          toast(msg, 6000);
+        } finally {
+          pdfBusy = false;
+        }
+      }
+      window.cbImportPdf = importPdf;
+
+      const pdfFileInput = $('pdfFileInput');
+      function pickPdf() { if (pdfFileInput) { pdfFileInput.value = ''; pdfFileInput.click(); } }
+      if (pdfFileInput) pdfFileInput.onchange = (e) => { const f = e.target.files && e.target.files[0]; if (f) importPdf(f); };
+      ['btnImportPdfAction', 'btnImportPdfDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); pickPdf(); }; });
+
+      /*R4_MORE*/
+    })();
   </script>
   <!-- Google AdSense Auto Ads: injected only for non-Pro users -->
   <script>
