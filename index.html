@@ -5219,6 +5219,11 @@
         document.removeEventListener('pointerdown', onOutClick, true);
         if (_commitOpenTextEditor === commitAndClose) _commitOpenTextEditor = null;
         const val = textarea.value.trim();
+        // 文字的新建 / 修改 / 清空删除都记入撤销栈
+        const changed = targetText
+          ? (val !== targetText.text || currentFont !== (targetText.fontFamily || currentFont) || currentSize !== Number(targetText.size) || currentColor !== targetText.color || isBold !== !!targetText.bold)
+          : !!val;
+        if (changed) saveHistory();
         if (targetText) {
           targetText._editing = false;
           if (val) {
