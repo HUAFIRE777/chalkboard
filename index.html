@@ -7270,6 +7270,9 @@ ${body}</svg>`;
       btn.onclick = () => {
         appState.tool = btn.dataset.tool;
         updateToolButtonsUI();
+        // 从「更多工具」抽屉里选了工具就收起抽屉 (手机上抽屉会盖住大半块黑板，点画布会点到抽屉按钮)
+        const drawer = btn.closest('#moreToolsDrawer');
+        if (drawer) drawer.classList.add('hidden');
       };
     });
 
