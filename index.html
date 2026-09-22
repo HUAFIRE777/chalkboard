@@ -900,6 +900,67 @@
       color: #ffffff !important;
     }
 
+    /* ================= Round 4 设计令牌：间距 4/8/12/16/24 · 圆角 8/12/16/24 · 阴影 sm/md/lg ================= */
+    :root {
+      --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-6: 24px;
+      --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.20);
+      --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.28);
+      --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.42);
+      --accent: #10b981; --accent-strong: #059669; --accent-ring: rgba(16, 185, 129, 0.55);
+      --glass-bg: rgba(15, 23, 42, 0.78);
+      --glass-bg-strong: rgba(15, 23, 42, 0.94);
+      --glass-border: rgba(148, 163, 184, 0.20);
+      --glass-text: #e2e8f0;
+      --glass-muted: #94a3b8;
+      --glass-hover: rgba(148, 163, 184, 0.16);
+      --glass-sep: rgba(148, 163, 184, 0.22);
+    }
+    body.theme-light {
+      --glass-bg: rgba(255, 255, 255, 0.90);
+      --glass-bg-strong: rgba(255, 255, 255, 0.98);
+      --glass-border: rgba(15, 23, 42, 0.12);
+      --glass-text: #0f172a;
+      --glass-muted: #475569;
+      --glass-hover: rgba(15, 23, 42, 0.06);
+      --glass-sep: rgba(15, 23, 42, 0.12);
+      --shadow-md: 0 6px 18px rgba(15, 23, 42, 0.10);
+      --shadow-lg: 0 18px 48px rgba(15, 23, 42, 0.16);
+    }
+    .r4-panel {
+      background: var(--glass-bg-strong);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      backdrop-filter: blur(14px) saturate(1.4);
+      border: 1px solid var(--glass-border);
+      color: var(--glass-text);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    .r4-panel .r4-muted, .r4-muted { color: var(--glass-muted); }
+    .r4-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: var(--r-sm); font-weight: 700; font-size: 12px; transition: background-color .15s, box-shadow .15s, transform .1s; cursor: pointer; }
+    .r4-btn:active { transform: scale(0.97); }
+    .r4-btn:focus-visible, .r4-icon-btn:focus-visible, .r4-link:focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 2px; }
+    .r4-btn-primary { background: var(--accent-strong); color: #fff; }
+    .r4-btn-primary:hover { background: var(--accent); }
+    .r4-btn-rec { background: #e11d48; color: #fff; }
+    .r4-btn-rec:hover { background: #f43f5e; }
+    .r4-btn-stop { background: #e11d48; color: #fff; }
+    .r4-btn-stop:hover { background: #f43f5e; }
+    .r4-btn-ghost { background: transparent; color: var(--glass-text); border: 1px solid var(--glass-border); }
+    .r4-btn-ghost:hover { background: var(--glass-hover); }
+    .r4-icon-btn { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--r-sm); color: var(--glass-muted); }
+    .r4-icon-btn:hover { background: var(--glass-hover); color: var(--glass-text); }
+    .r4-link { color: #f59e0b; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+    body.theme-light .r4-link { color: #b45309; }
+    .rec-dot { width: 10px; height: 10px; border-radius: 9999px; background: #fff; display: inline-block; flex-shrink: 0; }
+    .rec-dot-live { background: #ef4444; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); animation: recPulse 1.2s ease-out infinite; }
+    #recPanel.is-paused .rec-dot-live { animation: none; background: #f59e0b; }
+    @keyframes recPulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); } 100% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } }
+    #recLive:not(.hidden) { display: flex; }
+    .pro-chip { font-size: 9px; font-weight: 800; padding: 0 5px; border-radius: 6px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; line-height: 16px; }
+    body.theme-light .pro-chip { background: #fef3c7; color: #92400e; }
+    @media (prefers-reduced-motion: reduce) { .rec-dot-live { animation: none; } }
+
     /* ================= 📱 小屏布局 (< 640px)：避免整页横向滚动 ================= */
     .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -1176,6 +1237,26 @@
   <!-- ================= 2. 核心工作台区域 (SaaS 级绘图舞台) ================= -->
   <main id="workbenchWrapper" class="relative w-full bg-[#051610] flex items-center justify-center p-2 pl-[52px] sm:p-4 overflow-hidden h-[72vh] min-h-[520px] max-h-[920px] transition-all">
     
+    <!-- 🎥 讲解录制浮动条 -->
+    <div id="recPanel" class="r4-panel hidden absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 z-40 px-3 py-2 text-xs max-w-[94vw]" role="dialog" aria-label="Record lesson video">
+      <div id="recSetup" class="flex items-center gap-2 flex-wrap justify-center">
+        <span class="font-bold whitespace-nowrap">🎥 <span data-i18n="record_lesson">录制讲解视频</span></span>
+        <label class="flex items-center gap-1 cursor-pointer whitespace-nowrap"><input type="checkbox" id="recMicToggle" checked class="accent-emerald-500 w-3.5 h-3.5" /> <span data-i18n="rec_mic">录入麦克风声音</span></label>
+        <span id="recFreeNote" class="r4-muted whitespace-nowrap" data-i18n="rec_free_note">免费版：带水印 · 最长 3 分钟</span>
+        <button id="btnRecUpgrade" type="button" class="r4-link whitespace-nowrap" data-i18n="rec_upgrade">升级 Pro 去水印、不限时长</button>
+        <button id="btnRecStart" type="button" class="r4-btn r4-btn-rec whitespace-nowrap"><span class="rec-dot"></span><span data-i18n="rec_start">开始录制</span></button>
+        <button id="btnRecClose" type="button" class="r4-icon-btn" aria-label="close">✕</button>
+      </div>
+      <div id="recLive" class="hidden items-center gap-2 flex-wrap justify-center">
+        <span class="rec-dot rec-dot-live"></span>
+        <span id="recTimer" class="font-mono font-bold text-sm">00:00</span>
+        <span id="recLimit" class="r4-muted font-mono">/ 03:00</span>
+        <span id="recMicState" class="whitespace-nowrap">🎙️</span>
+        <button id="btnRecPause" type="button" class="r4-btn r4-btn-ghost whitespace-nowrap" data-i18n="rec_pause">暂停</button>
+        <button id="btnRecStop" type="button" class="r4-btn r4-btn-stop whitespace-nowrap" data-i18n="rec_stop">停止并保存</button>
+      </div>
+    </div>
+
     <button id="exitFullscreenBtn" class="hidden absolute top-4 right-5 z-40 items-center gap-1.5 bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 px-3 py-1.5 rounded-full text-xs font-medium shadow-2xl backdrop-blur-md transition">
       <span>✕</span> <span data-i18n="exit_fullscreen">退出全屏</span>
     </button>
@@ -1219,6 +1300,11 @@
       <!-- 7. 📑 图层管理 -->
       <button id="btnToggleLayers" class="p-2 rounded-xl text-teal-600 dark:text-teal-400 hover:bg-stone-100 dark:hover:bg-slate-800 text-xs transition flex items-center justify-center relative" data-i18n-title="tip_layers" title="📑 图层管理 (查看板书、视频、几何等图层)">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      </button>
+
+      <!-- 7.5 🎥 录制讲解视频 -->
+      <button id="btnRecordLesson" class="p-2 rounded-xl text-rose-500 hover:bg-stone-100 dark:hover:bg-slate-800 text-xs transition flex items-center justify-center relative" data-i18n-title="tip_record" title="🎥 录制讲解视频 (板书 + 麦克风声音)">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
       </button>
 
       <!-- 8. 🎨 粉笔色彩与粗细 -->
@@ -8852,6 +8938,291 @@ ${body}</svg>`;
         if (k === 'c') { useCompass(); }
         else if (k === 'escape') { if (comp.phase !== 'idle') resetCompass(); }
       });
+
+      // =====================================================================
+      // 🎥 录制讲解视频 (canvas.captureStream + 麦克风 → MediaRecorder)
+      //   免费：右下角水印「Made with Chalkboard」，最长 3 分钟；Pro：无水印、不限时长
+      // =====================================================================
+      Object.assign(TRANSLATIONS.zh, {
+        record_lesson: '录制讲解视频', record_lesson_short: '录制讲解', tip_record: '🎥 录制讲解视频 (板书 + 麦克风声音)',
+        rec_mic: '录入麦克风声音', rec_free_note: '免费版：带水印 · 最长 3 分钟', rec_pro_note: 'Pro：无水印 · 不限时长',
+        rec_upgrade: '升级 Pro 去水印、不限时长', rec_start: '开始录制', rec_pause: '暂停', rec_resume: '继续', rec_stop: '停止并保存',
+        rec_unsupported: '⚠️ 当前浏览器不支持录制（需要较新的 Chrome / Edge / Safari / Firefox）',
+        rec_mic_denied: '无法使用麦克风（{reason}）。要继续录制无声视频吗？',
+        rec_mic_off: '🔇 未录入声音',
+        rec_started: '🔴 开始录制：板书{dual}{mic}',
+        rec_dual: '（双板）', rec_with_mic: ' + 麦克风',
+        rec_limit_reached: '⏱️ 免费版单次最长 3 分钟，已自动停止并保存。升级 Pro 可不限时长、去除水印。',
+        rec_saved: '✅ 讲解视频已保存：{name}',
+        rec_failed: '⚠️ 录制失败：{msg}',
+        rec_confirm_leave: '正在录制讲解视频，确定离开吗？'
+      });
+      Object.assign(TRANSLATIONS.en, {
+        record_lesson: 'Record lesson video', record_lesson_short: 'Record', tip_record: '🎥 Record a lesson video (board + microphone)',
+        rec_mic: 'Record microphone', rec_free_note: 'Free: watermark · max 3 min', rec_pro_note: 'Pro: no watermark · no time limit',
+        rec_upgrade: 'Go Pro for no watermark or limit', rec_start: 'Start recording', rec_pause: 'Pause', rec_resume: 'Resume', rec_stop: 'Stop & save',
+        rec_unsupported: '⚠️ This browser cannot record video (try a recent Chrome, Edge, Safari or Firefox)',
+        rec_mic_denied: 'The microphone is unavailable ({reason}). Continue recording without sound?',
+        rec_mic_off: '🔇 No audio',
+        rec_started: '🔴 Recording the board{dual}{mic}',
+        rec_dual: ' (dual boards)', rec_with_mic: ' + microphone',
+        rec_limit_reached: '⏱️ Free recordings stop at 3 minutes and were saved. Pro removes the limit and the watermark.',
+        rec_saved: '✅ Lesson video saved: {name}',
+        rec_failed: '⚠️ Recording failed: {msg}',
+        rec_confirm_leave: 'A lesson video is being recorded. Leave anyway?'
+      });
+
+      const REC_FREE_LIMIT_MS = 3 * 60 * 1000;
+      const recPanel = $('recPanel'), recSetup = $('recSetup'), recLive = $('recLive');
+      const recTimerEl = $('recTimer'), recLimitEl = $('recLimit'), recMicStateEl = $('recMicState');
+      const rec = { state: 'idle', mr: null, chunks: [], mic: null, stream: null, comp: null, cctx: null, raf: 0, tick: 0, acc: 0, segStart: 0, mime: '', ext: 'webm', watermark: true, limit: REC_FREE_LIMIT_MS, dual: false, protImg: null, protHtml: '' };
+      window.cbRecorder = rec;
+
+      function fmtMs(ms) { const t = Math.floor(ms / 1000); return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`; }
+      function recElapsed() { return rec.acc + (rec.state === 'recording' ? performance.now() - rec.segStart : 0); }
+      function pickRecMime() {
+        if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return '';
+        const list = ['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4;codecs=avc1,opus', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+        for (const m of list) { try { if (MediaRecorder.isTypeSupported(m)) return m; } catch (e) {} }
+        return '';
+      }
+
+      function updateRecSetupUI() {
+        const pro = !!appState.isPro;
+        const note = $('recFreeNote'), up = $('btnRecUpgrade');
+        if (note) { note.textContent = pro ? tr('rec_pro_note') : tr('rec_free_note'); note.removeAttribute('data-i18n'); }
+        if (up) up.classList.toggle('hidden', pro);
+      }
+      function openRecPanel() {
+        if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) { toast(tr('rec_unsupported'), 5000); return; }
+        closeFileMenus();
+        if (rec.state !== 'idle') { recPanel.classList.remove('hidden'); return; }
+        updateRecSetupUI();
+        recSetup.classList.remove('hidden');
+        recLive.classList.add('hidden');
+        recPanel.classList.remove('hidden');
+      }
+      function closeRecPanel() { if (rec.state === 'idle') recPanel.classList.add('hidden'); }
+      ['btnRecordLesson', 'btnRecordDrawer'].forEach(id => { const b = $(id); if (b) b.onclick = (e) => { e.stopPropagation(); if (!recPanel.classList.contains('hidden') && rec.state === 'idle') closeRecPanel(); else openRecPanel(); }; });
+      const btnRecClose = $('btnRecClose'); if (btnRecClose) btnRecClose.onclick = closeRecPanel;
+      const btnRecUpgrade = $('btnRecUpgrade'); if (btnRecUpgrade) btnRecUpgrade.onclick = () => $('proModal').classList.remove('hidden');
+      window.addEventListener('eazypro:change', updateRecSetupUI);
+
+      // ---- 合成画面：双板 (左板 + 右板) + 辅助层 + 激光笔 + 量角器 + 直尺 + 水印 ----
+      function refreshProtImage() {
+        if (!prot.visible || !protSvg) { rec.protImg = null; return; }
+        const html = protSvg.innerHTML;
+        if (html === rec.protHtml && rec.protImg) return;
+        rec.protHtml = html;
+        const clone = protSvg.cloneNode(true);   // 录制画面里不需要旋转 / 关闭手柄
+        clone.querySelectorAll('#protRotate, #protClose').forEach(n => n.remove());
+        clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        const xml = new XMLSerializer().serializeToString(clone);
+        const img = new Image();
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
+        rec.protImg = img;
+      }
+      function drawBoardOverlays(c, ox, s) {
+        // 圆规 / 量角器辅助线
+        if (guideCanvas && guideCanvas.width) c.drawImage(guideCanvas, ox, 0, cssWidth * s, cssHeight * s);
+        // 直尺
+        const ruler = $('virtualRuler');
+        if (ruler && !ruler.classList.contains('hidden')) {
+          const cr = canvasCard.getBoundingClientRect(), rr = ruler.getBoundingClientRect();
+          const k = cssWidth / (cr.width || 1);
+          const x = (rr.left - cr.left) * k, y = (rr.top - cr.top) * k, w = rr.width * k, h = rr.height * k;
+          c.save();
+          c.translate(ox, 0); c.scale(s, s);
+          c.fillStyle = 'rgba(254, 243, 199, 0.72)'; c.strokeStyle = 'rgba(217, 119, 6, 0.65)'; c.lineWidth = 2;
+          c.beginPath(); if (c.roundRect) c.roundRect(x, y, w, h, 8); else c.rect(x, y, w, h); c.fill(); c.stroke();
+          c.strokeStyle = 'rgba(120, 53, 15, 0.9)'; c.lineWidth = 1;
+          for (let i = 0; i <= 40; i++) { const tx = x + 8 + (w - 16) * i / 40; const tl = i % 4 === 0 ? 12 : 6; c.beginPath(); c.moveTo(tx, y + h - 4); c.lineTo(tx, y + h - 4 - tl); c.stroke(); }
+          c.restore();
+        }
+        // 量角器
+        if (prot.visible) {
+          refreshProtImage();
+          if (rec.protImg && rec.protImg.complete && rec.protImg.naturalWidth) {
+            c.save();
+            c.translate(ox, 0); c.scale(s, s);
+            c.translate(prot.cx, prot.cy); c.rotate(prot.angle);
+            c.drawImage(rec.protImg, -PROT_R, -PROT_R, PROT_R * 2, PROT_R);
+            c.restore();
+          }
+        }
+        // 激光教鞭 (DOM 圆点，读取实时透明度与缩放)
+        const dots = laserLayer ? laserLayer.querySelectorAll('.laser-dot') : [];
+        if (dots.length) {
+          c.save(); c.translate(ox, 0); c.scale(s, s);
+          for (const d of dots) {
+            const cs = getComputedStyle(d);
+            const op = parseFloat(cs.opacity); if (!(op > 0.02)) continue;
+            let sc = 1; const m = /matrix\(([^,]+)/.exec(cs.transform || ''); if (m) sc = Math.abs(parseFloat(m[1])) || 1;
+            const x = parseFloat(d.style.left) || 0, y = parseFloat(d.style.top) || 0;
+            c.globalAlpha = op; c.fillStyle = '#f43f5e'; c.shadowColor = '#f43f5e'; c.shadowBlur = 12;
+            c.beginPath(); c.arc(x, y, 8 * sc, 0, Math.PI * 2); c.fill();
+          }
+          c.restore();
+        }
+      }
+      function drawWatermark(c, W, H) {
+        const fs = Math.max(14, Math.round(H * 0.028));
+        c.save();
+        c.font = `700 ${fs}px sans-serif`;
+        const text = 'Made with Chalkboard';
+        const tw = c.measureText(text).width;
+        const pad = Math.round(fs * 0.6), x = W - tw - pad * 2 - fs, y = H - fs * 2.2;
+        c.globalAlpha = 0.78;
+        c.fillStyle = 'rgba(2, 6, 23, 0.55)';
+        c.beginPath(); if (c.roundRect) c.roundRect(x, y, tw + pad * 2, fs * 1.6, fs * 0.5); else c.rect(x, y, tw + pad * 2, fs * 1.6); c.fill();
+        c.fillStyle = '#ffffff'; c.textBaseline = 'middle';
+        c.fillText(text, x + pad, y + fs * 0.82);
+        c.restore();
+      }
+      function drawRecFrame() {
+        const c = rec.cctx; if (!c) return;
+        const W = rec.comp.width, H = rec.comp.height, s = rec.scale;
+        c.setTransform(1, 0, 0, 1, 0, 0);
+        c.fillStyle = '#051610'; c.fillRect(0, 0, W, H);
+        let ox = 0;
+        if (rec.dual) {
+          const ref = $('referenceCanvas');
+          if (ref && ref.width) c.drawImage(ref, 0, 0, cssWidth * s, cssHeight * s);
+          ox = (cssWidth + rec.gap) * s;
+        }
+        c.drawImage(canvas, ox, 0, cssWidth * s, cssHeight * s);
+        drawBoardOverlays(c, ox, s);
+        if (rec.watermark) drawWatermark(c, W, H);
+      }
+      function recLoop() {
+        if (rec.state === 'idle') return;
+        drawRecFrame();
+        const el = recElapsed();
+        if (recTimerEl) recTimerEl.textContent = fmtMs(el);
+        if (rec.limit && el >= rec.limit && rec.state === 'recording') { stopRecording(true); return; }
+        rec.raf = requestAnimationFrame(recLoop);
+      }
+
+      async function startRecording() {
+        const mime = pickRecMime();
+        if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) { toast(tr('rec_unsupported'), 5000); return; }
+        const btn = $('btnRecStart'); if (btn) btn.disabled = true;
+        let mic = null;
+        const wantMic = !!($('recMicToggle') && $('recMicToggle').checked);
+        if (wantMic) {
+          try {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw Object.assign(new Error('getUserMedia unavailable'), { name: 'NotSupportedError' });
+            mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+          } catch (err) {
+            const reason = err && err.name === 'NotAllowedError' ? (appState.lang === 'zh' ? '权限被拒绝' : 'permission denied')
+              : err && err.name === 'NotFoundError' ? (appState.lang === 'zh' ? '没有找到麦克风' : 'no microphone found')
+              : ((err && (err.name || err.message)) || 'error');
+            if (!confirm(tr('rec_mic_denied', '', { reason }))) { if (btn) btn.disabled = false; return; }
+            mic = null;
+          }
+        }
+        try {
+          rec.dual = !!appState.isDualSpread;
+          rec.gap = 24;
+          const W = rec.dual ? cssWidth * 2 + rec.gap : cssWidth, H = cssHeight;
+          rec.scale = Math.min(2, 1920 / Math.max(W, H));
+          const comp = document.createElement('canvas');
+          comp.width = Math.max(2, Math.round(W * rec.scale / 2) * 2);   // H.264 需要偶数尺寸
+          comp.height = Math.max(2, Math.round(H * rec.scale / 2) * 2);
+          rec.comp = comp; rec.cctx = comp.getContext('2d');
+          rec.watermark = !appState.isPro;
+          rec.limit = appState.isPro ? 0 : REC_FREE_LIMIT_MS;
+          rec.protHtml = ''; rec.protImg = null;
+          drawRecFrame();
+          const vStream = comp.captureStream(30);
+          const tracks = [...vStream.getVideoTracks()];
+          if (mic) tracks.push(...mic.getAudioTracks());
+          const stream = new MediaStream(tracks);
+          const mr = mime ? new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5000000 }) : new MediaRecorder(stream);
+          rec.mime = mr.mimeType || mime || 'video/webm';
+          rec.ext = /mp4/i.test(rec.mime) ? 'mp4' : 'webm';
+          rec.chunks = [];
+          mr.ondataavailable = (ev) => { if (ev.data && ev.data.size) rec.chunks.push(ev.data); };
+          mr.onstop = finishRecording;
+          mr.onerror = (ev) => { toast(tr('rec_failed', '', { msg: (ev.error && ev.error.message) || 'MediaRecorder error' }), 6000); };
+          rec.mr = mr; rec.mic = mic; rec.stream = stream;
+          mr.start(1000);
+          rec.state = 'recording';
+          rec.acc = 0; rec.segStart = performance.now();
+          recSetup.classList.add('hidden');
+          recLive.classList.remove('hidden');
+          recPanel.classList.remove('is-paused');
+          if (recLimitEl) recLimitEl.classList.toggle('hidden', !rec.limit);
+          if (recMicStateEl) { recMicStateEl.textContent = mic ? '🎙️' : tr('rec_mic_off'); }
+          const bp = $('btnRecPause'); if (bp) { bp.textContent = tr('rec_pause'); bp.removeAttribute('data-i18n'); }
+          const dock = $('btnRecordLesson'); if (dock) dock.classList.add('tool-btn-active');
+          toast(tr('rec_started', '', { dual: rec.dual ? tr('rec_dual') : '', mic: mic ? tr('rec_with_mic') : '' }), 2500);
+          rec.raf = requestAnimationFrame(recLoop);
+          // 标签页在后台时 rAF 会暂停：用定时器兜底画帧并检查时长上限
+          clearInterval(rec.tick);
+          rec.tick = setInterval(() => {
+            if (rec.state === 'idle') { clearInterval(rec.tick); return; }
+            if (document.hidden) drawRecFrame();
+            if (rec.limit && rec.state === 'recording' && recElapsed() >= rec.limit) stopRecording(true);
+          }, 250);
+        } catch (err) {
+          if (mic) mic.getTracks().forEach(t => t.stop());
+          rec.state = 'idle';
+          toast(tr('rec_failed', '', { msg: (err && err.message) || String(err) }), 6000);
+        } finally {
+          if (btn) btn.disabled = false;
+        }
+      }
+      function togglePauseRecording() {
+        if (!rec.mr) return;
+        const bp = $('btnRecPause');
+        if (rec.state === 'recording') {
+          try { rec.mr.pause(); } catch (e) {}
+          rec.acc += performance.now() - rec.segStart;
+          rec.state = 'paused';
+          recPanel.classList.add('is-paused');
+          if (bp) bp.textContent = tr('rec_resume');
+        } else if (rec.state === 'paused') {
+          try { rec.mr.resume(); } catch (e) {}
+          rec.segStart = performance.now();
+          rec.state = 'recording';
+          recPanel.classList.remove('is-paused');
+          if (bp) bp.textContent = tr('rec_pause');
+        }
+      }
+      function stopRecording(byLimit) {
+        if (!rec.mr || rec.state === 'idle' || rec.state === 'stopping') return;
+        if (rec.state === 'recording') rec.acc += performance.now() - rec.segStart;
+        rec.state = 'stopping';
+        rec.byLimit = !!byLimit;
+        drawRecFrame();
+        try { rec.mr.stop(); } catch (e) { finishRecording(); }
+      }
+      function finishRecording() {
+        cancelAnimationFrame(rec.raf);
+        clearInterval(rec.tick);
+        if (rec.stream) rec.stream.getTracks().forEach(t => { try { t.stop(); } catch (e) {} });
+        if (rec.mic) rec.mic.getTracks().forEach(t => { try { t.stop(); } catch (e) {} });
+        const chunks = rec.chunks; rec.chunks = [];
+        const type = (rec.mime || 'video/webm').split(';')[0];
+        rec.state = 'idle'; rec.mr = null; rec.mic = null; rec.stream = null;
+        const dock = $('btnRecordLesson'); if (dock) dock.classList.remove('tool-btn-active');
+        recPanel.classList.remove('is-paused');
+        recPanel.classList.add('hidden');
+        if (rec.comp) { rec.comp.width = rec.comp.height = 0; rec.comp = null; rec.cctx = null; }
+        if (!chunks.length) { toast(tr('rec_failed', '', { msg: 'empty recording' }), 5000); return; }
+        const blob = new Blob(chunks, { type });
+        const name = `Chalkboard-lesson-${stamp()}.${rec.ext}`;
+        rec.lastBlob = blob; rec.lastName = name;
+        handleFileDownloadOrShare(blob, name, type);
+        toast(rec.byLimit ? tr('rec_limit_reached') : tr('rec_saved', '', { name }), rec.byLimit ? 8000 : 4500);
+      }
+      window.cbStartRecording = startRecording;
+      window.cbStopRecording = stopRecording;
+      const btnRecStart = $('btnRecStart'); if (btnRecStart) btnRecStart.onclick = startRecording;
+      const btnRecPause = $('btnRecPause'); if (btnRecPause) btnRecPause.onclick = togglePauseRecording;
+      const btnRecStop = $('btnRecStop'); if (btnRecStop) btnRecStop.onclick = () => stopRecording(false);
+      window.addEventListener('beforeunload', (e) => { if (rec.state === 'recording' || rec.state === 'paused') { e.preventDefault(); e.returnValue = tr('rec_confirm_leave'); return e.returnValue; } });
 
       /*R4_MORE*/
     })();
