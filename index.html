@@ -5456,13 +5456,11 @@
           }
         }
         if (hitImg) {
-          saveHistory();
           appState.selectedImages = [hitImg];
           appState.selectedTexts = [];
           appState.selectedStrokes = [];
           updateSelectionBoxUI();
-          appState.isDraggingSelection = true;
-          appState.dragStartPos = pos;
+          beginSelectionDrag(pos, e);
           return;
         }
 
@@ -5470,8 +5468,8 @@
         let hitText = null;
         for (let i = appState.texts.length - 1; i >= 0; i--) {
           const t = appState.texts[i];
-          const estW = Math.max(30, (t.text ? t.text.length : 4) * t.size * 0.7);
-          if (pos.x >= t.x && pos.x <= t.x + estW && pos.y >= t.y - t.size && pos.y <= t.y + 6) {
+          const tb = getTextBounds(t);
+          if (pos.x >= tb.x - 6 && pos.x <= tb.x + tb.width + 6 && pos.y >= tb.y - 6 && pos.y <= tb.y + tb.height + 6) {
             hitText = t;
             break;
           }
@@ -5486,13 +5484,11 @@
           appState._lastClickedText = hitText;
           appState._lastTextClickTime = now;
 
-          saveHistory();
           appState.selectedTexts = [hitText];
           appState.selectedImages = [];
           appState.selectedStrokes = [];
           updateSelectionBoxUI();
-          appState.isDraggingSelection = true;
-          appState.dragStartPos = pos;
+          beginSelectionDrag(pos, e);
           return;
         }
 
