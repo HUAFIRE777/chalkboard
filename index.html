@@ -4834,6 +4834,19 @@
       return true;
     }
 
+    // 双板模式下在左板用选择/文字/套索时给出提示（左板只支持画笔和橡皮），避免"点了没反应"
+    let _leftBoardHintAt = 0;
+    function hintLeftBoardTool(tool) {
+      if (!['select', 'text', 'lasso'].includes(tool)) return;
+      if (Date.now() - _leftBoardHintAt < 4000) return;
+      _leftBoardHintAt = Date.now();
+      const zh = (document.documentElement.lang || '').startsWith('zh');
+      const msg = zh
+        ? '左边是第 1 页，双板模式下只能用画笔和橡皮。要选择、移动或打字，请点「单板模式」回到第 1 页。'
+        : 'The left board (page 1) supports pen and eraser only in dual view. To select, move or type, switch to Single Board.';
+      try { showCreatorToast(msg, 4500); } catch (e) {}
+    }
+
     function setupWritableDualBoard() {
       const refCanvas = document.getElementById('referenceCanvas');
       if (!refCanvas || refCanvas._bound) return;
@@ -4866,7 +4879,7 @@
           return;
         }
         // 只有画笔类工具与橡皮擦作用于左板；选择 / 套索 / 文字 / 激光笔等不生成笔画
-        if (tool !== 'eraser' && !isStrokeTool(tool)) return;
+        if (tool !== 'eraser' && !isStrokeTool(tool)) { hintLeftBoardTool(tool); return; }
         if (e.button > 1) return;
 
         const p = appState.pages[0];
@@ -5000,7 +5013,7 @@
       resizeCanvas();
       clearSelection();
       redrawAllStrokes();
-      if (appState.isDualSpread) renderReferenceBoard();
+      renderReferenceBoard(); // 离开双板时也要调用：它会隐藏左板卡片
       updatePageUI();
     }
 
@@ -5084,6 +5097,10 @@
       `;
 
       canvasCard.appendChild(wrapper);
+
+      // 放进画布后按实际宽度再夹一次，避免文字工具条超出画板右边
+
+      { const ww = wrapper.offsetWidth; const left = parseFloat(wrapper.style.left) || 0; if (ww && left + ww > cssWidth - 6) wrapper.style.left = `${Math.max(6, cssWidth - ww - 6)}px`; }
 
       const textarea = wrapper.querySelector('#inlineCanvasTextArea');
       textarea.value = currentVal; // 用 .value 赋值，避免把用户文字当 HTML 注入
@@ -7273,7 +7290,7 @@ ${body}</svg>`;
     btnToggleFullscreen.onclick = toggleFullscreenMode;
     exitFullscreenBtn.onclick = toggleFullscreenMode;
 
-    // 启动语言优先级：?lang=xx (受支持时) > localStorage > 默认中文
+    // 启动语言优先级：?lang=xx (受支持时) > localStorage > 浏览器语言 > 英文
     function resolveInitialLanguage() {
       try {
         const q = new URLSearchParams(window.location.search).get('lang');
@@ -7282,7 +7299,7 @@ ${body}</svg>`;
       let saved = null;
       try { saved = localStorage.getItem('user_lang_pref'); } catch (err) {}
       if (saved && TRANSLATIONS[saved]) return saved;
-      return 'zh';
+      return (function () { try { const langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ""]; for (const l of langs) { const c = String(l).toLowerCase().slice(0, 2); if (TRANSLATIONS[c]) return c; } } catch (e) {} return "en"; })();
     }
 
     // 仅这些受信任的内置词条允许包含简单 HTML 标签 (如 <strong>)
